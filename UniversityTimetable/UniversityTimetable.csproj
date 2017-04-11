@@ -215,9 +215,13 @@
     <Content Include="Content\img\facebook%402x.png" />
     <Content Include="Content\img\futurity%402x.png" />
     <Content Include="Content\img\instagram%402x.png" />
+    <Content Include="Content\img\intro_about.jpg" />
     <Content Include="Content\img\slaider-s1.jpg" />
     <Content Include="Content\img\slaider-s2.jpg" />
+    <Content Include="Content\img\stanford.png" />
+    <Content Include="Content\img\stanforduniversity-white%402x-short.png" />
     <Content Include="Content\img\stanforduniversity-white%402x.png" />
+    <Content Include="Content\img\SU_BlockS_card_pos.png" />
     <Content Include="Content\img\twitter%402x.png" />
     <Content Include="Content\img\youtube%402x.png" />
     <Content Include="favicon.ico" />
