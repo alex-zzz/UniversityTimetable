@@ -1,10 +1,25 @@
-﻿<!DOCTYPE html>
-<html>
+﻿<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    @RenderSection("css", required: false)
+
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
@@ -17,7 +32,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <a href="@Url.Action("Index", "Home")" title="List View" class="navbar-brand">
+                    <img src="~/Content/img/stanforduniversity-white@2x.png" />
+                </a>
+
+                @*@Html.ActionLink("University Timetable", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -29,15 +48,51 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    @*<div class="container body-content">*@
+    <div class="container-fluid">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+        
+        <div class="container">
+            <hr />
+            <div class="row">
+                <div class="col-md-4">
+                    <h2>Stanford News</h2>
+                    <p>
+                        ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+                        enables a clean separation of concerns and gives you full control over markup
+                        for enjoyable, agile development.
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <h2>Contacts</h2>
+                    <p>Stanford, California 94305</p>
+                    <p>Stanford is easily accessible from throughout the San Francisco Bay area, including San Francisco, Berkeley, and San Jose.</p>
+                </div>
+                <div class="col-md-4">
+                    <div id="social">
+                        <h2>Social</h2>
+                        <ul>
+                            <li id="social_facebook"><a title="Facebook" class="xsu-link" data-ua-action="social" data-ua-label="Facebook" href="http://www.facebook.com/stanford"><img src="~/Content/img/facebook@2x.png" alt="Facebook"></a></li>
+                            <li id="social_twitter"><a title="Twitter" class="xsu-link" data-ua-action="social" data-ua-label="Twitter" href="http://twitter.com/stanford"><img src="~/Content/img/twitter@2x.png" alt="Twitter"></a></li>
+                            <li id="social_itunes"><a title="iTunes U" class="xsu-link" data-ua-action="social" data-ua-label="iTunes U" href="http://itunes.stanford.edu"><img src="~/Content/img/apple@2x.png" alt="iTunes U"></a></li>
+                        </ul>
+                        <ul>
+                            <li id="social_youtube"><a title="YouTube" class="xsu-link" data-ua-action="social" data-ua-label="YouTube" href="http://www.youtube.com/stanford"><img src="~/Content/img/youtube@2x.png" alt="YouTube"></a></li>
+                            <li id="social_instagram"><a title="Instagram" class="xsu-link" data-ua-action="social" data-ua-label="Instagram" href="http://instagram.com/stanford"><img src="~/Content/img/instagram@2x.png" alt="Instagram"></a></li>
+                            <li id="social_futurity"><a title="Futurity" class="xsu-link" data-ua-action="social" data-ua-label="Futurity" href="http://futurity.org/university/stanford-university/"><img src="~/Content/img/futurity@2x.png" alt="Futurity"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - CBS Test Application</p>
+            </footer>
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

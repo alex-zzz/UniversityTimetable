@@ -210,6 +210,16 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\carousel.css" />
+    <Content Include="Content\img\apple%402x.png" />
+    <Content Include="Content\img\facebook%402x.png" />
+    <Content Include="Content\img\futurity%402x.png" />
+    <Content Include="Content\img\instagram%402x.png" />
+    <Content Include="Content\img\slaider-s1.jpg" />
+    <Content Include="Content\img\slaider-s2.jpg" />
+    <Content Include="Content\img\stanforduniversity-white%402x.png" />
+    <Content Include="Content\img\twitter%402x.png" />
+    <Content Include="Content\img\youtube%402x.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -278,6 +288,8 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_Layout - Copy.cshtml" />
+    <Content Include="Views\Home\Index - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
