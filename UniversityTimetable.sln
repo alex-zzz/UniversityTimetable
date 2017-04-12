@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityTimetable", "UniversityTimetable\UniversityTimetable.csproj", "{E17DF051-CC43-410B-8B12-6668DDE6F90D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityTimetable.DAL", "UniversityTimetable.DAL\UniversityTimetable.DAL.csproj", "{802E96CE-5821-445B-B255-2CC2294AA4FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{E17DF051-CC43-410B-8B12-6668DDE6F90D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E17DF051-CC43-410B-8B12-6668DDE6F90D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E17DF051-CC43-410B-8B12-6668DDE6F90D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{802E96CE-5821-445B-B255-2CC2294AA4FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{802E96CE-5821-445B-B255-2CC2294AA4FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{802E96CE-5821-445B-B255-2CC2294AA4FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{802E96CE-5821-445B-B255-2CC2294AA4FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

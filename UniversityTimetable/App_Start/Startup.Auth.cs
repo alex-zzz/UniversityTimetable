@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using UniversityTimetable.Models;
+using UniversityTimetable.DAL.Identity;
 
 namespace UniversityTimetable
 {

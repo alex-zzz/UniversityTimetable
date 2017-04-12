@@ -36,11 +36,14 @@ textarea {
 
 .navbar-brand > img {
     height: 100%;
-    padding-top: 12px;
-    padding-left: 10px;
-    padding-bottom: 10px;
+    padding: 12px 10px 10px;
     width: auto;
 }
+
+#logoutForm {
+    margin-bottom: 0;
+}
+
 
 #social ul {
     padding: 0;
