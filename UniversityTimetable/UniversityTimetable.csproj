@@ -223,7 +223,9 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\carousel.css" />
+    <Content Include="Content\ie10-viewport-bug-workaround.css" />
     <Content Include="Content\img\apple%402x.png" />
+    <Content Include="Content\img\cd-icon-picture.svg" />
     <Content Include="Content\img\facebook%402x.png" />
     <Content Include="Content\img\futurity%402x.png" />
     <Content Include="Content\img\instagram%402x.png" />
@@ -236,6 +238,7 @@
     <Content Include="Content\img\SU_BlockS_card_pos.png" />
     <Content Include="Content\img\twitter%402x.png" />
     <Content Include="Content\img\youtube%402x.png" />
+    <Content Include="Content\timeline.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -270,6 +273,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\timeline.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

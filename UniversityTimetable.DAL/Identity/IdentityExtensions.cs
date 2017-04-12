@@ -15,7 +15,7 @@ namespace UniversityTimetable.DAL.Identity
         {
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             var currentUser = manager.FindById(identity.GetUserId());
-            return currentUser == null ? "Anonim" : currentUser.FullName;
+            return currentUser == null ? "Anonim" : currentUser.FullName == null ? currentUser.Email : currentUser.FullName;
         }
     }
 }

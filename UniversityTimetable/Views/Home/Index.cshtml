@@ -4,6 +4,8 @@
 
 @section css {
     <link href="@Url.Content("~/Content/carousel.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/timeline.css")" rel="stylesheet" />
+
 }
 
 <section class="section-white">
@@ -17,7 +19,7 @@
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
                 <div class="item active">
-                    <img src="~/Content/img/slaider-s1.jpg" alt="Stanford University"/>
+                    <img src="~/Content/img/slaider-s1.jpg" alt="Stanford University" />
                     <div class="carousel-caption">
                         <h2>Welcome to Stanford University</h2>
                     </div>
@@ -42,4 +44,72 @@
 <div class="container">
     <h2>Moral judging helps people cooperate better in groups, new Stanford research says</h2>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dictum et nibh pharetra rhoncus. Nam eu dictum neque. Sed maximus maximus ex euismod scelerisque. Suspendisse non turpis tempus, tristique libero dapibus, elementum dolor. Cras non luctus nisi. Praesent aliquam convallis lacus eu ultrices. Class aptent taciti sociosqu ad litora torquent.</p>
+ 
+    <section id="cd-timeline" class="cd-container">
+        <div class="cd-timeline-block">
+            <div class="cd-timeline-img color">
+            </div>
+            <div class="cd-timeline-content">
+            <div class="circle pull-right">
+                <h2>C#</h2>
+                </div>
+                <span class="cd-date">Step 1</span>
+            </div>
+        </div>
+        <div class="cd-timeline-block">
+            <div class="cd-timeline-img color">
+            </div>
+            <div class="cd-timeline-content">
+                <div class="circle pull-left">
+                    <h2>ASP</h2>
+                </div>
+                <span class="cd-date">Step 2</span>
+            </div>
+        </div>
+        <div class="cd-timeline-block">
+            <div class="cd-timeline-img color">
+            </div>
+            <div class="cd-timeline-content">
+                <div class="circle pull-right">
+                    <h2>EF</h2>
+                </div>
+                 <span class="cd-date">Step 3</span>
+            </div>
+        </div>
+        <div class="cd-timeline-block">
+            <div class="cd-timeline-img color">
+            </div>
+            <div class="cd-timeline-content">
+                <div class="circle pull-left">
+                    <h2>WCF</h2>
+                </div>
+                <span class="cd-date">Step 4</span>
+            </div>
+        </div>
+        <div class="cd-timeline-block">
+            <div class="cd-timeline-img color">
+            </div>
+            <div class="cd-timeline-content">
+                <div class="circle pull-right">
+                    <h2>HTML</h2>
+                </div>
+                <span class="cd-date">Step 5</span>
+            </div>
+        </div>
+        <div class="cd-timeline-block">
+            <div class="cd-timeline-img color">
+            </div>
+            <div class="cd-timeline-content">
+                <div class="circle pull-left">
+                    <h2>JS</h2>
+                </div>
+                <span class="cd-date">Step 6</span>
+            </div>
+        </div>
+    </section>
 </div>
+
+@section scripts {
+    <script src="@Url.Content("~/Scripts/timeline.js")"></script>
+
+}

@@ -17,6 +17,9 @@ namespace UniversityTimetable
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
                         "~/Scripts/knockout-{version}.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/timeline").Include(
+            "~/Scripts/timeline.js"));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
@@ -32,6 +35,9 @@ namespace UniversityTimetable
 
             bundles.Add(new StyleBundle("~/Content/carousel").Include(
                       "~/Content/carousel.css"));
+
+            bundles.Add(new StyleBundle("~/Content/timeline").Include(
+                      "~/Content/timeline.css"));
         }
     }
 }
