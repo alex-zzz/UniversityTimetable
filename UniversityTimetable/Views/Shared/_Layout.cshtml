@@ -46,7 +46,7 @@
 
                     @if (Request.IsAuthenticated && User.IsInRole("admin"))
                     {
-                        <li>@Html.ActionLink("Admin panel", "About", "Home")</li>
+                        <li>@Html.ActionLink("Admin panel", "Index", "Admin")</li>
                     }
                     @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
