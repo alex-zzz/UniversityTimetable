@@ -7,8 +7,5 @@ using System.Threading.Tasks;
 
 namespace UniversityTimetable.DAL.Identity
 {
-    public static class IdentityExtensions
-    {
 
-    }
 }
