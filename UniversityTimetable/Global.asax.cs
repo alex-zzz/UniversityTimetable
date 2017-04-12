@@ -15,7 +15,7 @@ namespace UniversityTimetable
     {
         protected void Application_Start()
         {
-            Database.SetInitializer<ApplicationDbContext>(new AppDbInitializer());
+            Database.SetInitializer<ApplicationDbContext>(new DbInitializer());
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

@@ -9,7 +9,7 @@ using UniversityTimetable.DAL.Identity;
 
 namespace UniversityTimetable.Models
 {
-    public class AppDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
+    public class DbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext context)
         {
@@ -29,8 +29,8 @@ namespace UniversityTimetable.Models
 
 
             // создаем пользователей
-            var admin = new ApplicationUser { Email = "somemail@mail.ru", UserName = "somemail@mail.ru" };
-            string password = "ad46D_ewr3";
+            var admin = new ApplicationUser { Email = "admin@stanford.edu", UserName = "admin@stanford.edu" };
+            string password = "Qwert!123";
             var result = userManager.Create(admin, password);
 
             // если создание пользователя прошло успешно
@@ -39,6 +39,7 @@ namespace UniversityTimetable.Models
                 // добавляем для пользователя роль
                 userManager.AddToRole(admin.Id, role1.Name);
                 userManager.AddToRole(admin.Id, role2.Name);
+                userManager.AddToRole(admin.Id, role3.Name);
             }
 
             base.Seed(context);

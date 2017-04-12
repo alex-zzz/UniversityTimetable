@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using UniversityTimetable.Common.Validators;
 
 namespace UniversityTimetable.Models
 {
@@ -65,6 +66,11 @@ namespace UniversityTimetable.Models
     public class RegisterViewModel
     {
         [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Display(Name = "Name")]
+        public string FullName { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -79,6 +85,10 @@ namespace UniversityTimetable.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [MustBeTrue(ErrorMessage = "You must accept the terms")]
+        public bool IsTermsAccepted { get; set; }
     }
 
     public class ResetPasswordViewModel

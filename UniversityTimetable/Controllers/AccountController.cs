@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using UniversityTimetable.Models;
 using UniversityTimetable.DAL.Identity;
+using UniversityTimetable.Common.Validators;
 
 namespace UniversityTimetable.Controllers
 {
@@ -148,6 +149,7 @@ namespace UniversityTimetable.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Register([ModelBinder(typeof(RegisterViewModelCustomBinder))]RegisterViewModel model)
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
