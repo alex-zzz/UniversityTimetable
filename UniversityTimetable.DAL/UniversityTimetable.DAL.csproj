@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EF\UniversityTimetableContext.cs" />
+    <Compile Include="Identity\IdentityExtensions.cs" />
     <Compile Include="Identity\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
