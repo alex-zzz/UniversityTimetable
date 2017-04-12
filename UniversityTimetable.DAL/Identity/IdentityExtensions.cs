@@ -9,8 +9,6 @@ namespace UniversityTimetable.DAL.Identity
 {
     public static class IdentityExtensions
     {
-        public static string GetUserName(this IIdentity identity) {
-            return identity
-        }
+
     }
 }
