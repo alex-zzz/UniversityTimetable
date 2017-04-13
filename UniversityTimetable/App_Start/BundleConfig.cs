@@ -15,7 +15,8 @@ namespace UniversityTimetable
                         "~/Scripts/jquery.validate*"));
 
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
-                        "~/Scripts/knockout-{version}.js"));
+                        "~/Scripts/knockout-{version}.js",
+                        "~/Scripts/knockout.simpleGrid.3.0.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/timeline").Include(
             "~/Scripts/timeline.js"));

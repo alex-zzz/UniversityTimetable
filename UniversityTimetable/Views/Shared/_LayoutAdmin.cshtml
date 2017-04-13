@@ -1,0 +1,42 @@
+﻿<html lang="en">
+<head>
+    @Html.Partial("_HeadSectionPartial")
+
+    @RenderSection("css", required: false)
+
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+    @Html.Partial("_HeaderPartial")
+
+    <div class="container">
+        <h2>Admin panel</h2>
+        <div class="row">
+            <div class="col-md-2">
+                <h3>Sections</h3>
+                <div class="list-group">
+                    <a href="#" class="list-group-item active">
+                        Reports
+                    </a>
+                    <a href="#" class="list-group-item">Students</a>
+                    <a href="#" class="list-group-item">Groups</a>
+                    <a href="#" class="list-group-item">Managers</a>
+                    <a href="#" class="list-group-item">News</a>
+                </div>
+            </div>
+            <div class="col-md-10">
+                @RenderBody()
+            </div>
+        </div>
+
+        @Html.Partial("_FooterPartial")
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/knockout")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

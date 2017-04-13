@@ -15,5 +15,12 @@ namespace UniversityTimetable.Controllers
         {
             return View();
         }
+
+
+        [Authorize(Roles = "admin")]
+        public ActionResult Students()
+        {
+            return View();
+        }
     }
 }
