@@ -36,7 +36,7 @@
             this.items = ko.observableArray(items);
 
             this.addItem = function () {
-                this.items.push({ name: "New item", sales: 0, price: 100 });
+                this.items.unshift({ name: "New item", sales: 0, price: 100 });
             };
 
             this.sortByName = function () {
@@ -56,7 +56,7 @@
                     { headerText: "Sales Count", rowText: "sales" },
                     { headerText: "Price", rowText: function (item) { return "$" + item.price.toFixed(2) } }
                 ],
-                pageSize: 15
+                pageSize: 6
             });
         };
 

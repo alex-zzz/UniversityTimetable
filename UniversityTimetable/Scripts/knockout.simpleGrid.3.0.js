@@ -35,12 +35,12 @@
     // Templates used to render the grid
     var templateEngine = new ko.nativeTemplateEngine();
 
-    templateEngine.addTemplate = function(templateName, templateMarkup) {
+    templateEngine.addTemplate = function (templateName, templateMarkup) {
         document.write("<script type='text/html' id='" + templateName + "'>" + templateMarkup + "<" + "/script>");
     };
 
     templateEngine.addTemplate("ko_simpleGrid_grid", "\
-                    <table class=\"ko-grid table table-striped table-bordered table-hover\" cellspacing=\"0\">\
+                    <table class=\"ko-grid table table-striped table-hover\" cellspacing=\"0\">\
                         <thead>\
                             <tr data-bind=\"foreach: columns\">\
                                <th data-bind=\"text: headerText\"></th>\
@@ -48,7 +48,15 @@
                         </thead>\
                         <tbody data-bind=\"foreach: itemsOnCurrentPage\">\
                            <tr data-bind=\"foreach: $parent.columns\">\
-                               <td data-bind=\"text: typeof rowText == 'function' ? rowText($parent) : $parent[rowText] \"></td>\
+                                <!--ko if: typeof rowText == 'object' && typeof rowText.edit == 'function'-->\
+                                <td><button class=\"btn btn-primary center-block\" data-bind=\"click:rowText.edit($parent)\">edit</button></td>\
+                                <!-- /ko -->\
+                                <!--ko if: typeof rowText == 'object' && typeof rowText.delete == 'function'-->\
+                                <td><button class=\"btn btn-primary center-block\" data-bind=\"click:rowText.delete($parent)\">delete</button></td>\
+                                <!-- /ko -->\
+                                <!--ko ifnot: typeof rowText == 'object'-->\
+                                <td data-bind=\"text: typeof rowText == 'function' ? rowText($parent) : $parent[rowText] \" ></td>\
+                                <!--/ko-->\
                             </tr>\
                         </tbody>\
                     </table>");
@@ -63,7 +71,7 @@
 
     // The "simpleGrid" binding
     ko.bindingHandlers.simpleGrid = {
-        init: function() {
+        init: function () {
             return { 'controlsDescendantBindings': true };
         },
         // This method is called to initialize the node, and will also be called again if you change what the grid is bound to
@@ -71,11 +79,11 @@
             var viewModel = viewModelAccessor();
 
             // Empty the element
-            while(element.firstChild)
+            while (element.firstChild)
                 ko.removeNode(element.firstChild);
 
             // Allow the default templates to be overridden
-            var gridTemplateName      = allBindings.get('simpleGridTemplate') || "ko_simpleGrid_grid",
+            var gridTemplateName = allBindings.get('simpleGridTemplate') || "ko_simpleGrid_grid",
                 pageLinksTemplateName = allBindings.get('simpleGridPagerTemplate') || "ko_simpleGrid_pageLinks";
 
             // Render the main grid
