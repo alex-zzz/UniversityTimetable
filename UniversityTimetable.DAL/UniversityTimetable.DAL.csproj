@@ -63,7 +63,6 @@
     <Compile Include="Entities\Student.cs" />
     <Compile Include="Identity\ApplicationRoleManager.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />
-    <Compile Include="Identity\IdentityExtensions.cs" />
     <Compile Include="Identity\IdentityModels.cs" />
     <Compile Include="Interfaces\IClientManager.cs" />
     <Compile Include="Interfaces\IEntity.cs" />

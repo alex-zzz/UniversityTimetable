@@ -10,12 +10,19 @@ using UniversityTimetable.BLL.Infrastructure;
 using UniversityTimetable.BLL.Interfaces;
 using UniversityTimetable.DAL.Identity;
 using UniversityTimetable.DAL.Interfaces;
+using UniversityTimetable.DAL.Repositories;
 
 namespace UniversityTimetable.BLL.Services
 {
     public class UserService : IUserService
     {
+        static IUnitOfWork StaticDatabase { get; set; }
         IUnitOfWork Database { get; set; }
+
+        static UserService()
+        {
+            StaticDatabase = new EFUnitOfWork("DefaultConnection");
+        }
 
         public UserService(IUnitOfWork uow)
         {
@@ -45,6 +52,28 @@ namespace UniversityTimetable.BLL.Services
             }
         }
 
+        public async Task<OperationDetails> ChangePasswordAsync(string Id, string OldPassword, string NewPassword)
+        {
+            ApplicationUser au = Database.UserManager.FindById(Id);
+
+            if (au == null)
+            {
+                return new OperationDetails(false, "Can't change the password!", "");
+            }
+            else
+            {
+                var result = await Database.UserManager.ChangePasswordAsync(Id, OldPassword, NewPassword);
+                if (result.Succeeded)
+                {
+                    return new OperationDetails(true, "Password is changed!", "");
+                }
+                else
+                {
+                    return new OperationDetails(false, result.ToString(), "");
+                }
+            }
+        }
+
         public async Task<ClaimsIdentity> Authenticate(UserDTO userDto)
         {
             ClaimsIdentity claim = null;
@@ -70,6 +99,18 @@ namespace UniversityTimetable.BLL.Services
                 }
             }
             await Create(adminDto);
+        }
+
+        public static UserDTO FindById(string id)
+        {
+            ApplicationUser au = StaticDatabase.UserManager.FindById(id);
+            if (au == null)
+            { return null; }
+            else
+            {
+                UserDTO user = new UserDTO { Name = au.FullName, Id = au.Id, Email = au.Email, Address = au.ClientProfile.Address };
+                return user;
+            }
         }
 
         public void Dispose()

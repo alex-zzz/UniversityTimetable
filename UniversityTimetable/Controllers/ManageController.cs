@@ -8,6 +8,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using UniversityTimetable.Models;
 using UniversityTimetable.BLL.Interfaces;
+using UniversityTimetable.BLL.DTO;
+using System.Security.Claims;
 
 namespace UniversityTimetable.Controllers
 {
@@ -92,6 +94,88 @@ namespace UniversityTimetable.Controllers
             };
             return View(model);
         }
+
+        // GET: /Manage/ChangePassword
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Manage/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            if (result.Succedeed)
+            {
+                UserDTO userDto = new UserDTO { Email = User.Identity.GetUserName(), Password = model.NewPassword };
+                ClaimsIdentity claim = await UserManager.Authenticate(userDto);
+
+                if (claim == null)
+                {
+                    ModelState.AddModelError("", "Wrong login/password.");
+                }
+                else
+                {
+                    AuthenticationManager.SignOut();
+                    AuthenticationManager.SignIn(new AuthenticationProperties
+                    {
+                        IsPersistent = true
+                    }, claim);
+                    return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                }
+
+                //    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                //    if (user != null)
+                //    {
+                //        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                //    }
+                //    return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+            }
+
+            //AddErrors(result);
+            return View(model);
+        }
+
+        //
+        // GET: /Manage/SetPassword
+        public ActionResult SetPassword()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Manage/SetPassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
+        {
+            //if (ModelState.IsValid)
+            //{
+            //    var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+            //    if (result.Succeeded)
+            //    {
+            //        var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            //        if (user != null)
+            //        {
+            //            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+            //        }
+            //        return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
+            //    }
+            //    AddErrors(result);
+            //}
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
 
         //
         // POST: /Manage/RemoveLogin
@@ -232,67 +316,6 @@ namespace UniversityTimetable.Controllers
         //}
 
         //
-        // GET: /Manage/ChangePassword
-        public ActionResult ChangePassword()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Manage/ChangePassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            //var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-            //if (result.Succeeded)
-            //{
-            //    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            //    if (user != null)
-            //    {
-            //        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-            //    }
-            //    return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
-            //}
-            //AddErrors(result);
-            return View(model);
-        }
-
-        //
-        // GET: /Manage/SetPassword
-        public ActionResult SetPassword()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Manage/SetPassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
-        {
-            //if (ModelState.IsValid)
-            //{
-            //    var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
-            //    if (result.Succeeded)
-            //    {
-            //        var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            //        if (user != null)
-            //        {
-            //            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-            //        }
-            //        return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
-            //    }
-            //    AddErrors(result);
-            //}
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
 
         //
         //// GET: /Manage/ManageLogins
