@@ -11,8 +11,8 @@ namespace UniversityTimetable.App_Start
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Modules;
-    using UniversityTimetable.DAL;
-    using UniversityTimetable.DAL.Identity;
+    using UniversityTimetable.BLL.Infrastructure;
+    using Ninject.Web.Mvc;
 
     public static class NinjectWebCommon 
     {
@@ -42,9 +42,10 @@ namespace UniversityTimetable.App_Start
         /// <returns>The created kernel.</returns>
         private static IKernel CreateKernel()
         {
-            //var modules = new INinjectModule[] { new ServiceModule("DefaultConnection") };
-            //var kernel = new StandardKernel(modules);
-            var kernel = new StandardKernel();
+            var modules = new INinjectModule[] { new ServiceModule("DefaultConnection") };
+            var kernel = new StandardKernel(modules);
+            //var kernel = new StandardKernel();
+
             try
             {
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
@@ -66,6 +67,7 @@ namespace UniversityTimetable.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-        }        
+            System.Web.Mvc.DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
+        }
     }
 }

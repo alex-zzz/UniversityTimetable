@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{802E96CE-5821-445B-B255-2CC2294AA4FD}</ProjectGuid>
+    <ProjectGuid>{13703C1A-7162-4EC9-8A96-D874E2E15EF1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UniversityTimetable.DAL</RootNamespace>
-    <AssemblyName>UniversityTimetable.DAL</AssemblyName>
+    <RootNamespace>UniversityTimetable.BLL</RootNamespace>
+    <AssemblyName>UniversityTimetable.BLL</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -56,29 +59,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\DbInitializer.cs" />
-    <Compile Include="EF\UniversityTimetableContext.cs" />
-    <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\Group.cs" />
-    <Compile Include="Entities\Student.cs" />
-    <Compile Include="Identity\ApplicationRoleManager.cs" />
-    <Compile Include="Identity\ApplicationUserManager.cs" />
-    <Compile Include="Identity\IdentityExtensions.cs" />
-    <Compile Include="Identity\IdentityModels.cs" />
-    <Compile Include="Interfaces\IClientManager.cs" />
-    <Compile Include="Interfaces\IEntity.cs" />
-    <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Interfaces\IUnitOfWork.cs" />
+    <Compile Include="DTO\GroupDTO.cs" />
+    <Compile Include="DTO\StudentDTO.cs" />
+    <Compile Include="DTO\UserDTO.cs" />
+    <Compile Include="Infrastructure\OperationDetails.cs" />
+    <Compile Include="Infrastructure\ServiceModule.cs" />
+    <Compile Include="Infrastructure\ValidationException.cs" />
+    <Compile Include="Mappings\Interfaces\IServiceCreator.cs" />
+    <Compile Include="Mappings\Interfaces\ITimeTableService.cs" />
+    <Compile Include="Mappings\Interfaces\IUserService.cs" />
+    <Compile Include="Mappings\AutoMapperConfiguration.cs" />
+    <Compile Include="Mappings\DomainToDtoMappingProfile.cs" />
+    <Compile Include="Mappings\DtoToDomainMappingProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\ClientManager.cs" />
-    <Compile Include="Repositories\EFUnitOfWork.cs" />
-    <Compile Include="Repositories\GroupRepository.cs" />
-    <Compile Include="Repositories\StudentRepository.cs" />
+    <Compile Include="Services\ServiceCreator.cs" />
+    <Compile Include="Services\TimeTableService.cs" />
+    <Compile Include="Services\UserService.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\UniversityTimetable.DAL\UniversityTimetable.DAL.csproj">
+      <Project>{802e96ce-5821-445b-b255-2cc2294aa4fd}</Project>
+      <Name>UniversityTimetable.DAL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

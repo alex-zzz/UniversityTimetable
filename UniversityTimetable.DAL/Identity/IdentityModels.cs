@@ -3,10 +3,15 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Ninject.Modules;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using UniversityTimetable.DAL.Common;
+using UniversityTimetable.DAL.Entities;
 
 namespace UniversityTimetable.DAL.Identity
 {
@@ -16,41 +21,54 @@ namespace UniversityTimetable.DAL.Identity
         public string FullName { get; set; }
         public bool IsTermsAccepted { get; set; }
 
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
-        {
-            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
-            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
-            // Add custom user claims here
-            return userIdentity;
-        }
+        public virtual ClientProfile ClientProfile { get; set; }
+
+        //public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
+        //{
+        //    // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+        //    var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
+        //    // Add custom user claims here
+        //    return userIdentity;
+        //}
+    }
+
+    public class ApplicationRole : IdentityRole
+    {
+    }
+
+    public class ClientProfile
+    {
+        [Key]
+        [ForeignKey("ApplicationUser")]
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+        public string Address { get; set; }
+
+        public virtual ApplicationUser ApplicationUser { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+        static ApplicationDbContext()
         {
+            Database.SetInitializer<ApplicationDbContext>(new DbInitializer());
         }
 
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
+        public ApplicationDbContext(string connectionString)
+            //:base(connectionString) 
+            : base(connectionString, throwIfV1Schema: false)
+        {}
+
+        public DbSet<ClientProfile> ClientProfiles { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Group> Groups { get; set; }
+
+        //public static ApplicationDbContext Create()
+        //{
+        //    return new ApplicationDbContext("DefaultConnection");
+        //}
     }
 
-    //public class ServiceModule : NinjectModule
-    //{
-    //    private string connectionString;
 
-    //    public ServiceModule(string connection)
-    //    {
-    //        connectionString = connection;
-    //    }
-
-    //    public override void Load()
-    //    {
-    //        //Bind<IUnitOfWork>().To<EFUnitOfWork>().WithConstructorArgument(connectionString);
-    //        //Bind<IMapper>().ToConstant(CbsTest.BLL.AutoMapperConfiguration.Configure().CreateMapper()).WhenInjectedInto(typeof(LibraryService));
-    //    }
-    //}
 }
