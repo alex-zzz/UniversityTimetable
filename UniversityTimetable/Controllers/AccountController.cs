@@ -55,7 +55,7 @@ namespace UniversityTimetable.Controllers
                 ClaimsIdentity claim = await UserService.Authenticate(userDto);
                 if (claim == null)
                 {
-                    ModelState.AddModelError("", "Неверный логин или пароль.");
+                    ModelState.AddModelError("", "Wrong login/password.");
                 }
                 else
                 {
@@ -102,7 +102,7 @@ namespace UniversityTimetable.Controllers
                     ClaimsIdentity claim = await UserService.Authenticate(userDto);
                     if (claim == null)
                     {
-                        ModelState.AddModelError("", "Неверный логин или пароль.");
+                        ModelState.AddModelError("", "Wrong login/password.");
                     }
                     else
                     {
