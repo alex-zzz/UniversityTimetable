@@ -64,19 +64,32 @@ textarea {
     color: #3f3c30;
 }
 
-/* About */
-#about img.pull-left {
+#footer article img {
+    width: 80px;
     margin-right: 20px;
 }
 
-#about img.pull-right {
+/* About, News */
+#about img.pull-left, #news img.pull-left {
+    margin-right: 20px;
+}
+
+#about img.pull-right, #news img.pull-right {
     margin-left: 20px;
 }
 
+#news article {
+    padding-bottom: 10px;
+}
+
+/* Admin */
+
+.ko-grid-pageLinks {
+    margin: 10px;
+}
 
 /* Media */
 @media screen and (max-width: 768px) {
-
     #about img {
         margin-bottom: 20px;
     }

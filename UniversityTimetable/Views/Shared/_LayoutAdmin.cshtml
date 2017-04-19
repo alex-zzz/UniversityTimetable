@@ -1,0 +1,68 @@
+﻿<html lang="en">
+<head>
+    @Html.Partial("_HeadSectionPartial")
+
+    @RenderSection("css", required: false)
+
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+    @Html.Partial("_HeaderPartial")
+
+    <div class="container">
+        <h2>Admin panel</h2>
+        <div class="row">
+            <div class="col-md-2">
+                <h3>Sections</h3>
+                <div class="list-group">
+                    @Html.ActionLink("Reports", "Reports", "Admin", new { }, new { @class = "list-group-item" })
+                    @Html.ActionLink("Students", "Students", "Admin", new { }, new { @class = "list-group-item" })
+                    @*<a href="#" class="list-group-item">Students</a>*@
+                    @Html.ActionLink("Groups", "Groups", "Admin", new { }, new { @class = "list-group-item" })
+                    @Html.ActionLink("Managers", "Managers", "Admin", new { }, new { @class = "list-group-item" })
+                    @Html.ActionLink("News", "News", "Admin", new { }, new { @class = "list-group-item" })
+                </div>
+            </div>
+            <div class="col-md-10">
+                @RenderBody()
+            </div>
+        </div>
+
+        @Html.Partial("_FooterPartial")
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/knockout")
+
+    <script>
+        //$('.list-group a').click(function (e) {
+        //    //e.preventDefault();
+        //    $('a').removeClass('active');
+        //    $(this).addClass('active');
+        //});
+
+        $(function () {
+            setNavigation();
+        });
+
+        function setNavigation() {
+            var path = window.location.pathname;
+            path = path.replace(/\/$/, "");
+            path = decodeURIComponent(path);
+
+            $(".list-group a").each(function () {
+                var href = $(this).attr('href');
+                if (path.substring(0, href.length) === href) {
+                    $(this).addClass('active');
+                }
+            });
+        }
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

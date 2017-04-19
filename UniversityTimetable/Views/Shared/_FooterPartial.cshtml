@@ -1,0 +1,39 @@
+﻿<div class="container">
+    <hr />
+    <div id="footer" class="row">
+        <div class="col-md-4">
+            <h2>Stanford News</h2>
+            @*<p>
+                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+                enables a clean separation of concerns and gives you full control over markup
+                for enjoyable, agile development.
+            </p>*@
+
+            @Html.Action("GetFooterNews", "Home", new { quantity = 2 })
+        </div>
+        <div class="col-md-4">
+            <h2>Contacts</h2>
+            <p>Stanford, California 94305</p>
+            <p>Stanford is easily accessible from throughout the San Francisco Bay area, including San Francisco, Berkeley, and San Jose.</p>
+        </div>
+        <div class="col-md-4">
+            <div id="social">
+                <h2>Social</h2>
+                <ul>
+                    <li id="social_facebook"><a title="Facebook" class="xsu-link" data-ua-action="social" data-ua-label="Facebook" href="http://www.facebook.com/stanford"><img src="~/Content/img/facebook@2x.png" alt="Facebook"></a></li>
+                    <li id="social_twitter"><a title="Twitter" class="xsu-link" data-ua-action="social" data-ua-label="Twitter" href="http://twitter.com/stanford"><img src="~/Content/img/twitter@2x.png" alt="Twitter"></a></li>
+                    <li id="social_itunes"><a title="iTunes U" class="xsu-link" data-ua-action="social" data-ua-label="iTunes U" href="http://itunes.stanford.edu"><img src="~/Content/img/apple@2x.png" alt="iTunes U"></a></li>
+                </ul>
+                <ul>
+                    <li id="social_youtube"><a title="YouTube" class="xsu-link" data-ua-action="social" data-ua-label="YouTube" href="http://www.youtube.com/stanford"><img src="~/Content/img/youtube@2x.png" alt="YouTube"></a></li>
+                    <li id="social_instagram"><a title="Instagram" class="xsu-link" data-ua-action="social" data-ua-label="Instagram" href="http://instagram.com/stanford"><img src="~/Content/img/instagram@2x.png" alt="Instagram"></a></li>
+                    <li id="social_futurity"><a title="Futurity" class="xsu-link" data-ua-action="social" data-ua-label="Futurity" href="http://futurity.org/university/stanford-university/"><img src="~/Content/img/futurity@2x.png" alt="Futurity"></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <footer>
+        <p>&copy; @DateTime.Now.Year - CBS Test Application</p>
+    </footer>
+</div>
