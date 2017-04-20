@@ -88,6 +88,10 @@ textarea {
     margin: 10px;
 }
 
+#news-grid img {
+    width:80px;
+}
+
 /* Media */
 @media screen and (max-width: 768px) {
     #about img {

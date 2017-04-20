@@ -54,7 +54,10 @@
                                 <!--ko if: typeof rowText == 'object' && typeof rowText.delete == 'function'-->\
                                 <td><button class=\"btn btn-primary center-block\" data-bind=\"click:rowText.delete($parent)\">delete</button></td>\
                                 <!-- /ko -->\
-                                <!--ko ifnot: typeof rowText == 'object'-->\
+                                <!--ko if: rowText == 'Img'-->\
+                                <td><img class=\"\" data-bind=\"attr:{src: typeof rowText == 'function' ? rowText($parent) : $parent[rowText]}\" /></td>\
+                                <!-- /ko -->\
+                                <!--ko ifnot: (typeof rowText == 'object' || rowText == 'Img') -->\
                                 <td data-bind=\"text: typeof rowText == 'function' ? rowText($parent) : $parent[rowText] \" ></td>\
                                 <!--/ko-->\
                             </tr>\

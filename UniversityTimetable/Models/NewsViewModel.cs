@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Linq;
 using System.Web;
+using UniversityTimetable.Common.Validators;
 
 namespace UniversityTimetable.Models
 {
@@ -24,11 +26,23 @@ namespace UniversityTimetable.Models
             }
         }
 
-
+        [Required]
+        [Display(Name = "Title")]
         public string Title { get; set; }
 
-        public Image Img { get; set; }
+        //public Image Img { get; set; }
 
+        public string Img { get; set; }
+
+        [Required]
+        [ValidateFileType("JPG,JPEG,PNG")]
+        //[ValidateFileSize(1 * 2048 * 2048, ErrorMessage = "Maximum allowed file size is {0} bytes")]
+        [ValidateFileSize(1 * 2048 * 2048)]
+        [Display(Name = "Upload Image")]
+        public HttpPostedFileBase ImgFile { get; set; }
+
+        [Required]
+        [Display(Name = "Content")]
         public string Content { get; set; }
 
         

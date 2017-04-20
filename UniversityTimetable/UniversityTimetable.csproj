@@ -204,6 +204,8 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Common\Validators\MustBeTrueAttribute.cs" />
     <Compile Include="Common\Validators\RegisterViewModelCustomBinder.cs" />
+    <Compile Include="Common\Validators\ValidateFileSizeAttribute.cs" />
+    <Compile Include="Common\Validators\ValidateFileTypeAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -395,11 +397,14 @@
     <Content Include="Views\Shared\_HeaderPartial.cshtml" />
     <Content Include="Views\Shared\_HeadSectionPartial.cshtml" />
     <Content Include="Views\Admin\Reports.cshtml" />
-    <Content Include="Views\Admin\_StudentFormPartial.cshtml" />
+    <Content Include="Views\Admin\_AddStudentFormPartial.cshtml" />
     <Content Include="Views\Home\News.cshtml" />
     <Content Include="Views\Shared\_FooterNewsPartial.cshtml" />
     <Content Include="Views\Home\GetDetailNews.cshtml" />
     <Content Include="Views\Admin\News.cshtml" />
+    <Content Include="Views\Admin\_EditStudentFormPartial.cshtml" />
+    <Content Include="Views\Admin\_AddNewsFormPartial.cshtml" />
+    <Content Include="Views\Admin\_EditNewsFormPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
