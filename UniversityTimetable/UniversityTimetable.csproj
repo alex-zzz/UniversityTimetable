@@ -207,6 +207,7 @@
     <Compile Include="Common\Validators\ValidateFileSizeAttribute.cs" />
     <Compile Include="Common\Validators\ValidateFileTypeAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AccountController_old.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -216,11 +217,15 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Common\DbInitializer.cs" />
     <Compile Include="Models\AdminViewModels.cs" />
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\NewsViewModel.cs" />
     <Compile Include="Models\StudentViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utils\IdentityExtensions.cs" />
+    <Compile Include="Utils\NinjectDependencyResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -419,9 +424,9 @@
     <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UniversityTimetable.DAL\UniversityTimetable.DAL.csproj">
-      <Project>{802e96ce-5821-445b-b255-2cc2294aa4fd}</Project>
-      <Name>UniversityTimetable.DAL</Name>
+    <ProjectReference Include="..\UniversityTimetable.BLL\UniversityTimetable.BLL.csproj">
+      <Project>{13703c1a-7162-4ec9-8a96-d874e2e15ef1}</Project>
+      <Name>UniversityTimetable.BLL</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

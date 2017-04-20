@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using UniversityTimetable.DAL.Identity;
+//using UniversityTimetable.DAL.Identity;
 using UniversityTimetable.Models;
 
 namespace UniversityTimetable
@@ -15,7 +15,7 @@ namespace UniversityTimetable
     {
         protected void Application_Start()
         {
-            Database.SetInitializer<ApplicationDbContext>(new DbInitializer());
+            //Database.SetInitializer<ApplicationDbContext>(new DbInitializer());
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
