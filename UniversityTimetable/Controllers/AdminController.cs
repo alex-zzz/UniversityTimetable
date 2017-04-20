@@ -70,6 +70,12 @@ namespace UniversityTimetable.Controllers
             return View(sl);
         }
 
+        [Authorize(Roles = "admin")]
+        public ActionResult Timetables()
+        {
+            return View();
+        }
+
         //[Authorize(Roles = "admin")]
         //public ActionResult GetStudents()
         //{

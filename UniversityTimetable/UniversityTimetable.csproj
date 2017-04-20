@@ -51,6 +51,9 @@
     <Reference Include="AutoMapper, Version=6.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="DayPilot.Web.Mvc">
+      <HintPath>..\..\..\..\..\Desktop\DayPilotLiteMvc-1.5.434\Binary\Mvc5\DayPilot.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.7\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
     </Reference>
@@ -202,6 +205,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Common\EventManager.cs" />
     <Compile Include="Common\Validators\MustBeTrueAttribute.cs" />
     <Compile Include="Common\Validators\RegisterViewModelCustomBinder.cs" />
     <Compile Include="Common\Validators\ValidateFileSizeAttribute.cs" />
@@ -209,6 +213,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccountController_old.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CalendarController.cs" />
+    <Compile Include="Controllers\CalendarDialogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -234,6 +240,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\carousel.css" />
     <Content Include="Content\ie10-viewport-bug-workaround.css" />
+    <Content Include="Content\img\ajax-loader-round.gif" />
     <Content Include="Content\img\apple%402x.png" />
     <Content Include="Content\img\cd-icon-picture.svg" />
     <Content Include="Content\img\facebook%402x.png" />
@@ -249,6 +256,7 @@
     <Content Include="Content\img\twitter%402x.png" />
     <Content Include="Content\img\youtube%402x.png" />
     <Content Include="Content\jquery.jqGrid\ui.jqgrid.css" />
+    <Content Include="Content\layout.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -295,6 +303,7 @@
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\daypilot-all.min.js" />
     <Content Include="Scripts\i18n\grid.locale-ar.js" />
     <Content Include="Scripts\i18n\grid.locale-bg.js" />
     <Content Include="Scripts\i18n\grid.locale-bg1251.js" />
@@ -410,9 +419,15 @@
     <Content Include="Views\Admin\_EditStudentFormPartial.cshtml" />
     <Content Include="Views\Admin\_AddNewsFormPartial.cshtml" />
     <Content Include="Views\Admin\_EditNewsFormPartial.cshtml" />
+    <None Include="Views\Admin\Timetables.cshtml" />
+    <Content Include="Views\CalendarDialog\New.cshtml" />
+    <Content Include="Views\Shared\_Blank.cshtml" />
+    <Content Include="Views\CalendarDialog\Edit.cshtml" />
+    <Content Include="Views\CalendarDialog\New - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Calendar\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
