@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using UniversityTimetable.BLL.Interfaces;
 using UniversityTimetable.Models;
 
 namespace UniversityTimetable.Controllers
@@ -12,6 +14,22 @@ namespace UniversityTimetable.Controllers
     [Authorize]
     public class AdminController : Controller
     {
+        private ITimeTableService NewsService
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<ITimeTableService>();
+            }
+        }
+
+        private INewsService TTService
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<INewsService>();
+            }
+        }
+
         public static List<StudentViewModel> sl = new List<StudentViewModel>();
         public static List<NewsViewModel> newsList = new List<NewsViewModel>();
 

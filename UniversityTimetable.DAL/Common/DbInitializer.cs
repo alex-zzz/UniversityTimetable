@@ -11,7 +11,7 @@ using UniversityTimetable.DAL.Identity;
 
 namespace UniversityTimetable.DAL.Common
 {
-    public class DbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
+    public class DbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext context)
         {
@@ -32,6 +32,7 @@ namespace UniversityTimetable.DAL.Common
 
             // создаем пользователей
             var admin = new ApplicationUser { Email = "admin@stanford.edu", UserName = "admin@stanford.edu" };
+            admin.ClientProfile = new ClientProfile() { Name = "Admin", ApplicationUser = admin };
             string password = "Qwert!123";
             var result = userManager.Create(admin, password);
 
@@ -41,7 +42,7 @@ namespace UniversityTimetable.DAL.Common
                 // добавляем для пользователя роль
                 userManager.AddToRole(admin.Id, role1.Name);
                 userManager.AddToRole(admin.Id, role2.Name);
-                userManager.AddToRole(admin.Id, role3.Name);
+                userManager.AddToRole(admin.Id, role3.Name);                
             }
 
             base.Seed(context);
