@@ -9,5 +9,7 @@ namespace UniversityTimetable.BLL.Interfaces
     public interface IServiceCreator
     {
         IUserService CreateUserService(string connection);
+        ITimeTableService CreateTTService(string connection);
+        INewsService CreateNewsService(string connection);
     }
 }

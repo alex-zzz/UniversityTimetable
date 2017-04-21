@@ -7,7 +7,7 @@ using UniversityTimetable.BLL.DTO;
 
 namespace UniversityTimetable.BLL.Interfaces
 {
-    public interface ITimeTableService
+    public interface ITimeTableService : IDisposable
     {
         IEnumerable<StudentDTO> GetStudents();
         StudentDTO GetStudentDTOById(Guid Id);
