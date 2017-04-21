@@ -36,6 +36,8 @@
 	function modal() {
         var modal = new DayPilot.Modal();
         modal.top = "70";
+        modal.autoStretch = true;
+        modal.height = 515;
 	    modal.onClosed = function (args) {
 	        if (args.result == "OK") {
 	            dpc.commandCallBack('refresh');

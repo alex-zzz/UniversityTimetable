@@ -40,7 +40,14 @@ namespace UniversityTimetable.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(FormCollection form)
         {
-            new EventManager(this).EventEdit(form["Id"], form["Text"]);
+            if (form["DeleteLesson"] == "on")
+            {
+                new EventManager(this).EventDelete(form["Id"]);
+            }
+            else
+            {
+                new EventManager(this).EventEdit(form["Id"], form["Text"]);
+            }
             return JavaScript(SimpleJsonSerializer.Serialize("OK"));
         }
 

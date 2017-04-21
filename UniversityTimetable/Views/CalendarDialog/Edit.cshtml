@@ -3,11 +3,16 @@
 <html>
 <body class="padded">
     <form id="f" method="post" action="@Url.Action("Edit")">
-        <h2>Edit Event</h2>
+        <h2>Edit Lesson</h2>
 
         <div style="margin-top:20px">
             <div>Event text</div>
             @Html.TextBox("Text")@Html.Hidden("Id")
+        </div>
+
+        <div style="margin-top:20px">
+            <input type="checkbox" name="DeleteLesson" onclick="showMe('recurrenceSection')" />
+            <span style="color: red;"> Delete</span>
         </div>
 
         <div style="margin-top:20px">
