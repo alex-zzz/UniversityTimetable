@@ -37,7 +37,7 @@ namespace UniversityTimetable.Common.Validators
             HttpPostedFileBase file = value as HttpPostedFileBase;
             if (file != null)
             {
-                if (_ValidTypes.Any(e => file.FileName.EndsWith(e)))
+                if (_ValidTypes.Any(e => file.FileName.ToLower().EndsWith(e)))
                 {
                     return ValidationResult.Success;
                 }

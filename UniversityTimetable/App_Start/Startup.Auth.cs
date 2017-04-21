@@ -23,7 +23,7 @@ namespace UniversityTimetable
             //app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<IUserService>(CreateUserService);
             app.CreatePerOwinContext<ITimeTableService>(CreateTimeTableService);
-            app.CreatePerOwinContext<INewsService>(CreateNewsService);
+            //app.CreatePerOwinContext<INewsService>(CreateNewsService);
             //app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             //app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
 
@@ -83,9 +83,9 @@ namespace UniversityTimetable
             return serviceCreator.CreateTTService("DefaultConnection");
         }
 
-        private INewsService CreateNewsService()
-        {
-            return serviceCreator.CreateNewsService("DefaultConnection");
-        }
+        //private INewsService CreateNewsService()
+        //{
+        //    return serviceCreator.CreateNewsService("DefaultConnection");
+        //}
     }
 }

@@ -12,7 +12,8 @@ namespace UniversityTimetable.App_Start
     using Ninject.Web.Common;
     using Ninject.Modules;
     using UniversityTimetable.BLL.Infrastructure;
-    using Ninject.Web.Mvc;
+    using UniversityTimetable.Utils;
+
 
     public static class NinjectWebCommon 
     {

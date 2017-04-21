@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using Ninject;
 using UniversityTimetable.BLL.Interfaces;
 using UniversityTimetable.BLL.Services;
-
+using UniversityTimetable.Controllers;
 
 namespace UniversityTimetable.Utils
 {
@@ -30,8 +30,10 @@ namespace UniversityTimetable.Utils
         private void AddBindings()
         {
             kernel.Bind<ITimeTableService>().To<TimeTableService>();
-            //kernel.Bind<IMapper>().ToConstant(Mappings.AutoMapperConfiguration.Configure().CreateMapper()).WhenInjectedInto(typeof(HomeController));
-            //kernel.Bind<IMapper>().ToConstant(Mappings.AutoMapperConfiguration.Configure().CreateMapper()).WhenInjectedInto(typeof(AccountController));
+            kernel.Bind<INewsService>().To<NewsService>();
+
+            kernel.Bind<IMapper>().ToConstant(Mappings.AutoMapperConfiguration.Configure().CreateMapper()).WhenInjectedInto(typeof(HomeController));
+            kernel.Bind<IMapper>().ToConstant(Mappings.AutoMapperConfiguration.Configure().CreateMapper()).WhenInjectedInto(typeof(AdminController));
             //kernel.Bind<IMapper>().ToConstant(Mappings.AutoMapperConfiguration.Configure().CreateMapper()).WhenInjectedInto(typeof(ManageController));
         }
     }

@@ -24,6 +24,6 @@ namespace UniversityTimetable.BLL.Interfaces
         void UpdateGroup(GroupDTO groupDto);
         void DeleteGroup(Guid Id);
 
-        void Dispose();
+        //void Dispose();
     }
 }

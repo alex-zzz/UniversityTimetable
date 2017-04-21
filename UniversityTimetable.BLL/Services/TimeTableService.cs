@@ -23,7 +23,6 @@ namespace UniversityTimetable.BLL.Services
             Database = uow;
         }
 
-
         public void AddGroup(GroupDTO groupDto)
         {
             if (Database.Groups.GetAll().Where(a => a.Name == groupDto.Name).Count() > 0)
@@ -46,7 +45,6 @@ namespace UniversityTimetable.BLL.Services
             Database.Save();
         }
 
-
         public void DeleteGroup(Guid Id)
         {
             Database.Groups.Delete(Id);
@@ -58,7 +56,6 @@ namespace UniversityTimetable.BLL.Services
             Database.Students.Delete(Id);
             Database.Save();
         }
-
 
         public StudentDTO GetStudentDTOById(Guid Id)
         {
@@ -72,7 +69,6 @@ namespace UniversityTimetable.BLL.Services
             return _mapper.Map<Group, GroupDTO>(group);
         }
 
-
         public IEnumerable<StudentDTO> GetStudents()
         {
             return _mapper.Map<IEnumerable<Student>, List<StudentDTO>>(Database.Students.GetAll());
@@ -82,7 +78,6 @@ namespace UniversityTimetable.BLL.Services
         {
             return _mapper.Map<IEnumerable<Group>, List<GroupDTO>>(Database.Groups.GetAll());
         }
-
 
         public void UpdateStudent(StudentDTO studentDto)
         {
@@ -105,7 +100,6 @@ namespace UniversityTimetable.BLL.Services
             Database.Groups.Update(group);
             Database.Save();
         }
-
 
         public void Dispose()
         {

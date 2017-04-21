@@ -1,15 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Ninject.Modules;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using UniversityTimetable.DAL.Common;
 using UniversityTimetable.DAL.Entities;
 using UniversityTimetable.DAL.Identity;
@@ -37,5 +29,34 @@ namespace UniversityTimetable.DAL.EF
         //{
         //    return new ApplicationDbContext("DefaultConnection");
         //}
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Entity>().Property(d => d.CreatedDate).HasColumnType("datetime2");
+            modelBuilder.Entity<Entity>().Property(d => d.ModifiedDate).HasColumnType("datetime2");
+
+            modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
+            modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
+            modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
+        }
+
+        public override int SaveChanges()
+        {
+            var CreatedEntities = ChangeTracker.Entries<Entity>().Where(E => E.State == EntityState.Added).ToList();
+
+            CreatedEntities.ForEach(E =>
+            {
+                E.Entity.CreatedDate = DateTime.Now;
+            });
+
+            var ModifiedEntities = ChangeTracker.Entries<Entity>().Where(E => E.State == EntityState.Modified).ToList();
+
+            ModifiedEntities.ForEach(E =>
+            {
+                E.Entity.ModifiedDate = DateTime.Now;
+            });
+
+            return base.SaveChanges();
+        }
     }
 }

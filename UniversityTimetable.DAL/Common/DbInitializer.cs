@@ -1,17 +1,12 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UniversityTimetable.DAL.EF;
 using UniversityTimetable.DAL.Identity;
 
 namespace UniversityTimetable.DAL.Common
 {
-    public class DbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
+    public class DbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext context)
         {
@@ -28,7 +23,6 @@ namespace UniversityTimetable.DAL.Common
             roleManager.Create(role1);
             roleManager.Create(role2);
             roleManager.Create(role3);
-
 
             // создаем пользователей
             var admin = new ApplicationUser { Email = "admin@stanford.edu", UserName = "admin@stanford.edu" };

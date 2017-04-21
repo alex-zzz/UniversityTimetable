@@ -23,7 +23,8 @@ namespace UniversityTimetable.BLL.Infrastructure
         public override void Load()
         {
             Bind<IUnitOfWork>().To<EFUnitOfWork>().WithConstructorArgument(connectionString);
-            Bind<IMapper>().ToConstant(Mappings.AutoMapperConfiguration.Configure().CreateMapper()).WhenInjectedInto(typeof(TimeTableService));
+            //Bind<IMapper>().ToConstant(Mappings.AutoMapperConfiguration.Configure().CreateMapper()).WhenInjectedInto(typeof(TimeTableService));
+            Bind<IMapper>().ToConstant(Mappings.AutoMapperConfiguration.Configure().CreateMapper());
         }
     }
 }

@@ -30,8 +30,6 @@ namespace UniversityTimetable.Models
         [Display(Name = "Title")]
         public string Title { get; set; }
 
-        //public Image Img { get; set; }
-
         public string Img { get; set; }
 
         [Required]

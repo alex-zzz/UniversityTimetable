@@ -22,91 +22,90 @@
 <div id="modalContainer"></div>
 
 @section scripts {
-    <script>
-        @{
-            IEnumerable<UniversityTimetable.Models.NewsViewModel> modelForSearilisation = Model.ToArray();
-            foreach (var item in modelForSearilisation)
-            {
-                item.ImgFile = null;
-            }
-         }
+<script>
+    @{
+        IEnumerable<UniversityTimetable.Models.NewsViewModel> modelForSearilisation = Model.ToArray();
+        foreach (var item in modelForSearilisation)
+        {
+            item.ImgFile = null;
+        }
+    }
 
-        var PagedGridModel = function () {
-                    var self = this;
-                    self.News = ko.observableArray(@Html.Raw(JsonConvert.SerializeObject(modelForSearilisation)));
+    var PagedGridModel = function () {
+        var self = this;
+        self.News = ko.observableArray(@Html.Raw(JsonConvert.SerializeObject(modelForSearilisation)));
 
-                    self.addItem = function () {
-                $.ajax({
-                            url: '@Url.Action("AddNews", "Admin")',
-                    type: "GET"
-                })
-                    .done(function (partialViewResult) {
-                        $("#modalContainer").html(partialViewResult);
-                        $('#myModal').modal('show')
-                    });
+        self.addItem = function () {
+            $.ajax({
+                url: '@Url.Action("AddNews", "Admin")',
+                type: "GET"
+            })
+            .done(function (partialViewResult) {
+                $("#modalContainer").html(partialViewResult);
+                $('#myModal').modal('show')
+            });
+        };
 
-                    };
+        self.removeItem = function (item) {
+            $.ajax({
+                url: '@Url.Action("DeleteNews", "Admin")',
+                type: "GET",
+                data: "id=" + item.Id
+            })
+            self.News.remove(item);
+        };
 
-                    self.removeItem = function (item) {
-                        self.News.remove(item);
-                    };
+        self.editItem = function (item) {
+            $.ajax({
+                url: '@Url.Action("EditNews", "Admin")',
+                type: "GET",
+                data: "id=" + item.Id
+            })
+            .done(function (partialViewResult) {
+                $("#modalContainer").html(partialViewResult);
+                $('#myModal').modal('show')
+            });
+        };
 
-                    self.editItem = function (item) {
+        self.jumpToFirstPage = function () {
+            self.gridViewModel.currentPageIndex(0);
+        };
 
-                $.ajax({
-                            url: '@Url.Action("EditNews", "Admin")',
-                    type: "GET",
-                    data: "id=" + item.Id
-                })
-                    .done(function (partialViewResult) {
-                        $("#modalContainer").html(partialViewResult);
-                        $('#myModal').modal('show')
-                    });
-
-                    };
-
-                    self.jumpToFirstPage = function () {
-                        self.gridViewModel.currentPageIndex(0);
-                    };
-
-
-                    self.gridViewModel = new ko.simpleGrid.viewModel({
-                data: self.News,
-                columns: [
-                    { headerText: "Title", rowText: "Title" },
-                    { headerText: "Image", rowText: "Img" },
-                    { headerText: "Content", rowText: "Content" },
-                    {
-                        headerText: "", rowText: {
-                            edit: function (item) {
-                                return function () {
-                                    self.editItem(item);
-                                    //console.log(item)
-                                }
-                            }
-                        }
-                    },
-                    {
-                        headerText: "", rowText: {
-                            delete: function (item) {
-                                return function () {
-                                    self.removeItem(item);
-                                    //console.log(item)
-                                }
+        self.gridViewModel = new ko.simpleGrid.viewModel({
+            data: self.News,
+            columns: [
+                { headerText: "Title", rowText: "Title" },
+                { headerText: "Image", rowText: "Img" },
+                { headerText: "Content", rowText: "Content" },
+                {
+                    headerText: "", rowText: {
+                        edit: function (item) {
+                            return function () {
+                                self.editItem(item);
+                                //console.log(item)
                             }
                         }
                     }
-                ],
-                pageSize: 6
-            });
-            }
-        $(document).ready(function () {
-
-
-                var viewModel = new PagedGridModel();
-                ko.applyBindings(viewModel);
-            });
-    </script>
+                },
+                {
+                    headerText: "", rowText: {
+                        delete: function (item) {
+                            return function () {
+                                self.removeItem(item);
+                                //console.log(item)
+                            }
+                        }
+                    }
+                }
+            ],
+            pageSize: 6
+        });
+    }
+    $(document).ready(function () {
+            var viewModel = new PagedGridModel();
+            ko.applyBindings(viewModel);
+        });
+</script>
 
 }
 
