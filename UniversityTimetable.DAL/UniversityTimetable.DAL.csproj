@@ -57,9 +57,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\DbInitializer.cs" />
+    <Compile Include="EF\ApplicationDbContext.cs" />
     <Compile Include="EF\UniversityTimetableContext.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Group.cs" />
+    <Compile Include="Entities\News.cs" />
     <Compile Include="Entities\Student.cs" />
     <Compile Include="Identity\ApplicationRoleManager.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="Repositories\ClientManager.cs" />
     <Compile Include="Repositories\EFUnitOfWork.cs" />
     <Compile Include="Repositories\GroupRepository.cs" />
+    <Compile Include="Repositories\NewsRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />
   </ItemGroup>
   <ItemGroup>

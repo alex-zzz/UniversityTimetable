@@ -18,6 +18,7 @@ namespace UniversityTimetable.DAL.Repositories
 
         private GroupRepository groupRepository;
         private StudentRepository studentRepository;
+        private NewsRepository newsRepository;
 
         private ApplicationUserManager userManager;
         private ApplicationRoleManager roleManager;
@@ -49,6 +50,16 @@ namespace UniversityTimetable.DAL.Repositories
                 if (groupRepository == null)
                     groupRepository = new GroupRepository(db);
                 return groupRepository;
+            }
+        }
+
+        public IRepository<News> News
+        {
+            get
+            {
+                if (newsRepository == null)
+                    newsRepository = new NewsRepository(db);
+                return newsRepository;
             }
         }
 

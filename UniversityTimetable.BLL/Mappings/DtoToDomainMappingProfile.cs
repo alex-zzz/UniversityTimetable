@@ -10,6 +10,7 @@ namespace UniversityTimetable.BLL.Mappings
         {
             CreateMap<StudentDTO, Student>();
             CreateMap<GroupDTO, Group>();
+            CreateMap<NewsDTO, News>();
         }
     }
 }

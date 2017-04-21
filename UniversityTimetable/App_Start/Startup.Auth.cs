@@ -22,6 +22,8 @@ namespace UniversityTimetable
             // Configure the db context, user manager and signin manager to use a single instance per request
             //app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<IUserService>(CreateUserService);
+            app.CreatePerOwinContext<ITimeTableService>(CreateTimeTableService);
+            app.CreatePerOwinContext<INewsService>(CreateNewsService);
             //app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             //app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
 
@@ -76,5 +78,14 @@ namespace UniversityTimetable
             return serviceCreator.CreateUserService("DefaultConnection");
         }
 
+        private ITimeTableService CreateTimeTableService()
+        {
+            return serviceCreator.CreateTTService("DefaultConnection");
+        }
+
+        private INewsService CreateNewsService()
+        {
+            return serviceCreator.CreateNewsService("DefaultConnection");
+        }
     }
 }

@@ -47,28 +47,4 @@ namespace UniversityTimetable.DAL.Identity
 
         public virtual ApplicationUser ApplicationUser { get; set; }
     }
-
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-    {
-        static ApplicationDbContext()
-        {
-            Database.SetInitializer<ApplicationDbContext>(new DbInitializer());
-        }
-
-        public ApplicationDbContext(string connectionString)
-            //:base(connectionString) 
-            : base(connectionString, throwIfV1Schema: false)
-        {}
-
-        public DbSet<ClientProfile> ClientProfiles { get; set; }
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Group> Groups { get; set; }
-
-        //public static ApplicationDbContext Create()
-        //{
-        //    return new ApplicationDbContext("DefaultConnection");
-        //}
-    }
-
-
 }
