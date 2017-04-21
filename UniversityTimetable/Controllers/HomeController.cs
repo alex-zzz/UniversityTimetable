@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using UniversityTimetable.BLL.Interfaces;
 using UniversityTimetable.Models;
 
 namespace UniversityTimetable.Controllers
@@ -12,6 +14,14 @@ namespace UniversityTimetable.Controllers
     public class HomeController : Controller
     {
         public static List<NewsViewModel> newsList = new List<NewsViewModel>();
+
+        private INewsService NewsService
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<INewsService>();
+            }
+        }
 
         static HomeController()
         {
