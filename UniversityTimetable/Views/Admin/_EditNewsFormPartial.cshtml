@@ -2,41 +2,50 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+            <script type="text/javascript">
+                $('form#editNewsForm').removeData("validator");
+                $('form#editNewsForm').removeData("unobtrusiveValidation");
 
-            @using (Html.BeginForm("EditNews", "Admin", FormMethod.Post, new { id = "editNewsForm" }))
-            {
-                <script type="text/javascript">
-                    $('form#editNewsForm').removeData("validator");
-                    $('form#editNewsForm').removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.adapters.add('validatefiletype', ['validtypes'], function (options) {
+                    options.rules['validatefiletype'] = { validtypes: options.params.validtypes.split(',') };
+                    options.messages['validatefiletype'] = options.message;
+                });
 
-                    $.validator.unobtrusive.adapters.add('validatefiletype', ['validtypes'], function (options) {
-                        options.rules['validatefiletype'] = { validtypes: options.params.validtypes.split(',') };
-                        options.messages['validatefiletype'] = options.message;
-                    });
+                $.validator.unobtrusive.adapters.add('validatefilesize', ['validsize'], function (options) {
+                    options.rules['validatefilesize'] = options.params;
+                    options.messages['validatefilesize'] = options.message;
+                });
 
-                    $.validator.unobtrusive.adapters.add('validatefilesize', ['validsize'], function (options) {
-                        options.rules['validatefilesize'] = options.params;
-                        options.messages['validatefilesize'] = options.message;
-                    });
-
-                    $.validator.addMethod("validatefiletype", function (value, element, param) {
-                        if (element.files.length < 1) {
-                            return true; // No files selected
-                        }
-                        var extension = getFileExtension(value);
-                        return $.inArray(extension, param.validtypes) !== -1;
-                    });
-
-                    function getFileExtension(fileName) {
-                        if (/[.]/.exec(fileName)) {
-                            return /[^.]+$/.exec(fileName)[0].toLowerCase();
-                        }
-                        return null;
+                $.validator.addMethod("validatefiletype", function (value, element, param) {
+                    if (element.files.length < 1) {
+                        return true; // No files selected
                     }
+                    var extension = getFileExtension(value);
+                    return $.inArray(extension, param.validtypes) !== -1;
+                });
 
-                    $.validator.unobtrusive.parse($('form#editNewsForm'));
-                </script>
+                function getFileExtension(fileName) {
+                    if (/[.]/.exec(fileName)) {
+                        return /[^.]+$/.exec(fileName)[0].toLowerCase();
+                    }
+                    return null;
+                }
 
+                $.validator.addMethod('validatefilesize', function (value, element, params) {
+                    if (element.files.length < 1) {
+                        return true; // No files selected
+                    }
+                    if (!element.files || !element.files[0].size) {
+                        return true; // This browser doesn't support the HTML5 API
+                    }
+                    return element.files[0].size < params.validsize;
+                }, '');
+
+                $.validator.unobtrusive.parse($('form#editNewsForm'));
+            </script>
+
+            @using (Html.BeginForm("EditNews", "Admin", FormMethod.Post, new { id = "editNewsForm", enctype = "multipart/form-data" }))
+            {
                 @Html.AntiForgeryToken()
 
                 <div class="modal-header">
@@ -47,6 +56,9 @@
 
                     @Html.ValidationSummary()
 
+                    @Html.HiddenFor(m => m.Id)
+                    @Html.HiddenFor(m => m.Img)
+
                     <div class="form-group">
                         @Html.LabelFor(m => m.Title, new { })
                         @Html.TextBoxFor(m => m.Title, new { @class = "form-control", @placeholder = "Title" })
@@ -56,7 +68,7 @@
                         <img src="@Model.Img" style="width:80px;display: block;">
                         <br>
                         <label>Choose another image</label>
-                        @Html.TextBoxFor(m => m.ImgFile, new { @class = "btn btn-default btn-file", type = "file", title = "Choose another image", id = "anotherFile" })
+                        @Html.TextBoxFor(m => m.ImgFile, new { @class = "btn btn-default btn-file", type = "file" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.Content, new { })

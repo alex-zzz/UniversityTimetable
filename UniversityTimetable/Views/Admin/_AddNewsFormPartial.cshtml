@@ -44,10 +44,8 @@
                 $.validator.unobtrusive.parse($('form#AddNewsForm'));
             </script>
 
-
             @using (Html.BeginForm("AddNews", "Admin", FormMethod.Post, new { id = "addNewsForm", enctype = "multipart/form-data" }))
             {
-
                 @Html.AntiForgeryToken()
 
                 <div class="modal-header">

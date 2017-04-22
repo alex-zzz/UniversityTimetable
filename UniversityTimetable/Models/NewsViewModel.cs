@@ -32,7 +32,7 @@ namespace UniversityTimetable.Models
 
         public string Img { get; set; }
 
-        [Required]
+        //[Required]
         [ValidateFileType("JPG,JPEG,PNG")]
         //[ValidateFileSize(1 * 2048 * 2048, ErrorMessage = "Maximum allowed file size is {0} bytes")]
         [ValidateFileSize(1 * 2048 * 2048)]

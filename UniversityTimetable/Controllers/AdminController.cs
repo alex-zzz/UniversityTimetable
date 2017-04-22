@@ -17,25 +17,17 @@ namespace UniversityTimetable.Controllers
     public class AdminController : Controller
     {
         INewsService _newsService;
+        ITimeTableService _timeTableService;
         IMapper _mapper;
 
-        public AdminController(INewsService newsService, IMapper mapper)
+        public AdminController(INewsService newsService, ITimeTableService timeTableService, IMapper mapper)
         {
             _newsService = newsService;
+            _timeTableService = timeTableService;
             _mapper = mapper;
         }
 
-        private ITimeTableService TTService
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<ITimeTableService>();
-            }
-        }
-
         public static List<StudentViewModel> sl = new List<StudentViewModel>();
-        public static List<NewsViewModel> newsList = new List<NewsViewModel>();
-
 
         static AdminController()
         {
@@ -51,24 +43,7 @@ namespace UniversityTimetable.Controllers
 
             sl.Add(student);
             sl.Add(student2);
-
-            //var news1 = new NewsViewModel();
-            //news1.Title = "Article 1";
-            ////news1.Img = Base64ToImage("/9j/");
-            //news1.Img = "data:image/jpg;base64,/9j/";
-            //news1.Content = "The Stanfords engaged Frederick Law Olmsted, the famed landscape architect who created New York’s Central Park, to design the physical plan for the university.The collaboration was contentious, but finally resulted in an organization of quadrangles on an east - west axis.Today, as Stanford continues to expand, the university’s architects attempt to respect those original university plans.";
-
-            //var news2 = new NewsViewModel();
-            //news2.Title = "Article 2";
-            ////news2.Img = Base64ToImage("/9j/");
-            //news2.Img = "data:image/jpg;base64,/9j/";
-            //news2.Content = "The Stanfords engaged Frederick Law Olmsted, the famed landscape architect who created New York’s Central Park, to design the physical plan for the university.The collaboration was contentious, but finally resulted in an organization of quadrangles on an east - west axis.Today, as Stanford continues to expand, the university’s architects attempt to respect those original university plans.";
-
-            ////var newsList = new List<NewsViewModel>();
-            //newsList.Add(news1);
-            //newsList.Add(news2);
         }
-
 
         // GET: Admin
         [Authorize(Roles = "admin")]
@@ -77,17 +52,9 @@ namespace UniversityTimetable.Controllers
             return RedirectToAction("Students", "Admin");
         }
 
-
-
-
-
         [Authorize(Roles = "admin")]
         public ActionResult Reports()
         {
-            //return View();
-
-
-
             return View(sl);
         }
 
@@ -147,7 +114,6 @@ namespace UniversityTimetable.Controllers
         {
             IEnumerable<NewsDTO> newsDtos = _newsService.GetNews();
             var newsViewModels = _mapper.Map<IEnumerable<NewsDTO>, List<NewsViewModel>>(newsDtos);
-
             return View(newsViewModels);
         }
 
@@ -167,26 +133,29 @@ namespace UniversityTimetable.Controllers
                 {
                     HttpPostedFileBase hpf = Request.Files[file];
 
-                    //var img = Image.FromStream(hpf.InputStream, true, true);
-
-                    string path = "/Uploads/";
-                    if (!Directory.Exists(path))
+                    if (hpf.ContentLength != 0)
                     {
-                        Directory.CreateDirectory(path);
+                        string path = "/Uploads/";
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+
+                        hpf.SaveAs(Server.MapPath(path) + Path.GetFileName(hpf.FileName));
+                        newsViewModel.Img = path + Path.GetFileName(hpf.FileName);
+                    }
+                    else
+                    {
+                        newsViewModel.Img = "https://placehold.it/350x200";
                     }
 
-                    hpf.SaveAs(Server.MapPath("/Uploads/") + Path.GetFileName(hpf.FileName));
-
-                    newsViewModel.Img = path + Path.GetFileName(hpf.FileName);
-
                     NewsDTO newsDto = _mapper.Map<NewsViewModel, NewsDTO>(newsViewModel);
-
                     _newsService.AddNews(newsDto);
                 }
                 return RedirectToAction("News", "Admin");
             }
             else
-            return PartialView("_AddNewsFormPartial", new NewsViewModel());
+            return PartialView("_AddNewsFormPartial", newsViewModel);
         }
 
         [Authorize(Roles = "admin")]
@@ -194,9 +163,6 @@ namespace UniversityTimetable.Controllers
         {
             NewsDTO newsDto = _newsService.GetNewsDTOById(id);
             var newsViewModel = _mapper.Map<NewsDTO, NewsViewModel>(newsDto);
-            //newsViewModel.ImgFile = Image.FromFile(newsViewModel.Img);
-
-            //var news = newsList.Where(n => n.Id == id).FirstOrDefault();
             return PartialView("_EditNewsFormPartial", newsViewModel);
         }
 
@@ -210,30 +176,25 @@ namespace UniversityTimetable.Controllers
                 {
                     HttpPostedFileBase hpf = Request.Files[file];
 
-                    //var img = Image.FromStream(hpf.InputStream, true, true);
-
-                    string path = "/Uploads/";
-                    if (!Directory.Exists(path))
+                    if (hpf.ContentLength != 0)
                     {
-                        Directory.CreateDirectory(path);
+                        string path = "/Uploads/";
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+
+                        hpf.SaveAs(Server.MapPath(path) + Path.GetFileName(hpf.FileName));
+                        newsViewModel.Img = path + Path.GetFileName(hpf.FileName);
                     }
 
-                    hpf.SaveAs(path + Path.GetFileName(hpf.FileName));
-
-                    newsViewModel.Img = path + Path.GetFileName(hpf.FileName);
-
                     NewsDTO newsDto = _mapper.Map<NewsViewModel, NewsDTO>(newsViewModel);
-
                     _newsService.UpdateNews(newsDto);
-                    
-                    //newsList.Add(newsViewModel);
-
                 }
-                //return View("News", newsList);
                 return RedirectToAction("News", "Admin");
             }
             else
-            return PartialView("_EditNewsFormPartial", new NewsViewModel());
+            return PartialView("_EditNewsFormPartial", newsViewModel);
         }
 
         [Authorize(Roles = "admin")]

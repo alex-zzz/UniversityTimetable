@@ -33,12 +33,9 @@ namespace UniversityTimetable.Common.Validators
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             HttpPostedFileBase file = value as HttpPostedFileBase;
-            if (file != null)
+            if ((file != null && file.ContentLength < 1 * 2048 * 2048) || file == null)
             {
-                if (file.ContentLength < 1 * 2048 * 2048)
-                {
-                    return ValidationResult.Success;
-                }
+                return ValidationResult.Success;
             }
             return new ValidationResult(ErrorMessageString);
         }
