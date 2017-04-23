@@ -42,8 +42,8 @@
             })
             .done(function (partialViewResult) {
                 $("#modalContainer").html(partialViewResult);
-                $('#myModal').modal('show')
-            });
+                $('#myModal').modal('show');
+                });
         };
 
         self.removeItem = function (item) {
@@ -51,7 +51,7 @@
                 url: '@Url.Action("DeleteNews", "Admin")',
                 type: "GET",
                 data: "id=" + item.Id
-            })
+            });
             self.News.remove(item);
         };
 
@@ -63,8 +63,8 @@
             })
             .done(function (partialViewResult) {
                 $("#modalContainer").html(partialViewResult);
-                $('#myModal').modal('show')
-            });
+                    $('#myModal').modal('show');
+                });
         };
 
         self.jumpToFirstPage = function () {

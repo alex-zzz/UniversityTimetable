@@ -11,5 +11,8 @@ namespace UniversityTimetable.BLL.DTO
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public Guid GroupId { get; set; }
+
+        public UserDTO User { get; set; }
+
     }
 }

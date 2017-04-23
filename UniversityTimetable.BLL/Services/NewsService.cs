@@ -31,9 +31,9 @@ namespace UniversityTimetable.BLL.Services
             Database.Save();
         }
 
-        public void DeleteNews(Guid Id)
+        public void DeleteNews(Guid id)
         {
-            Database.News.Delete(Id);
+            Database.News.Delete(id);
             Database.Save();
         }
 
@@ -42,9 +42,9 @@ namespace UniversityTimetable.BLL.Services
             return _mapper.Map<IEnumerable<News>, List<NewsDTO>>(Database.News.GetAll());
         }
 
-        public NewsDTO GetNewsDTOById(Guid Id)
+        public NewsDTO GetNewsDTOById(Guid id)
         {
-            News news = Database.News.Get(Id);
+            News news = Database.News.Get(id);
             return _mapper.Map<News, NewsDTO>(news);
         }
 

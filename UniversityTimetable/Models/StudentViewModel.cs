@@ -8,22 +8,9 @@ namespace UniversityTimetable.Models
 {
     public class StudentViewModel
     {
-        private Guid _id;
 
-        public Guid Id
-        {
-            get
-            {
-                if (this._id == Guid.Empty)
-                    this._id = Guid.NewGuid();
-                return this._id;
-            }
-            set
-            {
-                this._id = value;
-            }
-        }
-
+        public Guid Id { get; set; }
+ 
         [Required]
         [Display(Name = "Number")]
         public string Number { get; set; }
@@ -32,8 +19,10 @@ namespace UniversityTimetable.Models
         [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "Surname")]
-        public string Surname { get; set; }
+        //[Required]
+        //[Display(Name = "Surname")]
+        //public string Surname { get; set; }
+
+        public string Group { get; set; }
     }
 }

@@ -45,27 +45,27 @@ namespace UniversityTimetable.BLL.Services
             Database.Save();
         }
 
-        public void DeleteGroup(Guid Id)
+        public void DeleteGroup(Guid id)
         {
-            Database.Groups.Delete(Id);
+            Database.Groups.Delete(id);
             Database.Save();
         }
 
-        public void DeleteStudent(Guid Id)
+        public void DeleteStudent(Guid id)
         {
-            Database.Students.Delete(Id);
+            Database.Students.Delete(id);
             Database.Save();
         }
 
-        public StudentDTO GetStudentDTOById(Guid Id)
+        public StudentDTO GetStudentDTOById(Guid id)
         {
-            Student student = Database.Students.Get(Id);
+            Student student = Database.Students.Get(id);
             return _mapper.Map<Student, StudentDTO>(student);
         }
 
-        public GroupDTO GetGroupDTOById(Guid Id)
+        public GroupDTO GetGroupDTOById(Guid id)
         {
-            Group group = Database.Groups.Get(Id);
+            Group group = Database.Groups.Get(id);
             return _mapper.Map<Group, GroupDTO>(group);
         }
 

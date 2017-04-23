@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using UniversityTimetable.BLL.DTO;
+using UniversityTimetable.BLL.Infrastructure;
 using UniversityTimetable.BLL.Interfaces;
 using UniversityTimetable.Models;
 
@@ -16,9 +17,9 @@ namespace UniversityTimetable.Controllers
     [Authorize]
     public class AdminController : Controller
     {
-        INewsService _newsService;
-        ITimeTableService _timeTableService;
-        IMapper _mapper;
+        private readonly INewsService _newsService;
+        private readonly ITimeTableService _timeTableService;
+        private readonly IMapper _mapper;
 
         public AdminController(INewsService newsService, ITimeTableService timeTableService, IMapper mapper)
         {
@@ -34,12 +35,12 @@ namespace UniversityTimetable.Controllers
             StudentViewModel student = new StudentViewModel();
             student.Number = "B123456";
             student.Name = "Mahesh";
-            student.Surname = "Chand";
+            //student.Surname = "Chand";
 
             StudentViewModel student2 = new StudentViewModel();
             student2.Number = "B123457";
             student2.Name = "Mahesh2";
-            student2.Surname = "Chand2";
+            //student2.Surname = "Chand2";
 
             sl.Add(student);
             sl.Add(student2);
@@ -50,6 +51,75 @@ namespace UniversityTimetable.Controllers
         public ActionResult Index()
         {
             return RedirectToAction("Students", "Admin");
+        }
+
+        [Authorize(Roles = "admin")]
+        public ActionResult Groups()
+        {
+            IEnumerable<GroupDTO> groupDtos = _timeTableService.GetGroups();
+            var groupViewModels = _mapper.Map<IEnumerable<GroupDTO>, List<GroupViewModel>>(groupDtos);
+            return View(groupViewModels);
+        }
+
+        [Authorize(Roles = "admin")]
+        public ActionResult AddGroup()
+        {
+            return PartialView("_AddGroupFormPartial", new GroupViewModel());
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddGroup(GroupViewModel groupViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    GroupDTO groupDto = _mapper.Map<GroupViewModel, GroupDTO>(groupViewModel);
+                    _timeTableService.AddGroup(groupDto);
+                    //return RedirectToAction("Groups", "Admin");
+                    return Json(new { success = true });
+
+                }
+            }
+            catch (ValidationException ex)
+            {
+                ViewBag.Error = ex.Message;
+                return Json(new { success = false, errorMessage = ex.Message });
+            }
+
+            return PartialView("_AddGroupFormPartial", groupViewModel);
+        }
+
+        [Authorize(Roles = "admin")]
+        public ActionResult EditGroup(Guid id)
+        {
+            GroupDTO groupDto = _timeTableService.GetGroupDTOById(id);
+            var groupViewModel = _mapper.Map<GroupDTO, GroupViewModel>(groupDto);
+            return PartialView("_EditGroupFormPartial", groupViewModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditGroup(GroupViewModel groupViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                GroupDTO groupDto = _mapper.Map<GroupViewModel, GroupDTO>(groupViewModel);
+                _timeTableService.UpdateGroup(groupDto);
+
+                return RedirectToAction("Groups", "Admin");
+            }
+            return PartialView("_EditGroupFormPartial", groupViewModel);
+        }
+
+        [Authorize(Roles = "admin")]
+        public ActionResult DeleteGroup(Guid id)
+        {
+            _timeTableService.DeleteGroup(id);
+            return RedirectToAction("Groups", "Admin");
         }
 
         [Authorize(Roles = "admin")]
@@ -84,6 +154,7 @@ namespace UniversityTimetable.Controllers
 
         [HttpPost]
         [Authorize(Roles = "admin")]
+        [ValidateAntiForgeryToken]
         public ActionResult AddStudent(StudentViewModel sVM)
         {
             return PartialView("_AddStudentFormPartial", new StudentViewModel());
@@ -92,12 +163,13 @@ namespace UniversityTimetable.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult EditStudent(Guid id)
         {
-            var student = sl.Where(s => s.Id == id).FirstOrDefault();
+            var student = sl.FirstOrDefault(s => s.Id == id);
             return PartialView("_EditStudentFormPartial", student);
         }
 
         [HttpPost]
         [Authorize(Roles = "admin")]
+        [ValidateAntiForgeryToken]
         public ActionResult EditStudent(StudentViewModel sVM)
         {
             return PartialView("_AddStudentFormPartial", new StudentViewModel());
@@ -125,15 +197,17 @@ namespace UniversityTimetable.Controllers
 
         [HttpPost]
         [Authorize(Roles = "admin")]
+        [ValidateAntiForgeryToken]
         public ActionResult AddNews(NewsViewModel newsViewModel)
         {
+            Request.Files.Get(0);
             if (ModelState.IsValid)
             {
                 foreach (string file in Request.Files)
                 {
                     HttpPostedFileBase hpf = Request.Files[file];
 
-                    if (hpf.ContentLength != 0)
+                    if (hpf != null && hpf.ContentLength != 0)
                     {
                         string path = "/Uploads/";
                         if (!Directory.Exists(path))
@@ -148,14 +222,15 @@ namespace UniversityTimetable.Controllers
                     {
                         newsViewModel.Img = "https://placehold.it/350x200";
                     }
-
-                    NewsDTO newsDto = _mapper.Map<NewsViewModel, NewsDTO>(newsViewModel);
-                    _newsService.AddNews(newsDto);
                 }
+
+                NewsDTO newsDto = _mapper.Map<NewsViewModel, NewsDTO>(newsViewModel);
+                _newsService.AddNews(newsDto);
+
                 return RedirectToAction("News", "Admin");
             }
             else
-            return PartialView("_AddNewsFormPartial", newsViewModel);
+                return PartialView("_AddNewsFormPartial", newsViewModel);
         }
 
         [Authorize(Roles = "admin")]
@@ -168,6 +243,7 @@ namespace UniversityTimetable.Controllers
 
         [HttpPost]
         [Authorize(Roles = "admin")]
+        [ValidateAntiForgeryToken]
         public ActionResult EditNews(NewsViewModel newsViewModel)
         {
             if (ModelState.IsValid)
@@ -187,14 +263,15 @@ namespace UniversityTimetable.Controllers
                         hpf.SaveAs(Server.MapPath(path) + Path.GetFileName(hpf.FileName));
                         newsViewModel.Img = path + Path.GetFileName(hpf.FileName);
                     }
-
-                    NewsDTO newsDto = _mapper.Map<NewsViewModel, NewsDTO>(newsViewModel);
-                    _newsService.UpdateNews(newsDto);
                 }
+
+                NewsDTO newsDto = _mapper.Map<NewsViewModel, NewsDTO>(newsViewModel);
+                _newsService.UpdateNews(newsDto);
+
                 return RedirectToAction("News", "Admin");
             }
             else
-            return PartialView("_EditNewsFormPartial", newsViewModel);
+                return PartialView("_EditNewsFormPartial", newsViewModel);
         }
 
         [Authorize(Roles = "admin")]
