@@ -2,13 +2,11 @@
 
 @model IEnumerable<UniversityTimetable.Models.GroupViewModel>
 @{
-    ViewBag.Title = "Reports";
+    ViewBag.Title = "Groups";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-
 }
 
-
-<h3>Reports</h3>
+<h3>Groups</h3>
 
 <div data-bind="simpleGrid: gridViewModel" class="panel panel-default"> </div>
 
@@ -25,14 +23,10 @@
 </div>
 
 
-
-
 @section scripts {
     <script>
-
-
         var PagedGridModel = function () {
-            var self = this;
+            self = this;
             self.Groups = ko.observableArray(@Html.Raw(JsonConvert.SerializeObject(this.Model)));
 
             self.addItem = function () {
@@ -44,7 +38,6 @@
                         $("#modalContainer").html(partialViewResult);
                         $('#myModal').modal('show');
                     });
-
             };
 
             self.removeItem = function (item) {
@@ -70,7 +63,19 @@
 
             };
 
+            self.updateItem = function (item) {
+                var groupObj = JSON.parse('{"' + decodeURI(item).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+                var groupId = groupObj.Id;
 
+                var group = ko.utils.arrayFirst(self.Groups(), function(group) {
+                    return group.Id === groupId;
+                });
+
+                self.Groups.replace(group, {
+                    Id: groupObj.Id,
+                    Name: groupObj.Name
+                });
+            };
 
             self.jumpToFirstPage = function () {
                 self.gridViewModel.currentPageIndex(0);
@@ -107,10 +112,8 @@
             });
         }
         $(document).ready(function () {
-
-
-            var viewModel = new PagedGridModel();
-            ko.applyBindings(viewModel);
+            //var viewModel = new PagedGridModel();
+            ko.applyBindings(new PagedGridModel());
         });
 
 

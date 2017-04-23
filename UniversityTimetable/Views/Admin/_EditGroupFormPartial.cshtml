@@ -48,7 +48,7 @@
                             if (result.success) {
                                 $('#myModal').modal('hide');
                                 //Refresh page
-                                location.reload();
+                                //location.reload();
                             } else {
                                 if (!$("#dbError").length) {
                                     $(".modal-body").prepend('<div class="validation-summary-errors" id="dbError"><ul><li>' + result.errorMessage + '</li></ul></div>');
@@ -56,7 +56,9 @@
                             }
                         }
                     });
+                    self.updateItem($(this).serialize());
                     return false;
+
                 });
             </script>
 
