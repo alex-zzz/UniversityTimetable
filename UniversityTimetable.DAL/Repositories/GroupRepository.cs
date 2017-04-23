@@ -36,7 +36,7 @@ namespace UniversityTimetable.DAL.Repositories
 
         public IEnumerable<Group> Find(Func<Group, bool> predicate)
         {
-            return db.Groups.Where(predicate).ToList();
+            return db.Groups.AsNoTracking().Where(predicate).ToList();
         }
 
         public Group Get(Guid id)

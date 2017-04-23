@@ -92,7 +92,7 @@ namespace UniversityTimetable.BLL.Services
 
         public void UpdateGroup(GroupDTO groupDto)
         {
-            if (Database.Groups.GetAll().Where(a => a.Name == groupDto.Name).Count() > 0)
+            if (Database.Groups.Find(g => g.Name == groupDto.Name).Any())
                 throw new ValidationException("Такая группа уже существует в БД!", "");
 
             Group group = _mapper.Map<GroupDTO, Group>(groupDto);

@@ -78,9 +78,7 @@ namespace UniversityTimetable.Controllers
                 {
                     GroupDTO groupDto = _mapper.Map<GroupViewModel, GroupDTO>(groupViewModel);
                     _timeTableService.AddGroup(groupDto);
-                    //return RedirectToAction("Groups", "Admin");
                     return Json(new { success = true });
-
                 }
             }
             catch (ValidationException ex)
@@ -105,13 +103,22 @@ namespace UniversityTimetable.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditGroup(GroupViewModel groupViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                GroupDTO groupDto = _mapper.Map<GroupViewModel, GroupDTO>(groupViewModel);
-                _timeTableService.UpdateGroup(groupDto);
+                if (ModelState.IsValid)
+                {
+                    GroupDTO groupDto = _mapper.Map<GroupViewModel, GroupDTO>(groupViewModel);
 
-                return RedirectToAction("Groups", "Admin");
+                    _timeTableService.UpdateGroup(groupDto);
+                    return Json(new { success = true });
+                }
             }
+            catch (ValidationException ex)
+            {
+                ViewBag.Error = ex.Message;
+                return Json(new { success = false, errorMessage = ex.Message });
+            }
+
             return PartialView("_EditGroupFormPartial", groupViewModel);
         }
 

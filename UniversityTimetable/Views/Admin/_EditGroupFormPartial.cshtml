@@ -36,6 +36,29 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             }
+            
+            <script>
+                $('#editGroupForm').submit(function () {
+                    $.ajax({
+                        url: this.action,
+                        type: this.method,
+
+                        data: $(this).serialize(),
+                        success: function (result) {
+                            if (result.success) {
+                                $('#myModal').modal('hide');
+                                //Refresh page
+                                location.reload();
+                            } else {
+                                if (!$("#dbError").length) {
+                                    $(".modal-body").prepend('<div class="validation-summary-errors" id="dbError"><ul><li>' + result.errorMessage + '</li></ul></div>');
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                });
+            </script>
 
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
