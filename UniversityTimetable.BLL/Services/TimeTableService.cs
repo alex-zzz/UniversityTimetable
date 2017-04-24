@@ -36,10 +36,18 @@ namespace UniversityTimetable.BLL.Services
 
         public void AddStudent(StudentDTO studentDto)
         {
-            if (Database.Students.GetAll().Where(a => a.UserId == studentDto.UserId && a.GroupId == studentDto.GroupId).Count() > 0)
-                throw new ValidationException("Такой студент уже существует в этой группе!", "");
+            if (studentDto != null && studentDto.Group != null)
+            {
+                if (Database.Students.GetAll().Where(a => a.User.Id == studentDto.User.Id && a.Group.Id == studentDto.Group.Id).Count() > 0)
+                    throw new ValidationException("Такой студент уже существует в этой группе!", "");
+            }
 
             Student student = _mapper.Map<StudentDTO, Student>(studentDto);
+            if (student.Group == null)
+            {
+                //student.Group = Database.Groups.GetByName("Default");
+                student.GroupId = Database.Groups.GetByName("Default").Id;
+            }
 
             Database.Students.Create(student);
             Database.Save();
@@ -81,8 +89,11 @@ namespace UniversityTimetable.BLL.Services
 
         public void UpdateStudent(StudentDTO studentDto)
         {
-            if (Database.Students.GetAll().Where(a => a.UserId == studentDto.UserId && a.GroupId == studentDto.GroupId).Count() > 0)
-                throw new ValidationException("Такой студент уже существует в этой группе!", "");
+            if (studentDto != null && studentDto.Group != null)
+            {
+                if (Database.Students.GetAll().Where(a => a.User.Id == studentDto.User.Id && a.Group.Id == studentDto.Group.Id).Count() > 0)
+                    throw new ValidationException("Такой студент уже существует в этой группе!", "");
+            }
 
             Student student = _mapper.Map<StudentDTO, Student>(studentDto);
 

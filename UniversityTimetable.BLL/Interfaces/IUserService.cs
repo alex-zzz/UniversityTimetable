@@ -15,5 +15,6 @@ namespace UniversityTimetable.BLL.Interfaces
         Task<OperationDetails> ChangePasswordAsync(string Id, string OldPassword, string NewPassword);
         Task<ClaimsIdentity> Authenticate(UserDTO userDto);
         Task SetInitialData(UserDTO adminDto, List<string> roles);
+        UserDTO FindByEMail(string email);
     }
 }

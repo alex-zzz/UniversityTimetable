@@ -43,6 +43,11 @@ namespace UniversityTimetable.DAL.Repositories
             return db.News.Find(id);
         }
 
+        public News GetByName(string name)
+        {
+            return (from n in db.News where n.Title == name select n).FirstOrDefault();
+        }
+
         public IEnumerable<News> GetAll()
         {
             return db.News.ToList();

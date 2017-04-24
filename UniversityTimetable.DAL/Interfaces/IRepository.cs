@@ -10,6 +10,7 @@ namespace UniversityTimetable.DAL.Interfaces
     {
         IEnumerable<T> GetAll();
         T Get(Guid id);
+        T GetByName(string name);
         IEnumerable<T> Find(Func<T, Boolean> predicate);
         void Create(T item);
         void Update(T item);

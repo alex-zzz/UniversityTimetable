@@ -11,10 +11,10 @@ namespace UniversityTimetable.DAL.Entities
     [Table("Students")]
     public class Student : Entity
     {
-        public Guid UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
-        public Guid GroupId { get; set; }
+        public Nullable<Guid> GroupId { get; set; }
         public virtual Group Group { get; set; }
 
     }

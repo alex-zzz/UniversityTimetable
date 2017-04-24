@@ -32,6 +32,14 @@ namespace UniversityTimetable.Controllers
             }
         }
 
+        private ITimeTableService TTService
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<ITimeTableService>();
+            }
+        }
+
         private IAuthenticationManager AuthenticationManager
         {
             get
@@ -98,8 +106,9 @@ namespace UniversityTimetable.Controllers
                 };
                 OperationDetails operationDetails = await UserService.Create(userDto);
                 if (operationDetails.Succedeed)
-                { 
-                    ClaimsIdentity claim = await UserService.Authenticate(userDto);
+                {
+
+                    ClaimsIdentity claim = await UserService.Authenticate(userDto); 
                     if (claim == null)
                     {
                         ModelState.AddModelError("", "Wrong login/password.");
@@ -111,8 +120,12 @@ namespace UniversityTimetable.Controllers
                         {
                             IsPersistent = true
                         }, claim);
+
+                        userDto = UserService.FindByEMail(model.Email);
+                        TTService.AddStudent(new StudentDTO { UserId = userDto.Id });
+
                         return RedirectToAction("Index", "Home");
-                    }
+                    }                   
                 }
                 
                 else

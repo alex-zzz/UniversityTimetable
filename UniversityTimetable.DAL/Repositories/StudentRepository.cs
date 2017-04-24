@@ -36,7 +36,7 @@ namespace UniversityTimetable.DAL.Repositories
 
         public IEnumerable<Student> Find(Func<Student, bool> predicate)
         {
-            return db.Students.Where(predicate).ToList();
+            return db.Students.AsNoTracking().Where(predicate).ToList();
         }
 
         public Student Get(Guid id)
@@ -44,9 +44,16 @@ namespace UniversityTimetable.DAL.Repositories
             return db.Students.Find(id);
         }
 
+        public Student GetByName(string name)
+        {
+            return (from s in db.Students
+                    join u in db.Users on s.User.Id equals u.Id 
+                    where u.FullName == name select s).FirstOrDefault();
+        }
+
         public IEnumerable<Student> GetAll()
         {
-            return db.Students.ToList();
+            return (from s in db.Students select s).ToList();
         }
 
         public void Update(Student item)

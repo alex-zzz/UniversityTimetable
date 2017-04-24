@@ -38,6 +38,19 @@ namespace UniversityTimetable.DAL.EF
             modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
             modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
+
+            modelBuilder.Entity<Group>().Map(m => {
+                m.MapInheritedProperties();
+                m.ToTable("Groups");
+            });
+            modelBuilder.Entity<News>().Map(m => {
+                m.MapInheritedProperties();
+                m.ToTable("News");
+            });
+            modelBuilder.Entity<Student>().Map(m => {
+                m.MapInheritedProperties();
+                m.ToTable("Students");
+            });
         }
 
         public override int SaveChanges()

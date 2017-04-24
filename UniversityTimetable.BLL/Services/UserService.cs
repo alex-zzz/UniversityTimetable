@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -16,6 +17,7 @@ namespace UniversityTimetable.BLL.Services
     {
         static IUnitOfWork StaticDatabase { get; set; }
         IUnitOfWork Database { get; set; }
+        IMapper _mapper;
 
         static UserService()
         {
@@ -25,6 +27,7 @@ namespace UniversityTimetable.BLL.Services
         public UserService(IUnitOfWork uow)
         {
             Database = uow;
+            _mapper = Mappings.AutoMapperConfiguration.Configure().CreateMapper();
         }
 
         public async Task<OperationDetails> Create(UserDTO userDto)
@@ -102,6 +105,18 @@ namespace UniversityTimetable.BLL.Services
         public static UserDTO FindById(string id)
         {
             ApplicationUser au = StaticDatabase.UserManager.FindById(id);
+            if (au == null)
+            { return null; }
+            else
+            {
+                UserDTO user = new UserDTO { Name = au.FullName, Id = au.Id, Email = au.Email, Address = au.ClientProfile.Address };
+                return user;
+            }
+        }
+
+        public UserDTO FindByEMail(string email)
+        {
+            ApplicationUser au = Database.UserManager.FindByEmail(email);
             if (au == null)
             { return null; }
             else

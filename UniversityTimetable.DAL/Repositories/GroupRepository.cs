@@ -44,6 +44,11 @@ namespace UniversityTimetable.DAL.Repositories
             return db.Groups.Find(id);
         }
 
+        public Group GetByName(string name)
+        {
+            return (from g in db.Groups where g.Name == name select g).FirstOrDefault();
+        }
+
         public IEnumerable<Group> GetAll()
         {
             return db.Groups.ToList();
