@@ -26,23 +26,11 @@ namespace UniversityTimetable.Models
             }
         }
 
-        //[Required]
-        //[Display(Name = "Number")]
-        //public string Number { get; set; }
-
         [Display(Name = "Name")]
         public string Name { get; set; }
 
-        //[Required]
-        //[Display(Name = "Surname")]
-        //public string Surname { get; set; }
-
+        [Display(Name = "Group")]
         public string GroupId { get; set; }
         public string GroupName { get; set; }
-
-
-        //public SelectList Groups { get; set; }
-
-
     }
 }

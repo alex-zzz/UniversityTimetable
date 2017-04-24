@@ -233,6 +233,7 @@
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\NewsViewModel.cs" />
     <Compile Include="Models\StudentViewModel.cs" />
+    <Compile Include="Models\TimeTableViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\IdentityExtensions.cs" />
@@ -417,7 +418,6 @@
     <Content Include="Views\Shared\_HeaderPartial.cshtml" />
     <Content Include="Views\Shared\_HeadSectionPartial.cshtml" />
     <Content Include="Views\Admin\Reports.cshtml" />
-    <Content Include="Views\Admin\_AddStudentFormPartial.cshtml" />
     <Content Include="Views\Home\News.cshtml" />
     <Content Include="Views\Shared\_FooterNewsPartial.cshtml" />
     <Content Include="Views\Home\GetDetailNews.cshtml" />
@@ -435,7 +435,6 @@
     <Content Include="Views\CalendarDialog\New - Copy.cshtml" />
     <Content Include="Views\Admin\_AddGroupFormPartial.cshtml" />
     <Content Include="Views\Admin\_EditGroupFormPartial.cshtml" />
-    <Content Include="Views\Admin\_AddStudentFormPartial - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
