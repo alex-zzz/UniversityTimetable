@@ -18,7 +18,7 @@
                 <li>@Html.ActionLink("News", "News", "Home")</li>
                 <li>@Html.ActionLink("About", "About", "Home")</li>
 
-                @if (Request.IsAuthenticated && User.IsInRole("admin"))
+                @if (Request.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("manager")))
                 {
                     <li>@Html.ActionLink("Admin panel", "Index", "Admin")</li>
                 }

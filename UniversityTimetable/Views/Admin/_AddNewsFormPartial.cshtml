@@ -3,8 +3,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <script type="text/javascript">
-                $('form#AddNewsForm').removeData("validator");
-                $('form#AddNewsForm').removeData("unobtrusiveValidation");
+                $('form#addNewsForm').removeData("validator");
+                $('form#addNewsForm').removeData("unobtrusiveValidation");
 
                 $.validator.unobtrusive.adapters.add('validatefiletype', ['validtypes'], function (options) {
                     options.rules['validatefiletype'] = { validtypes: options.params.validtypes.split(',') };
@@ -41,7 +41,7 @@
                     return element.files[0].size < params.validsize;
                 }, '');
 
-                $.validator.unobtrusive.parse($('form#AddNewsForm'));
+                $.validator.unobtrusive.parse($('form#addNewsForm'));
             </script>
 
             @using (Html.BeginForm("AddNews", "Admin", FormMethod.Post, new { id = "addNewsForm", enctype = "multipart/form-data" }))

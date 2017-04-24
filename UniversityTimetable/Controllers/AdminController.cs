@@ -33,12 +33,12 @@ namespace UniversityTimetable.Controllers
         static AdminController()
         {
             StudentViewModel student = new StudentViewModel();
-            student.Number = "B123456";
+            //student.Number = "B123456";
             student.Name = "Mahesh";
             //student.Surname = "Chand";
 
             StudentViewModel student2 = new StudentViewModel();
-            student2.Number = "B123457";
+            //student2.Number = "B123457";
             student2.Name = "Mahesh2";
             //student2.Surname = "Chand2";
 
@@ -47,13 +47,21 @@ namespace UniversityTimetable.Controllers
         }
 
         // GET: Admin
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Index()
         {
             return RedirectToAction("Students", "Admin");
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
+        public ActionResult Managers()
+        {
+            //IEnumerable<GroupDTO> groupDtos = _timeTableService.GetGroups();
+            IEnumerable<ManagerViewModel> managerViewModels = null;
+            return View(managerViewModels);
+        }
+
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Groups()
         {
             IEnumerable<GroupDTO> groupDtos = _timeTableService.GetGroups();
@@ -61,14 +69,14 @@ namespace UniversityTimetable.Controllers
             return View(groupViewModels);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult AddGroup()
         {
             return PartialView("_AddGroupFormPartial", new GroupViewModel());
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult AddGroup(GroupViewModel groupViewModel)
         {
@@ -90,7 +98,7 @@ namespace UniversityTimetable.Controllers
             return PartialView("_AddGroupFormPartial", groupViewModel);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult EditGroup(Guid id)
         {
             GroupDTO groupDto = _timeTableService.GetGroupDTOById(id);
@@ -99,7 +107,7 @@ namespace UniversityTimetable.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult EditGroup(GroupViewModel groupViewModel)
         {
@@ -122,20 +130,20 @@ namespace UniversityTimetable.Controllers
             return PartialView("_EditGroupFormPartial", groupViewModel);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult DeleteGroup(Guid id)
         {
             _timeTableService.DeleteGroup(id);
             return RedirectToAction("Groups", "Admin");
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Reports()
         {
             return View(sl);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Timetables()
         {
             return View();
@@ -147,48 +155,98 @@ namespace UniversityTimetable.Controllers
         //    return Json(sl, JsonRequestBehavior.AllowGet);
         //}
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Students()
         {
-            return View();
+            return View(sl);
         }
 
         [Authorize(Roles = "admin")]
-        public ActionResult AddStudent()
+        public ActionResult GetGroups()
         {
-            return PartialView("_AddStudentFormPartial", new StudentViewModel());
+            IEnumerable<GroupDTO> groupDtos = _timeTableService.GetGroups();
+            var groupViewModels = _mapper.Map<IEnumerable<GroupDTO>, List<GroupViewModel>>(groupDtos);
+            return Json(groupViewModels, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        [Authorize(Roles = "admin")]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddStudent(StudentViewModel sVM)
-        {
-            return PartialView("_AddStudentFormPartial", new StudentViewModel());
-        }
+        //[Authorize(Roles = "admin, manager")]
+        //public ActionResult AddStudent()
+        //{
+        //    return PartialView("_AddStudentFormPartial", new StudentViewModel());
+        //}
 
-        [Authorize(Roles = "admin")]
+        //[HttpPost]
+        //[Authorize(Roles = "admin, manager")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult AddStudent(StudentViewModel studentViewModel)
+        //{
+
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            //StudentDTO studentDto = _mapper.Map<StudentViewModel, StudentDTO>(studentViewModel);
+        //            //_timeTableService.AddStudent(studentDto);
+        //            sl.Add(studentViewModel);
+        //            return Json(new { success = true });
+        //        }
+        //    }
+        //    catch (ValidationException ex)
+        //    {
+        //        ViewBag.Error = ex.Message;
+        //        return Json(new { success = false, errorMessage = ex.Message });
+        //    }
+
+        //    return PartialView("_AddStudentFormPartial", studentViewModel);
+        //}
+
+        [Authorize(Roles = "admin, manager")]
         public ActionResult EditStudent(Guid id)
         {
+            IEnumerable<GroupDTO> groupDtos = _timeTableService.GetGroups();
+            var groupViewModels = _mapper.Map<IEnumerable<GroupDTO>, List<GroupViewModel>>(groupDtos);
+            ViewBag.GroupList = new SelectList(groupViewModels, "Id", "Name");
+
             var student = sl.FirstOrDefault(s => s.Id == id);
             return PartialView("_EditStudentFormPartial", student);
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditStudent(StudentViewModel sVM)
+        public ActionResult EditStudent(StudentViewModel studentViewModel)
         {
-            return PartialView("_AddStudentFormPartial", new StudentViewModel());
+            var student = sl.FirstOrDefault(s => s.Id == studentViewModel.Id);
+
+            if (studentViewModel != null && studentViewModel.GroupId != null)
+            {
+                GroupDTO groupDto = _timeTableService.GetGroupDTOById(new Guid(studentViewModel.GroupId));
+                var groupViewModel = _mapper.Map<GroupDTO, GroupViewModel>(groupDto);
+                studentViewModel.GroupName = groupViewModel.Name;
+
+                if (student != null)
+                {
+                    student.GroupName = studentViewModel.GroupName;
+                    student.GroupId = studentViewModel.GroupId;
+                }
+
+            }
+            else
+            {
+                if (student != null) student.GroupName = "";
+            }
+
+            //sl.Add(student);
+            return RedirectToAction("Students", "Admin");
         }
 
-        [Authorize(Roles = "admin")]
-        public ActionResult DeleteStudent(Guid Id)
-        {
-            return new EmptyResult();
-        }
+        //[Authorize(Roles = "admin, manager")]
+        //public ActionResult DeleteStudent(Guid Id)
+        //{
+        //    return new EmptyResult();
+        //}
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult News()
         {
             IEnumerable<NewsDTO> newsDtos = _newsService.GetNews();
@@ -196,14 +254,14 @@ namespace UniversityTimetable.Controllers
             return View(newsViewModels);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult AddNews()
         {
             return PartialView("_AddNewsFormPartial", new NewsViewModel());
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult AddNews(NewsViewModel newsViewModel)
         {
@@ -240,7 +298,7 @@ namespace UniversityTimetable.Controllers
                 return PartialView("_AddNewsFormPartial", newsViewModel);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult EditNews(Guid id)
         {
             NewsDTO newsDto = _newsService.GetNewsDTOById(id);
@@ -249,7 +307,7 @@ namespace UniversityTimetable.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult EditNews(NewsViewModel newsViewModel)
         {
@@ -281,7 +339,7 @@ namespace UniversityTimetable.Controllers
                 return PartialView("_EditNewsFormPartial", newsViewModel);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult DeleteNews(Guid Id)
         {
             _newsService.DeleteNews(Id);
