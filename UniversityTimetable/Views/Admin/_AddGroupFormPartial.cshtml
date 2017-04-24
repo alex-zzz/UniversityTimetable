@@ -19,6 +19,8 @@
                 <div class="modal-body">
 
                     @Html.ValidationSummary()
+                    
+                    @Html.HiddenFor(m => m.Id, new { @value = Guid.NewGuid()})
 
                     <div class="form-group">
                         @Html.LabelFor(m => m.Name, new { })
@@ -36,20 +38,24 @@
             }
 
             <script>
-                    $('#addGroupForm').submit(function () {
+                $('#addGroupForm').submit(function () {
+                    var formData = $(this).serialize();
                         $.ajax({
                             url: this.action,
                             type: this.method,
-
                             data: $(this).serialize(),
-                            success: function (result) {
+                            success: function(result) {
                                 if (result.success) {
                                     $('#myModal').modal('hide');
+                                    self.insertItem(formData);
                                     //Refresh page
-                                    location.reload();
+                                    //location.reload();
                                 } else {
                                     if (!$("#dbError").length) {
-                                        $(".modal-body").prepend('<div class="validation-summary-errors" id="dbError"><ul><li>' + result.errorMessage + '</li></ul></div>');
+                                        $(".modal-body")
+                                            .prepend('<div class="validation-summary-errors" id="dbError"><ul><li>' +
+                                                result.errorMessage +
+                                                '</li></ul></div>');
                                     }
                                 }
                             }

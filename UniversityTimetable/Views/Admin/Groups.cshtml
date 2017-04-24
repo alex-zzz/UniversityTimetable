@@ -40,13 +40,9 @@
                     });
             };
 
-            self.removeItem = function (item) {
-                $.ajax({
-                    url: '@Url.Action("DeleteGroup", "Admin")',
-                    type: "GET",
-                    data: "id=" + item.Id
-                });
-                self.Groups.remove(item);
+            self.insertItem = function (item) {
+                var groupObj = JSON.parse('{"' + decodeURI(item).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+                self.Groups.unshift(groupObj);
             };
 
             self.editItem = function (item) {
@@ -75,6 +71,15 @@
                     Id: groupObj.Id,
                     Name: groupObj.Name
                 });
+            };
+
+            self.removeItem = function (item) {
+                $.ajax({
+                    url: '@Url.Action("DeleteGroup", "Admin")',
+                    type: "GET",
+                    data: "id=" + item.Id
+                });
+                self.Groups.remove(item);
             };
 
             self.jumpToFirstPage = function () {
