@@ -70,8 +70,8 @@ namespace UniversityTimetable.BLL.Services
 
         public StudentDTO GetStudentDTOById(Guid id)
         {
-            //Student student = Database.Students.Get(id);
-            Student student = Database.Students.Find(s => s.Id == id).FirstOrDefault();
+            Student student = Database.Students.Get(id);
+            //Student student = Database.Students.Find(s => s.Id == id).FirstOrDefault();
 
             //StudentDTO studentDto = new StudentDTO();
             //studentDto.Id = student.Id;

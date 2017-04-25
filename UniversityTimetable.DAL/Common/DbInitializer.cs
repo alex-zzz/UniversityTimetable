@@ -8,7 +8,7 @@ using UniversityTimetable.DAL.Identity;
 
 namespace UniversityTimetable.DAL.Common
 {
-    public class DbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
+    public class DbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext context)
         {

@@ -7,6 +7,7 @@ using UniversityTimetable.DAL.EF;
 using UniversityTimetable.DAL.Entities;
 using UniversityTimetable.DAL.Interfaces;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using UniversityTimetable.DAL.Identity;
 
 namespace UniversityTimetable.DAL.Repositories
@@ -59,7 +60,8 @@ namespace UniversityTimetable.DAL.Repositories
 
         public void Update(Student item)
         {
-            db.Entry(item).State = EntityState.Modified;
+            //db.Entry(item).State = EntityState.Modified;
+            db.Students.AddOrUpdate(item);
         }
     }
 }
