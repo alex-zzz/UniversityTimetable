@@ -49,7 +49,7 @@ namespace UniversityTimetable.DAL.Common
                 Id = "50c9a856-ee28-4678-a236-ae434185e053",
                 Email = "manager1@stanford.edu",
                 UserName = "manager1@stanford.edu",
-                FullName = "John Smith"
+                FullName = "Rumblday Rumbldon"
             };
             manager1.ClientProfile = new ClientProfile { Name = "John Smith", ApplicationUser = manager1 };
             password = "Qwert!123";
@@ -94,8 +94,11 @@ namespace UniversityTimetable.DAL.Common
 
             //Default Group
             context.Groups.Add(new Group { Id = new Guid("c47b2d19-bd53-41b8-98fb-fa8b0578b8ce"), Name = "Default" });
-            context.Groups.Add(new Group { Name = "C# Prof (04.05.17 - 20.06.2017)" });
-            context.Groups.Add(new Group { Name = "Java Script Advanced (18.05.17 - 04.07.2017)" });
+            context.Groups.Add(new Group { Id = new Guid("44c93470-f488-4433-865c-2c707bfc9661"), Name = "C# Prof (04.05.17 - 20.06.2017)" });
+            context.Groups.Add(new Group { Id = new Guid("7771485d-1156-4657-a085-f8f33504603f"), Name = "Java Script Advanced (18.05.17 - 04.07.2017)" });
+
+            context.Students.Add(new Student { UserId = user1.Id, GroupId = new Guid("44c93470-f488-4433-865c-2c707bfc9661") });
+            context.Students.Add(new Student { UserId = user2.Id, GroupId = new Guid("44c93470-f488-4433-865c-2c707bfc9661") });
 
             //news
             context.News.Add(new News
