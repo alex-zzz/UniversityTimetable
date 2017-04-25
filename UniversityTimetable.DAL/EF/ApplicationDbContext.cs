@@ -20,6 +20,7 @@ namespace UniversityTimetable.DAL.EF
             : base(connectionString, throwIfV1Schema: false)
         { }
 
+        public DbSet<Entity> Entity { get; set; }
         public DbSet<ClientProfile> ClientProfiles { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Group> Groups { get; set; }
@@ -53,6 +54,14 @@ namespace UniversityTimetable.DAL.EF
             modelBuilder.Entity<Student>().Map(m => {
                 m.MapInheritedProperties();
                 m.ToTable("Students");
+            });
+            modelBuilder.Entity<Event>().Map(m => {
+                m.MapInheritedProperties();
+                m.ToTable("Event");
+            });
+            modelBuilder.Entity<TimeTable>().Map(m => {
+                m.MapInheritedProperties();
+                m.ToTable("TimeTable");
             });
         }
 

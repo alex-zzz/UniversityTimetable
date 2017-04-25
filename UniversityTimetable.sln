@@ -1,9 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26206.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityTimetable", "UniversityTimetable\UniversityTimetable.csproj", "{E17DF051-CC43-410B-8B12-6668DDE6F90D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{13703C1A-7162-4EC9-8A96-D874E2E15EF1} = {13703C1A-7162-4EC9-8A96-D874E2E15EF1}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityTimetable.DAL", "UniversityTimetable.DAL\UniversityTimetable.DAL.csproj", "{802E96CE-5821-445B-B255-2CC2294AA4FD}"
 EndProject

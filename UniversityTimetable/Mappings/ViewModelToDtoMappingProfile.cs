@@ -13,7 +13,7 @@ namespace UniversityTimetable.Mappings
         public ViewModelToDtoMappingProfile()
         {
             CreateMap<NewsViewModel, NewsDTO>().ForMember(dest => dest.ImagePath, opt => opt.MapFrom(src => src.Img));
-            CreateMap<GroupViewModel, GroupDTO>();
+            CreateMap<GroupViewModel, GroupDTO>().PreserveReferences();
 
         }
     }

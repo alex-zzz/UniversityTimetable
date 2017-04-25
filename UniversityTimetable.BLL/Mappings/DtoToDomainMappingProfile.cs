@@ -9,8 +9,8 @@ namespace UniversityTimetable.BLL.Mappings
     {
         public DtoToDomainMappingProfile()
         {
-            CreateMap<StudentDTO, Student>();
-            CreateMap<GroupDTO, Group>();
+            CreateMap<StudentDTO, Student>().PreserveReferences();
+            CreateMap<GroupDTO, Group>().PreserveReferences();
             CreateMap<NewsDTO, News>();
             CreateMap<UserDTO, ApplicationUser>();
         }
