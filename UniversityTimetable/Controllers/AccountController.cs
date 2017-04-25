@@ -102,7 +102,7 @@ namespace UniversityTimetable.Controllers
                 {
                     Email = model.Email,
                     Password = model.Password,
-                    Name = model.FullName,
+                    FullName = model.FullName,
                     UserName = model.Email,
                     IsTermsAccepted = model.IsTermsAccepted,
                     Role = "student"
