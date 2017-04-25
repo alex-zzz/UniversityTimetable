@@ -226,6 +226,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\GroupViewModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Models\ManagerViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\RegisterModel.cs" />

@@ -57,7 +57,7 @@ namespace UniversityTimetable.DAL.Common
 
             if (result.Succeeded)
             {
-                userManager.AddToRole(manager1.Id, role2.Name);
+                userManager.AddToRoles(manager1.Id, role2.Name, role3.Name);
             }
 
             var user1 = new ApplicationUser

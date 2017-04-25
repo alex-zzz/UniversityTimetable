@@ -47,7 +47,28 @@ namespace UniversityTimetable.Controllers
         [Authorize(Roles = "admin, manager")]
         public ActionResult AddManager()
         {
+            IEnumerable<UserDTO> users = _userService.GetUsers();
+            var userViewModels = _mapper.Map<IEnumerable<UserDTO>, List<UserViewModel>>(users);
+            ViewBag.UserList = new SelectList(userViewModels, "Id", "FullName");
+
             return PartialView("_AddManagerFormPartial", new ManagerViewModel());
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, manager")]
+        public ActionResult AddManager(string userId)
+        {
+            _userService.AddManager(userId);
+
+            return RedirectToAction("Managers", "Admin");
+        }
+
+        [Authorize(Roles = "admin, manager")]
+        public ActionResult DeleteManager(string userId)
+        {
+            _userService.RemoveManager(userId);
+
+            return RedirectToAction("Managers", "Admin");
         }
 
         [Authorize(Roles = "admin, manager")]
@@ -189,27 +210,6 @@ namespace UniversityTimetable.Controllers
 
             _timeTableService.UpdateStudent(studentDto);
 
-            //var student = sl.FirstOrDefault(s => s.Id == studentViewModel.Id);
-
-            //if (studentViewModel != null && studentViewModel.GroupId != null)
-            //{
-            //    GroupDTO groupDto = _timeTableService.GetGroupDTOById(new Guid(studentViewModel.GroupId));
-            //    var groupViewModel = _mapper.Map<GroupDTO, GroupViewModel>(groupDto);
-            //    studentViewModel.GroupName = groupViewModel.Name;
-
-            //    if (student != null)
-            //    {
-            //        student.GroupName = studentViewModel.GroupName;
-            //        student.GroupId = studentViewModel.GroupId;
-            //    }
-
-            //}
-            //else
-            //{
-            //    if (student != null) student.GroupName = "";
-            //}
-
-            //sl.Add(student);
             return RedirectToAction("Students", "Admin");
         }
 

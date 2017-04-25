@@ -42,9 +42,9 @@
 
             self.removeItem = function (item) {
                 $.ajax({
-                    url: '@Url.Action("DeleteGroup", "Admin")',
+                    url: '@Url.Action("DeleteManager", "Admin")',
                     type: "GET",
-                    data: "id=" + item.Id
+                    data: "UserId=" + item.UserId
                 });
                 self.Groups.remove(item);
             };

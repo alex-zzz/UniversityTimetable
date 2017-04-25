@@ -2,13 +2,8 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <script type="text/javascript">
-                $('form#addGroupForm').removeData("validator");
-                $('form#addGroupForm').removeData("unobtrusiveValidation");
-                $.validator.unobtrusive.parse($('form#addGroupForm'));
-            </script>
 
-            @using (Html.BeginForm("AddGroup", "Admin", FormMethod.Post, new { id = "addGroupForm" }))
+            @using (Html.BeginForm("AddManager", "Admin", FormMethod.Post, new { id = "addGroupForm" }))
             {
                 @Html.AntiForgeryToken()
 
@@ -20,11 +15,9 @@
 
                     @Html.ValidationSummary()
                     
-                    @Html.HiddenFor(m => m.Id, new { @value = Guid.NewGuid()})
-
                     <div class="form-group">
-                        @Html.LabelFor(m => m.FullName, new { })
-                        @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @placeholder = "User name" })
+                        @Html.LabelFor(m => m.UserId)
+                        @Html.DropDownListFor(m => m.UserId, (SelectList)ViewBag.UserList, "  -----No user selected-----  ", new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -32,32 +25,7 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             }
-
             <script>
-                $('#addGroupForm').submit(function () {
-                    var formData = $(this).serialize();
-                        $.ajax({
-                            url: this.action,
-                            type: this.method,
-                            data: $(this).serialize(),
-                            success: function(result) {
-                                if (result.success) {
-                                    $('#myModal').modal('hide');
-                                    self.insertItem(formData);
-                                    //Refresh page
-                                    //location.reload();
-                                } else {
-                                    if (!$("#dbError").length) {
-                                        $(".modal-body")
-                                            .prepend('<div class="validation-summary-errors" id="dbError"><ul><li>' +
-                                                result.errorMessage +
-                                                '</li></ul></div>');
-                                    }
-                                }
-                            }
-                        });
-                        return false;
-                    });
             </script>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
