@@ -150,5 +150,31 @@ namespace UniversityTimetable.BLL.Services
                                                                       where user.Roles.Any(r => r.RoleId == "manager")
                                                                       select user).ToList());
         }
+
+        public async Task<OperationDetails> AddManager(string Id)
+        {
+            try
+            {
+                await Database.UserManager.AddToRoleAsync(Id, "manager");
+                return new OperationDetails(true, "Ok!", "");
+            }
+            catch (Exception ex)
+            {
+                return new OperationDetails(false, ex.Message, "");
+            }            
+        }
+
+        public async Task<OperationDetails> RemoveManager(string Id)
+        {
+            try
+            {
+                await Database.UserManager.RemoveFromRoleAsync(Id, "manager");
+                return new OperationDetails(true, "Ok!", "");
+            }
+            catch (Exception ex)
+            {
+                return new OperationDetails(false, ex.Message, "");
+            }
+        }
     }
 }

@@ -19,5 +19,7 @@ namespace UniversityTimetable.BLL.Interfaces
         IEnumerable<UserDTO> GetAllUsers();
         IEnumerable<UserDTO> GetUsers();
         IEnumerable<UserDTO> GetManagers();
+        Task<OperationDetails> AddManager(string Id);
+        Task<OperationDetails> RemoveManager(string Id);
     }
 }

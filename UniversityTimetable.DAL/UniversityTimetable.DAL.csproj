@@ -58,7 +58,6 @@
   <ItemGroup>
     <Compile Include="Common\DbInitializer.cs" />
     <Compile Include="EF\ApplicationDbContext.cs" />
-    <Compile Include="EF\UniversityTimetableContext.cs" />
     <Compile Include="Entities\Event.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Group.cs" />
