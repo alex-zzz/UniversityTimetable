@@ -46,7 +46,8 @@ namespace UniversityTimetable.BLL.Services
             if (student.Group == null)
             {
                 //student.Group = Database.Groups.GetByName("Default");
-                student.GroupId = Database.Groups.GetByName("Default").Id;
+                //student.GroupId = Database.Groups.GetByName("Default").Id;
+                student.GroupId = Database.Groups.Get(new Guid("c47b2d19-bd53-41b8-98fb-fa8b0578b8ce")).Id;
             }
 
             Database.Students.Create(student);

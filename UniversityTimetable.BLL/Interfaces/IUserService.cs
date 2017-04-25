@@ -16,5 +16,8 @@ namespace UniversityTimetable.BLL.Interfaces
         Task<ClaimsIdentity> Authenticate(UserDTO userDto);
         Task SetInitialData(UserDTO adminDto, List<string> roles);
         UserDTO FindByEMail(string email);
+        IEnumerable<UserDTO> GetAllUsers();
+        IEnumerable<UserDTO> GetUsers();
+        IEnumerable<UserDTO> GetManagers();
     }
 }

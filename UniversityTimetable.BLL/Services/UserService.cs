@@ -10,6 +10,7 @@ using UniversityTimetable.BLL.Interfaces;
 using UniversityTimetable.DAL.Identity;
 using UniversityTimetable.DAL.Interfaces;
 using UniversityTimetable.DAL.Repositories;
+using System;
 
 namespace UniversityTimetable.BLL.Services
 {
@@ -35,14 +36,14 @@ namespace UniversityTimetable.BLL.Services
             ApplicationUser user = await Database.UserManager.FindByEmailAsync(userDto.Email);
             if (user == null)
             {
-                user = new ApplicationUser { Email = userDto.Email, UserName = userDto.Email, IsTermsAccepted = userDto.IsTermsAccepted, FullName = userDto.Name };
+                user = new ApplicationUser { Email = userDto.Email, UserName = userDto.Email, IsTermsAccepted = userDto.IsTermsAccepted, FullName = userDto.FullName };
                 var result = await Database.UserManager.CreateAsync(user, userDto.Password);
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
                 // добавляем роль
                 await Database.UserManager.AddToRoleAsync(user.Id, userDto.Role);
                 // создаем профиль клиента
-                ClientProfile clientProfile = new ClientProfile { Id = user.Id, Address = userDto.Address, Name = userDto.Name };
+                ClientProfile clientProfile = new ClientProfile { Id = user.Id, Address = userDto.Address, Name = userDto.FullName };
                 Database.ClientManager.Create(clientProfile);
                 await Database.SaveAsync();
                 return new OperationDetails(true, "Registration successful!", "");
@@ -109,7 +110,7 @@ namespace UniversityTimetable.BLL.Services
             { return null; }
             else
             {
-                UserDTO user = new UserDTO { Name = au.FullName, Id = au.Id, Email = au.Email, Address = au.ClientProfile.Address };
+                UserDTO user = new UserDTO { Name = au.FullName, FullName = au.FullName, Id = au.Id, Email = au.Email, Address = au.ClientProfile.Address };
                 return user;
             }
         }
@@ -121,7 +122,7 @@ namespace UniversityTimetable.BLL.Services
             { return null; }
             else
             {
-                UserDTO user = new UserDTO { Name = au.FullName, Id = au.Id, Email = au.Email, Address = au.ClientProfile.Address };
+                UserDTO user = new UserDTO { Name = au.FullName, FullName = au.FullName, Id = au.Id, Email = au.Email, Address = au.ClientProfile.Address };
                 return user;
             }
         }
@@ -129,6 +130,25 @@ namespace UniversityTimetable.BLL.Services
         public void Dispose()
         {
             Database.Dispose();
+        }
+
+        public IEnumerable<UserDTO> GetAllUsers()
+        {
+            return _mapper.Map<List<ApplicationUser>, List<UserDTO>>(Database.UserManager.Users.ToList());
+        }
+
+        public IEnumerable<UserDTO> GetUsers()
+        {
+            return _mapper.Map<List<ApplicationUser>, List<UserDTO>>((from user in Database.UserManager.Users
+                                                                      where user.Roles.Count == 0
+                                                                      select user).ToList());
+        }
+
+        public IEnumerable<UserDTO> GetManagers()
+        {
+            return _mapper.Map<List<ApplicationUser>, List<UserDTO>>((from user in Database.UserManager.Users
+                                                                      where user.Roles.Any(r => r.RoleId == "manager")
+                                                                      select user).ToList());
         }
     }
 }
