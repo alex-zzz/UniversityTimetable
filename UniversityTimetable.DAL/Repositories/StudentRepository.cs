@@ -42,6 +42,7 @@ namespace UniversityTimetable.DAL.Repositories
         public Student Get(Guid id)
         {
             return db.Students.Find(id);
+            //return db.Students.AsNoTracking().FirstOrDefault(s => s.Id == id);
         }
 
         public Student GetByName(string name)

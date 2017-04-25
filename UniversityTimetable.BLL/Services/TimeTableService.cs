@@ -69,6 +69,8 @@ namespace UniversityTimetable.BLL.Services
         public StudentDTO GetStudentDTOById(Guid id)
         {
             Student student = Database.Students.Get(id);
+            //Student student = Database.Students.Find(s => s.Id == id).FirstOrDefault();
+
             return _mapper.Map<Student, StudentDTO>(student);
         }
 
@@ -92,8 +94,10 @@ namespace UniversityTimetable.BLL.Services
         {
             if (studentDto != null && studentDto.Group != null)
             {
+                //if (Database.Students.Find(a => a.User.Id == studentDto.User.Id && a.Group.Id == studentDto.Group.Id).Any())
                 if (Database.Students.GetAll().Where(a => a.User.Id == studentDto.User.Id && a.Group.Id == studentDto.Group.Id).Count() > 0)
                     throw new ValidationException("Такой студент уже существует в этой группе!", "");
+
             }
 
             Student student = _mapper.Map<StudentDTO, Student>(studentDto);

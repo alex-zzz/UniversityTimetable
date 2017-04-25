@@ -200,9 +200,12 @@ namespace UniversityTimetable.Controllers
             }
             else
             {
-                studentDto.Group = null;
-                studentDto.GroupId = Guid.Empty;
+                GroupDTO defaultGroupDto = _timeTableService.GetGroupDTOById(new Guid("c47b2d19-bd53-41b8-98fb-fa8b0578b8ce"));
+                studentDto.Group = defaultGroupDto;
+                studentDto.GroupId = defaultGroupDto.Id;
             }
+
+            _timeTableService.UpdateStudent(studentDto);
 
             //var student = sl.FirstOrDefault(s => s.Id == studentViewModel.Id);
 
