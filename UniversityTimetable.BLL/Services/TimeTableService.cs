@@ -25,7 +25,8 @@ namespace UniversityTimetable.BLL.Services
 
         public void AddGroup(GroupDTO groupDto)
         {
-            if (Database.Groups.GetAll().Where(a => a.Name == groupDto.Name).Count() > 0)
+            //if (Database.Groups.GetAll().Where(a => a.Name == groupDto.Name).Count() > 0)
+            if (Database.Groups.Find(g => g.Name == groupDto.Name).Any())
                 throw new ValidationException("Такая группа уже существует в БД!", "");
 
             Group group = _mapper.Map<GroupDTO, Group>(groupDto);
@@ -38,7 +39,8 @@ namespace UniversityTimetable.BLL.Services
         {
             if (studentDto != null && studentDto.Group != null)
             {
-                if (Database.Students.GetAll().Where(a => a.User.Id == studentDto.User.Id && a.Group.Id == studentDto.Group.Id).Count() > 0)
+                //if (Database.Students.GetAll().Where(a => a.User.Id == studentDto.User.Id && a.Group.Id == studentDto.Group.Id).Count() > 0)
+                if (Database.Students.Find(a => a.User.Id == studentDto.User.Id && a.Group.Id == studentDto.Group.Id).Any())
                     throw new ValidationException("Такой студент уже существует в этой группе!", "");
             }
 
@@ -68,8 +70,15 @@ namespace UniversityTimetable.BLL.Services
 
         public StudentDTO GetStudentDTOById(Guid id)
         {
-            Student student = Database.Students.Get(id);
-            //Student student = Database.Students.Find(s => s.Id == id).FirstOrDefault();
+            //Student student = Database.Students.Get(id);
+            Student student = Database.Students.Find(s => s.Id == id).FirstOrDefault();
+
+            //StudentDTO studentDto = new StudentDTO();
+            //studentDto.Id = student.Id;
+            //studentDto.UserId = student.UserId;
+            //studentDto.GroupId = (Guid) student.GroupId;
+
+            //return studentDto;
 
             return _mapper.Map<Student, StudentDTO>(student);
         }
@@ -92,13 +101,13 @@ namespace UniversityTimetable.BLL.Services
 
         public void UpdateStudent(StudentDTO studentDto)
         {
-            if (studentDto != null && studentDto.Group != null)
-            {
-                //if (Database.Students.Find(a => a.User.Id == studentDto.User.Id && a.Group.Id == studentDto.Group.Id).Any())
-                if (Database.Students.GetAll().Where(a => a.User.Id == studentDto.User.Id && a.Group.Id == studentDto.Group.Id).Count() > 0)
-                    throw new ValidationException("Такой студент уже существует в этой группе!", "");
+            //if (studentDto != null && studentDto.Group != null)
+            //{
+            //    //if (Database.Students.Find(a => a.User.Id == studentDto.User.Id && a.Group.Id == studentDto.Group.Id).Any())
+            //    if (Database.Students.GetAll().Where(a => a.User.Id == studentDto.User.Id && a.Group.Id == studentDto.Group.Id).Count() > 0)
+            //        throw new ValidationException("Такой студент уже существует в этой группе!", "");
 
-            }
+            //}
 
             Student student = _mapper.Map<StudentDTO, Student>(studentDto);
 

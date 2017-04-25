@@ -17,7 +17,7 @@ namespace UniversityTimetable.DAL.Repositories
 
         public StudentRepository(ApplicationDbContext context)
         {
-            db = context; 
+            db = context;
         }
 
         public void Create(Student item)
