@@ -8,17 +8,17 @@ using UniversityTimetable.DAL.Identity;
 
 namespace UniversityTimetable.DAL.Common
 {
-    public class DbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
+    public class DbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext context)
         {
             var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context));
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
 
-            // создаем две роли
-            var role1 = new IdentityRole { Name = "admin" };
-            var role2 = new IdentityRole { Name = "manager" };
-            var role3 = new IdentityRole { Name = "student" };
+            // создаем роли
+            var role1 = new IdentityRole { Id = "admin",    Name = "admin" };
+            var role2 = new IdentityRole { Id = "manager",  Name = "manager" };
+            var role3 = new IdentityRole { Id = "student",  Name = "student" };
 
             // добавляем роли в бд
             roleManager.Create(role1);
@@ -26,10 +26,13 @@ namespace UniversityTimetable.DAL.Common
             roleManager.Create(role3);
 
             // создаем пользователей
-            var admin = new ApplicationUser {
+            var admin = new ApplicationUser
+            {
+                Id = "c3045e0c-48b7-444e-b38b-bd30ff87f51c",
                 Email = "admin@stanford.edu",
                 UserName = "admin@stanford.edu",
-                FullName = "Admin" };
+                FullName = "Admin"
+            };
             admin.ClientProfile = new ClientProfile { Name = "Admin", ApplicationUser = admin };
             string password = "Qwert!123";
             var result = userManager.Create(admin, password);
@@ -37,10 +40,56 @@ namespace UniversityTimetable.DAL.Common
             // если создание пользователя прошло успешно
             if (result.Succeeded)
             {
-                // добавляем для пользователя роль
-                userManager.AddToRole(admin.Id, role1.Name);
-                userManager.AddToRole(admin.Id, role2.Name);
-                userManager.AddToRole(admin.Id, role3.Name);                
+                // добавляем для пользователя роли
+                userManager.AddToRoles(admin.Id, role1.Name, role2.Name, role3.Name);
+            }
+
+            var manager1 = new ApplicationUser
+            {
+                Id = "50c9a856-ee28-4678-a236-ae434185e053",
+                Email = "manager1@stanford.edu",
+                UserName = "manager1@stanford.edu",
+                FullName = "John Smith"
+            };
+            manager1.ClientProfile = new ClientProfile { Name = "John Smith", ApplicationUser = manager1 };
+            password = "Qwert!123";
+            result = userManager.Create(manager1, password);
+
+            if (result.Succeeded)
+            {
+                userManager.AddToRole(manager1.Id, role2.Name);
+            }
+
+            var user1 = new ApplicationUser
+            {
+                Id = "6c476311-8a1c-4db2-9447-cf969975100c",
+                Email = "student1@stanford.edu",
+                UserName = "student1@stanford.edu",
+                FullName = "John Smith"
+            };
+            user1.ClientProfile = new ClientProfile { Name = "John Smith", ApplicationUser = user1 };
+            password = "Qwert!123";
+            result = userManager.Create(user1, password);
+
+            if (result.Succeeded)
+            {
+                userManager.AddToRole(user1.Id, role3.Name);
+            }
+
+            var user2 = new ApplicationUser
+            {
+                Id = "79ae07fc-d86b-41b6-93fc-6c2c2dd997c0",
+                Email = "student2@stanford.edu",
+                UserName = "student2@stanford.edu",
+                FullName = "Elthon John"
+            };
+            user2.ClientProfile = new ClientProfile { Name = "Elthon John", ApplicationUser = user2 };
+            password = "Qwert!123";
+            result = userManager.Create(user2, password);
+
+            if (result.Succeeded)
+            {
+                userManager.AddToRole(user2.Id, role3.Name);
             }
 
             //Default Group

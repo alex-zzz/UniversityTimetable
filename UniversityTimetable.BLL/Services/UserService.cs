@@ -140,7 +140,7 @@ namespace UniversityTimetable.BLL.Services
         public IEnumerable<UserDTO> GetUsers()
         {
             return _mapper.Map<List<ApplicationUser>, List<UserDTO>>((from user in Database.UserManager.Users
-                                                                      where user.Roles.Count == 0
+                                                                      where user.Roles.Count == 1 && user.Roles.Any(r => r.RoleId == "student")
                                                                       select user).ToList());
         }
 

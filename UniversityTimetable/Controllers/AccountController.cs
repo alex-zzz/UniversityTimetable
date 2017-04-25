@@ -50,9 +50,6 @@ namespace UniversityTimetable.Controllers
 
         public ActionResult Login()
         {
-            var u1 = UserService.GetAllUsers();
-            var u2 = UserService.GetUsers();
-            var u3 = UserService.GetManagers();
             return View();
         }
 
