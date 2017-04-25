@@ -51,7 +51,7 @@ namespace UniversityTimetable.DAL.Repositories
 
         public IEnumerable<Group> GetAll()
         {
-            return db.Groups.ToList();
+            return db.Groups.Include("Students").ToList();
         }
 
         public void Update(Group item)
