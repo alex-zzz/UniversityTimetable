@@ -31,6 +31,7 @@ namespace UniversityTimetable.Utils
         {
             kernel.Bind<ITimeTableService>().To<TimeTableService>();
             kernel.Bind<INewsService>().To<NewsService>();
+            kernel.Bind<IUserService>().To<UserService>();
 
             kernel.Bind<IMapper>().ToConstant(Mappings.AutoMapperConfiguration.Configure().CreateMapper()).WhenInjectedInto(typeof(HomeController));
             kernel.Bind<IMapper>().ToConstant(Mappings.AutoMapperConfiguration.Configure().CreateMapper()).WhenInjectedInto(typeof(AdminController));

@@ -224,8 +224,6 @@
     <Compile Include="Mappings\DtoToViewModelMappingProfile.cs" />
     <Compile Include="Mappings\ViewModelToDtoMappingProfile.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Common\DbInitializer.cs" />
-    <Compile Include="Models\AdminViewModels.cs" />
     <Compile Include="Models\GroupViewModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ManagerViewModel.cs" />
@@ -435,6 +433,7 @@
     <Content Include="Views\CalendarDialog\New - Copy.cshtml" />
     <Content Include="Views\Admin\_AddGroupFormPartial.cshtml" />
     <Content Include="Views\Admin\_EditGroupFormPartial.cshtml" />
+    <Content Include="Views\Admin\_AddManagerFormPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

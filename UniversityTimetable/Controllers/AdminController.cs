@@ -19,34 +19,17 @@ namespace UniversityTimetable.Controllers
     {
         private readonly INewsService _newsService;
         private readonly ITimeTableService _timeTableService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public AdminController(INewsService newsService, ITimeTableService timeTableService, IMapper mapper)
+        public AdminController(INewsService newsService, ITimeTableService timeTableService, IUserService userService, IMapper mapper)
         {
             _newsService = newsService;
             _timeTableService = timeTableService;
+            _userService = userService;
             _mapper = mapper;
         }
 
-        public static List<StudentViewModel> sl = new List<StudentViewModel>();
-
-        static AdminController()
-        {
-            StudentViewModel student = new StudentViewModel();
-            //student.Number = "B123456";
-            student.Name = "Mahesh";
-            //student.Surname = "Chand";
-
-            StudentViewModel student2 = new StudentViewModel();
-            //student2.Number = "B123457";
-            student2.Name = "Mahesh2";
-            //student2.Surname = "Chand2";
-
-            sl.Add(student);
-            sl.Add(student2);
-        }
-
-        // GET: Admin
         [Authorize(Roles = "admin, manager")]
         public ActionResult Index()
         {
@@ -56,9 +39,15 @@ namespace UniversityTimetable.Controllers
         [Authorize(Roles = "admin, manager")]
         public ActionResult Managers()
         {
-            //IEnumerable<GroupDTO> groupDtos = _timeTableService.GetGroups();
-            IEnumerable<ManagerViewModel> managerViewModels = null;
+            IEnumerable<UserDTO> userDtos = _userService.GetManagers();
+            IEnumerable<ManagerViewModel> managerViewModels = _mapper.Map<IEnumerable<UserDTO>, List<ManagerViewModel>>(userDtos);
             return View(managerViewModels);
+        }
+
+        [Authorize(Roles = "admin, manager")]
+        public ActionResult AddManager()
+        {
+            return PartialView("_AddManagerFormPartial", new ManagerViewModel());
         }
 
         [Authorize(Roles = "admin, manager")]
@@ -140,7 +129,7 @@ namespace UniversityTimetable.Controllers
         [Authorize(Roles = "admin, manager")]
         public ActionResult Reports()
         {
-            return View(sl);
+            return View();
         }
 
         [Authorize(Roles = "admin, manager")]
@@ -148,12 +137,6 @@ namespace UniversityTimetable.Controllers
         {
             return View();
         }
-
-        //[Authorize(Roles = "admin")]
-        //public ActionResult GetStudents()
-        //{
-        //    return Json(sl, JsonRequestBehavior.AllowGet);
-        //}
 
         [Authorize(Roles = "admin, manager")]
         public ActionResult Students()
@@ -181,7 +164,6 @@ namespace UniversityTimetable.Controllers
             IEnumerable<StudentDTO> studentDtos = _timeTableService.GetStudents();
             var studentViewModels = _mapper.Map<IEnumerable<StudentDTO>, List<StudentViewModel>>(studentDtos);
 
-            //var student = sl.FirstOrDefault(s => s.Id == id);
             return PartialView("_EditStudentFormPartial", studentViewModels.FirstOrDefault(s => s.Id == id));
         }
 
@@ -230,12 +212,6 @@ namespace UniversityTimetable.Controllers
             //sl.Add(student);
             return RedirectToAction("Students", "Admin");
         }
-
-        //[Authorize(Roles = "admin, manager")]
-        //public ActionResult DeleteStudent(Guid Id)
-        //{
-        //    return new EmptyResult();
-        //}
 
         [Authorize(Roles = "admin, manager")]
         public ActionResult News()
@@ -331,9 +307,9 @@ namespace UniversityTimetable.Controllers
         }
 
         [Authorize(Roles = "admin, manager")]
-        public ActionResult DeleteNews(Guid Id)
+        public ActionResult DeleteNews(Guid id)
         {
-            _newsService.DeleteNews(Id);
+            _newsService.DeleteNews(id);
             return RedirectToAction("News", "Admin");
         }
 

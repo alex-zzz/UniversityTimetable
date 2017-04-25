@@ -8,7 +8,7 @@ using UniversityTimetable.DAL.Identity;
 
 namespace UniversityTimetable.DAL.Common
 {
-    public class DbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
+    public class DbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext context)
         {
@@ -41,7 +41,7 @@ namespace UniversityTimetable.DAL.Common
             if (result.Succeeded)
             {
                 // добавляем для пользователя роли
-                userManager.AddToRoles(admin.Id, role1.Name, role2.Name, role3.Name);
+                userManager.AddToRoles(admin.Id, role1.Name);
             }
 
             var manager1 = new ApplicationUser

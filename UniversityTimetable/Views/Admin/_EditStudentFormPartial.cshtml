@@ -5,12 +5,6 @@
 
             @using (Html.BeginForm("EditStudent", "Admin", FormMethod.Post, new { id = "studentForm" }))
             {
-                @*<script type="text/javascript">
-                    $('form#studentForm').removeData("validator");
-                    $('form#studentForm').removeData("unobtrusiveValidation");
-                    $.validator.unobtrusive.parse($('form#studentForm'));
-                </script>*@
-
                 @Html.AntiForgeryToken()
 
                 <div class="modal-header">

@@ -17,6 +17,8 @@ namespace UniversityTimetable.Mappings
             CreateMap<StudentDTO, StudentViewModel>().ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.FullName))
                 .ForMember(dest => dest.GroupId, opt => opt.MapFrom(src => src.Group.Id.ToString()))
                 .ForMember(dest => dest.GroupName, opt => opt.MapFrom(src => src.Group.Name));
+            CreateMap<UserDTO, ManagerViewModel>();
+
         }
     }
 }

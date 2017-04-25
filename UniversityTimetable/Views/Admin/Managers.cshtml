@@ -31,46 +31,13 @@
 
             self.addItem = function () {
                 $.ajax({
-                        url: '@Url.Action("AddGroup", "Admin")',
+                        url: '@Url.Action("AddManager", "Admin")',
                         type: "GET"
                     })
                     .done(function (partialViewResult) {
                         $("#modalContainer").html(partialViewResult);
                         $('#myModal').modal('show');
                     });
-            };
-
-            self.insertItem = function (item) {
-                var groupObj = JSON.parse('{"' + decodeURI(item).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
-                self.Groups.unshift(groupObj);
-            };
-
-            self.editItem = function (item) {
-
-                $.ajax({
-                        url: '@Url.Action("EditGroup", "Admin")',
-                        type: "GET",
-                        data: "id=" + item.Id
-                    })
-                    .done(function (partialViewResult) {
-                        $("#modalContainer").html(partialViewResult);
-                        $('#myModal').modal('show');
-                    });
-
-            };
-
-            self.updateItem = function (item) {
-                var groupObj = JSON.parse('{"' + decodeURI(item).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
-                var groupId = groupObj.Id;
-
-                var group = ko.utils.arrayFirst(self.Groups(), function(group) {
-                    return group.Id === groupId;
-                });
-
-                self.Groups.replace(group, {
-                    Id: groupObj.Id,
-                    Name: groupObj.Name
-                });
             };
 
             self.removeItem = function (item) {
@@ -85,29 +52,16 @@
             self.jumpToFirstPage = function () {
                 self.gridViewModel.currentPageIndex(0);
             };
-
-
+            
             self.gridViewModel = new ko.simpleGrid.viewModel({
                 data: self.Groups,
                 columns: [
-                    { headerText: "Name", rowText: "Name" },
-                    { headerText: "Students", rowText: "StudentsList" },
-                    {
-                        headerText: "", rowText: {
-                            edit: function (item) {
-                                return function () {
-                                    self.editItem(item);
-                                    //console.log(item)
-                                }
-                            }
-                        }
-                    },
+                    { headerText: "Name", rowText: "FullName" },
                     {
                         headerText: "", rowText: {
                             delete: function (item) {
                                 return function () {
                                     self.removeItem(item);
-                                    //console.log(item)
                                 }
                             }
                         }
@@ -117,7 +71,6 @@
             });
         }
         $(document).ready(function () {
-            //var viewModel = new PagedGridModel();
             ko.applyBindings(new PagedGridModel());
         });
 
