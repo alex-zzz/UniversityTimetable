@@ -81,7 +81,7 @@ namespace UniversityTimetable.DAL.Common
                 Id = "79ae07fc-d86b-41b6-93fc-6c2c2dd997c0",
                 Email = "student2@stanford.edu",
                 UserName = "student2@stanford.edu",
-                FullName = "Elthon John"
+                FullName = "Elton John"
             };
             user2.ClientProfile = new ClientProfile { Name = "Elthon John", ApplicationUser = user2 };
             password = "Qwert!123";
@@ -94,8 +94,8 @@ namespace UniversityTimetable.DAL.Common
 
             //Default Group
             context.Groups.Add(new Group { Id = new Guid("c47b2d19-bd53-41b8-98fb-fa8b0578b8ce"), Name = "Default" });
-            context.Groups.Add(new Group { Id = new Guid("44c93470-f488-4433-865c-2c707bfc9661"), Name = "C# Prof (04.05.17 - 20.06.2017)" });
-            context.Groups.Add(new Group { Id = new Guid("7771485d-1156-4657-a085-f8f33504603f"), Name = "Java Script Advanced (18.05.17 - 04.07.2017)" });
+            context.Groups.Add(new Group { Id = new Guid("44c93470-f488-4433-865c-2c707bfc9661"), Name = "C# Prof (04.05.2017 - 20.06.2017)" });
+            context.Groups.Add(new Group { Id = new Guid("7771485d-1156-4657-a085-f8f33504603f"), Name = "Java Script Advanced (18.05.2017 - 04.07.2017)" });
 
             context.Students.Add(new Student { UserId = user1.Id, GroupId = new Guid("44c93470-f488-4433-865c-2c707bfc9661") });
             context.Students.Add(new Student { UserId = user2.Id, GroupId = new Guid("44c93470-f488-4433-865c-2c707bfc9661") });
