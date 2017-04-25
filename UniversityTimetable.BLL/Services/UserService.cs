@@ -10,6 +10,7 @@ using UniversityTimetable.BLL.Interfaces;
 using UniversityTimetable.DAL.Identity;
 using UniversityTimetable.DAL.Interfaces;
 using UniversityTimetable.DAL.Repositories;
+using System;
 
 namespace UniversityTimetable.BLL.Services
 {
@@ -129,6 +130,25 @@ namespace UniversityTimetable.BLL.Services
         public void Dispose()
         {
             Database.Dispose();
+        }
+
+        public IEnumerable<UserDTO> GetAllUsers()
+        {
+            return _mapper.Map<List<ApplicationUser>, List<UserDTO>>(Database.UserManager.Users.ToList());
+        }
+
+        public IEnumerable<UserDTO> GetUsers()
+        {
+            return _mapper.Map<List<ApplicationUser>, List<UserDTO>>((from user in Database.UserManager.Users
+                                                                      where user.Roles.Count == 0
+                                                                      select user).ToList());
+        }
+
+        public IEnumerable<UserDTO> GetManagers()
+        {
+            return _mapper.Map<List<ApplicationUser>, List<UserDTO>>((from user in Database.UserManager.Users
+                                                                      where user.Roles.Any(r => r.RoleId == "manager")
+                                                                      select user).ToList());
         }
     }
 }
