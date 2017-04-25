@@ -1,192 +1,19 @@
-﻿@*@using System.Web.Script.Serialization;*@
-@using Newtonsoft.Json
-@*@using UniversityTimetable.Models*@
+﻿@*@using Newtonsoft.Json
 
-@*@model UniversityTimetable.Models.StudentsViewModel*@
-@model IEnumerable<UniversityTimetable.Models.StudentViewModel>
+@model IEnumerable<UniversityTimetable.Models.StudentViewModel>*@
     @{
         ViewBag.Title = "Reports";
         Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 
     }
 
-
     <h3>Reports</h3>
 
     <h4>There will be reports...</h4>
 
-    <div data-bind='simpleGrid: gridViewModel' class="panel panel-default"> </div>
-
-    <button data-bind='click: addItem' class="btn btn-primary">
-        Add item
-    </button>
-
-    @*<button data-bind='click: sortByName' class="btn btn-primary">
-            Sort by name
-        </button>*@
-
-    <button data-bind='click: jumpToFirstPage, enable: gridViewModel.currentPageIndex' class="btn btn-primary">
-        Jump to first page
-    </button>
-
-
-    <div id="modalContainer">
-        @*@Html.Partial("_StudentFormPartial", studentVM)*@
-    </div>
-
-
-
-    @*<table>
-            <tbody data-bind="foreach: Students">
-                <tr style="border-bottom: 1px solid #000000;">
-                    <td>
-                        <span data-bind="text: Number"></span>
-                    </td>
-                    <td>
-                        <span data-bind="text: Name"></span>
-                    </td>
-                    <td>
-                        <span data-bind="text: Surname"></span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>*@
-
-
     @section scripts {
         <script>
-        //$("#modalContainer").change(
-        //    function () {
-        //        $.validator.unobtrusive.parse("#studentForm");
-        //    });
 
-        var PagedGridModel = function () {
-            var self = this;
-            self.Students = ko.observableArray(@Html.Raw(JsonConvert.SerializeObject(this.Model)));
-
-            @*self.Students = ko.mapping.fromJS([]);
-            $.getJSON(@Url.Action("GetStudents", "Admin"), function (data) {
-                ko.mapping.fromJS(data, {}, self.Students);
-            });*@
-
-            self.addItem = function () {
-                //self.Students.unshift({ Name: "Petya", Surname: "Ivanov", Number: 100 });
-                $.ajax({
-                    url: '@Url.Action("AddStudent", "Admin")',
-                    type: "GET"
-                })
-                    .done(function (partialViewResult) {
-                        $("#modalContainer").html(partialViewResult);
-                        $('#myModal').modal('show');
-                    });
-
-            };
-
-            self.removeItem = function (item) {
-                self.Students.remove(item);
-            };
-
-            self.editItem = function (item) {
-
-                $.ajax({
-                    url: '@Url.Action("EditStudent", "Admin")',
-                    type: "GET",
-                    data: "id=" + item.Id
-                })
-                    .done(function (partialViewResult) {
-                        $("#modalContainer").html(partialViewResult);
-                        $('#myModal').modal('show');
-                    });
-
-            };
-
-            //this.sortByName = function () {
-            //    self.Students.sort(function (a, b) {
-            //        return a.Surname < b.Surname ? -1 : 1;
-            //    });
-            //};
-
-            self.jumpToFirstPage = function () {
-                self.gridViewModel.currentPageIndex(0);
-            };
-
-
-            self.gridViewModel = new ko.simpleGrid.viewModel({
-                data: self.Students,
-                columns: [
-                    { headerText: "Name", rowText: "Name" },
-                    //{ headerText: "Surname", rowText: "Surname" },
-                    { headerText: "Number", rowText: "Number" },
-                    {
-                        headerText: "", rowText: {
-                            edit: function (item) {
-                                return function () {
-                                    self.editItem(item);
-                                    //console.log(item)
-                                }
-                            }
-                        }
-                    },
-                    {
-                        headerText: "", rowText: {
-                            delete: function (item) {
-                                return function () {
-                                    self.removeItem(item);
-                                    //console.log(item)
-                                }
-                            }
-                        }
-                    }
-                ],
-                pageSize: 6
-            });
-        }
-        $(document).ready(function () {
-
-
-            var viewModel = new PagedGridModel();
-            ko.applyBindings(viewModel);
-        });
-
-        //var initialData = [
-        //    { name: "Well-Travelled Kitten", sales: 352, price: 75.95 },
-        //    { name: "Speedy Coyote", sales: 89, price: 190.00 },
-        //    { name: "Furious Lizard", sales: 152, price: 25.00 },
-        //    { name: "Indifferent Monkey", sales: 1, price: 99.95 },
-        //    { name: "Brooding Dragon", sales: 0, price: 6350 },
-        //    { name: "Ingenious Tadpole", sales: 39450, price: 0.35 },
-        //    { name: "Optimistic Snail", sales: 420, price: 1.50 }
-        //];
-
-        //var PagedGridModel = function (items) {
-        //    this.items = ko.observableArray(items);
-
-        //    this.addItem = function () {
-        //        this.items.unshift({ name: "New item", sales: 0, price: 100 });
-        //    };
-
-        //    this.sortByName = function () {
-        //        this.items.sort(function (a, b) {
-        //            return a.name < b.name ? -1 : 1;
-        //        });
-        //    };
-
-        //    this.jumpToFirstPage = function () {
-        //        this.gridViewModel.currentPageIndex(0);
-        //    };
-
-        //    this.gridViewModel = new ko.simpleGrid.viewModel({
-        //        data: this.items,
-        //        columns: [
-        //            { headerText: "Name", rowText: "name" },
-        //            { headerText: "Surname", rowText: "surname" },
-        //            { headerText: "Number", rowText: "number" }
-        //        ],
-        //        pageSize: 6
-        //    });
-        //};
-
-        //ko.applyBindings(new PagedGridModel(initialData));
         </script>
 
     }

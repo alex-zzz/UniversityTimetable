@@ -158,46 +158,17 @@ namespace UniversityTimetable.Controllers
         [Authorize(Roles = "admin, manager")]
         public ActionResult Students()
         {
-            return View(sl);
+            IEnumerable<StudentDTO> studentDtos = _timeTableService.GetStudents();
+            var studentViewModels = _mapper.Map<IEnumerable<StudentDTO>, List<StudentViewModel>>(studentDtos);
+            return View(studentViewModels);
         }
 
-        [Authorize(Roles = "admin")]
-        public ActionResult GetGroups()
-        {
-            IEnumerable<GroupDTO> groupDtos = _timeTableService.GetGroups();
-            var groupViewModels = _mapper.Map<IEnumerable<GroupDTO>, List<GroupViewModel>>(groupDtos);
-            return Json(groupViewModels, JsonRequestBehavior.AllowGet);
-        }
-
-        //[Authorize(Roles = "admin, manager")]
-        //public ActionResult AddStudent()
+        //[Authorize(Roles = "admin")]
+        //public ActionResult GetGroups()
         //{
-        //    return PartialView("_AddStudentFormPartial", new StudentViewModel());
-        //}
-
-        //[HttpPost]
-        //[Authorize(Roles = "admin, manager")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult AddStudent(StudentViewModel studentViewModel)
-        //{
-
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            //StudentDTO studentDto = _mapper.Map<StudentViewModel, StudentDTO>(studentViewModel);
-        //            //_timeTableService.AddStudent(studentDto);
-        //            sl.Add(studentViewModel);
-        //            return Json(new { success = true });
-        //        }
-        //    }
-        //    catch (ValidationException ex)
-        //    {
-        //        ViewBag.Error = ex.Message;
-        //        return Json(new { success = false, errorMessage = ex.Message });
-        //    }
-
-        //    return PartialView("_AddStudentFormPartial", studentViewModel);
+        //    IEnumerable<GroupDTO> groupDtos = _timeTableService.GetGroups();
+        //    var groupViewModels = _mapper.Map<IEnumerable<GroupDTO>, List<GroupViewModel>>(groupDtos);
+        //    return Json(groupViewModels, JsonRequestBehavior.AllowGet);
         //}
 
         [Authorize(Roles = "admin, manager")]
@@ -207,8 +178,11 @@ namespace UniversityTimetable.Controllers
             var groupViewModels = _mapper.Map<IEnumerable<GroupDTO>, List<GroupViewModel>>(groupDtos);
             ViewBag.GroupList = new SelectList(groupViewModels, "Id", "Name");
 
-            var student = sl.FirstOrDefault(s => s.Id == id);
-            return PartialView("_EditStudentFormPartial", student);
+            IEnumerable<StudentDTO> studentDtos = _timeTableService.GetStudents();
+            var studentViewModels = _mapper.Map<IEnumerable<StudentDTO>, List<StudentViewModel>>(studentDtos);
+
+            //var student = sl.FirstOrDefault(s => s.Id == id);
+            return PartialView("_EditStudentFormPartial", studentViewModels.FirstOrDefault(s => s.Id == id));
         }
 
         [HttpPost]
@@ -216,25 +190,39 @@ namespace UniversityTimetable.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditStudent(StudentViewModel studentViewModel)
         {
-            var student = sl.FirstOrDefault(s => s.Id == studentViewModel.Id);
+            StudentDTO studentDto = _timeTableService.GetStudentDTOById(studentViewModel.Id);
 
-            if (studentViewModel != null && studentViewModel.GroupId != null)
+            if (studentViewModel.GroupId != null)
             {
                 GroupDTO groupDto = _timeTableService.GetGroupDTOById(new Guid(studentViewModel.GroupId));
-                var groupViewModel = _mapper.Map<GroupDTO, GroupViewModel>(groupDto);
-                studentViewModel.GroupName = groupViewModel.Name;
-
-                if (student != null)
-                {
-                    student.GroupName = studentViewModel.GroupName;
-                    student.GroupId = studentViewModel.GroupId;
-                }
-
+                studentDto.Group = groupDto;
+                studentDto.GroupId = new Guid(studentViewModel.GroupId);
             }
             else
             {
-                if (student != null) student.GroupName = "";
+                studentDto.Group = null;
+                studentDto.GroupId = Guid.Empty;
             }
+
+            //var student = sl.FirstOrDefault(s => s.Id == studentViewModel.Id);
+
+            //if (studentViewModel != null && studentViewModel.GroupId != null)
+            //{
+            //    GroupDTO groupDto = _timeTableService.GetGroupDTOById(new Guid(studentViewModel.GroupId));
+            //    var groupViewModel = _mapper.Map<GroupDTO, GroupViewModel>(groupDto);
+            //    studentViewModel.GroupName = groupViewModel.Name;
+
+            //    if (student != null)
+            //    {
+            //        student.GroupName = studentViewModel.GroupName;
+            //        student.GroupId = studentViewModel.GroupId;
+            //    }
+
+            //}
+            //else
+            //{
+            //    if (student != null) student.GroupName = "";
+            //}
 
             //sl.Add(student);
             return RedirectToAction("Students", "Admin");
