@@ -59,10 +59,12 @@
     <Compile Include="Common\DbInitializer.cs" />
     <Compile Include="EF\ApplicationDbContext.cs" />
     <Compile Include="EF\UniversityTimetableContext.cs" />
+    <Compile Include="Entities\Event.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Group.cs" />
     <Compile Include="Entities\News.cs" />
     <Compile Include="Entities\Student.cs" />
+    <Compile Include="Entities\TimeTable.cs" />
     <Compile Include="Identity\ApplicationRoleManager.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />
     <Compile Include="Identity\IdentityModels.cs" />
@@ -73,6 +75,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClientManager.cs" />
     <Compile Include="Repositories\EFUnitOfWork.cs" />
+    <Compile Include="Repositories\TimeTableRepository.cs" />
+    <Compile Include="Repositories\EventRepository.cs" />
     <Compile Include="Repositories\GroupRepository.cs" />
     <Compile Include="Repositories\NewsRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />

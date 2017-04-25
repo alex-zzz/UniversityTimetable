@@ -24,6 +24,9 @@ namespace UniversityTimetable.DAL.EF
         public DbSet<Student> Students { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<News> News { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<TimeTable> TimeTables { get; set; }
+
 
         //public static ApplicationDbContext Create()
         //{
