@@ -49,6 +49,11 @@ namespace UniversityTimetable.DAL.Repositories
             return db.Events.ToList();
         }
 
+        public Event GetByName(string name)
+        {
+            return null;
+        }
+
         public void Update(Event item)
         {
             db.Entry(item).State = EntityState.Modified;

@@ -59,9 +59,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\EventDTO.cs" />
     <Compile Include="DTO\GroupDTO.cs" />
     <Compile Include="DTO\NewsDTO.cs" />
     <Compile Include="DTO\StudentDTO.cs" />
+    <Compile Include="DTO\TimeTableDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Infrastructure\OperationDetails.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />
