@@ -1,5 +1,16 @@
 ﻿@model IEnumerable<UniversityTimetable.Models.NewsViewModel>
 
+<script>
+    function ellipsify(str) {
+        if (str.length > 500) {
+            return (str.substring(0, 500) + "...");
+        }
+        else {
+            return str;
+        }
+    }
+</script>
+
 <div id="news" class="container">
     @foreach (var item in Model)
     {
@@ -7,7 +18,7 @@
             <img src="@item.Img" alt="" style="width: 160px;" class="pull-left img-responsive" />
             <h2>@item.Title</h2>
 
-            <p>@item.Content</p>
+            <p><script>document.write(ellipsify(`@item.Content`))</script></p>
 
             @Html.ActionLink("More...", "GetDetailNews", "Home", new { id = item.Id }, null)
         </article>
