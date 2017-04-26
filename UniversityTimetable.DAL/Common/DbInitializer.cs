@@ -103,7 +103,7 @@ namespace UniversityTimetable.DAL.Common
             //news
             context.News.Add(new News
             {
-                Title = "Stanford undergrads win Lemelson-MIT Student Prize for work combating antibiotic resistance",
+                Title = "Stanford undergrads win Lemelson-MIT Student Prize for work",
                 ImagePath = "https://s3-us-west-1.amazonaws.com/stanford.ucomm.newsms.media/wp-content/uploads/2017/04/11161234/Lemelson-795x530.jpg",
                 Content = "A team of Stanford ChEM - H undergraduates has won the Lemelson - MIT Student Prize for their development of proteins that could combat multidrug - resistant bacteria, which the World Health Organization has described as one of the most serious public health threats the world faces today. " +
                 "Maria Filsinger Interrante, now a student in the School of Medicine’s Medical Scientist Training Program, and seniors Christian Choe and Zach Rosenthal will share a $10,000 award that comes with the prize, which is presented to promising young inventors around the country." +
