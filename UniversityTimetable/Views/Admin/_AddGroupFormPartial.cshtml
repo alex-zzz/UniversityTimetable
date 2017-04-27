@@ -40,10 +40,12 @@
                             url: this.action,
                             type: this.method,
                             data: $(this).serialize(),
-                            success: function(result) {
+                            success: function (result) {
                                 if (result.success) {
                                     $('#myModal').modal('hide');
-                                    self.insertItem(formData);
+                                    var deserializedFormData = JSON.parse('{"' + decodeURI(formData).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+                                    deserializedFormData.Id = result.id;
+                                    self.insertItem(deserializedFormData);
                                     //Refresh page
                                     //location.reload();
                                 } else {

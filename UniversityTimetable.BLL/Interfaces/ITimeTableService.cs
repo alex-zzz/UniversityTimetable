@@ -20,7 +20,7 @@ namespace UniversityTimetable.BLL.Interfaces
         IEnumerable<GroupDTO> GetGroups();
         GroupDTO GetGroupDTOById(Guid Id);
 
-        void AddGroup(GroupDTO groupDto);
+        Guid AddGroup(GroupDTO groupDto);
         void UpdateGroup(GroupDTO groupDto);
         void DeleteGroup(Guid Id);
 

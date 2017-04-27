@@ -95,8 +95,8 @@ namespace UniversityTimetable.Controllers
                 if (ModelState.IsValid)
                 {
                     GroupDTO groupDto = _mapper.Map<GroupViewModel, GroupDTO>(groupViewModel);
-                    _timeTableService.AddGroup(groupDto);
-                    return Json(new { success = true });
+                    var groupId = _timeTableService.AddGroup(groupDto);
+                    return Json(new { success = true, id = groupId });
                 }
             }
             catch (ValidationException ex)
@@ -143,8 +143,20 @@ namespace UniversityTimetable.Controllers
         [Authorize(Roles = "admin, manager")]
         public ActionResult DeleteGroup(Guid id)
         {
-            _timeTableService.DeleteGroup(id);
-            return RedirectToAction("Groups", "Admin");
+            try
+            {
+                _timeTableService.DeleteGroup(id);
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                //return RedirectToAction("Groups", "Admin");
+            }
+            catch (ValidationException ex)
+            {
+                ViewBag.Error = ex.Message;
+                return PartialView("_ErrorDeletePartial");
+
+                //return Json(new { success = false, errorMessage = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+
         }
 
         [Authorize(Roles = "admin, manager")]

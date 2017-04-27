@@ -23,7 +23,7 @@ namespace UniversityTimetable.BLL.Services
             Database = uow;
         }
 
-        public void AddGroup(GroupDTO groupDto)
+        public Guid AddGroup(GroupDTO groupDto)
         {
             //if (Database.Groups.GetAll().Where(a => a.Name == groupDto.Name).Count() > 0)
             if (Database.Groups.Find(g => g.Name == groupDto.Name).Any())
@@ -33,6 +33,8 @@ namespace UniversityTimetable.BLL.Services
 
             Database.Groups.Create(group);
             Database.Save();
+
+            return group.Id;
         }
 
         public void AddStudent(StudentDTO studentDto)
@@ -58,6 +60,9 @@ namespace UniversityTimetable.BLL.Services
 
         public void DeleteGroup(Guid id)
         {
+            if ((Database.Students.GetAll().Any(s => s.Group.Id == id)))
+                throw new ValidationException("Нельзя удалить группу в которой присутствуют студенты", "");
+
             Database.Groups.Delete(id);
             Database.Save();
         }

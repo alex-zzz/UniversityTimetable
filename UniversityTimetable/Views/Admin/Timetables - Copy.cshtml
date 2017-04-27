@@ -1,12 +1,12 @@
 ﻿@using Newtonsoft.Json
 
-@model IEnumerable<UniversityTimetable.Models.GroupViewModel>
+@model IEnumerable<UniversityTimetable.Models.TimeTableViewModel>
 @{
-    ViewBag.Title = "Groups";
+    ViewBag.Title = "TimeTables";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h3>Groups</h3>
+<h3>TimeTables</h3>
 
 <div data-bind="simpleGrid: gridViewModel" class="panel panel-default"> </div>
 
@@ -25,77 +25,64 @@
 
 @section scripts {
     <script>
-        var PagedGridModel = function() {
+        var PagedGridModel = function () {
             self = this;
             self.Groups = ko.observableArray(@Html.Raw(JsonConvert.SerializeObject(this.Model)));
 
-            self.addItem = function() {
+            self.addItem = function () {
                 $.ajax({
                         url: '@Url.Action("AddGroup", "Admin")',
                         type: "GET"
                     })
-                    .done(function(partialViewResult) {
+                    .done(function (partialViewResult) {
                         $("#modalContainer").html(partialViewResult);
                         $('#myModal').modal('show');
                     });
             };
 
-            self.insertItem = function(item) {
-                //var groupObj = JSON.parse('{"' + decodeURI(item).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
-                //self.Groups.unshift(groupObj);
-                self.Groups.unshift(item);
+            self.insertItem = function (item) {
+                var groupObj = JSON.parse('{"' + decodeURI(item).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+                self.Groups.unshift(groupObj);
             };
 
-            self.editItem = function(item) {
+            self.editItem = function (item) {
 
                 $.ajax({
                         url: '@Url.Action("EditGroup", "Admin")',
                         type: "GET",
                         data: "id=" + item.Id
                     })
-                    .done(function(partialViewResult) {
+                    .done(function (partialViewResult) {
                         $("#modalContainer").html(partialViewResult);
                         $('#myModal').modal('show');
                     });
 
             };
 
-            self.updateItem = function(item) {
-                var groupObj = JSON.parse('{"' +
-                    decodeURI(item).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') +
-                    '"}');
+            self.updateItem = function (item) {
+                var groupObj = JSON.parse('{"' + decodeURI(item).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
                 var groupId = groupObj.Id;
 
-                var group = ko.utils.arrayFirst(self.Groups(),
-                    function(group) {
-                        return group.Id === groupId;
-                    });
+                var group = ko.utils.arrayFirst(self.Groups(), function(group) {
+                    return group.Id === groupId;
+                });
 
-                self.Groups.replace(group,
-                    {
-                        Id: groupObj.Id,
-                        Name: groupObj.Name
-                    });
+                self.Groups.replace(group, {
+                    Id: groupObj.Id,
+                    Name: groupObj.Name
+                });
             };
 
-            self.removeItem = function(item) {
+            self.removeItem = function (item) {
                 $.ajax({
                     url: '@Url.Action("DeleteGroup", "Admin")',
                     type: "GET",
-                    data: "id=" + item.Id,
-                    success: function(result) {
-                        if (result.success) {
-                            self.Groups.remove(item);
-                        }
-                    }
-                }).done(function(partialViewResult) {
-                    $("#modalContainer").html(partialViewResult);
-                    $('#myModal').modal('show');
+                    data: "id=" + item.Id
                 });
-                //self.Groups.remove(item);
+                self.Groups.remove(item);
             };
 
-            self.jumpToFirstPage = function() {
+            self.jumpToFirstPage = function () {
                 self.gridViewModel.currentPageIndex(0);
             };
 
@@ -106,10 +93,9 @@
                     { headerText: "Name", rowText: "Name" },
                     { headerText: "Students", rowText: "StudentsList" },
                     {
-                        headerText: "",
-                        rowText: {
-                            edit: function(item) {
-                                return function() {
+                        headerText: "", rowText: {
+                            edit: function (item) {
+                                return function () {
                                     self.editItem(item);
                                     //console.log(item)
                                 }
@@ -117,10 +103,9 @@
                         }
                     },
                     {
-                        headerText: "",
-                        rowText: {
-                            delete: function(item) {
-                                return function() {
+                        headerText: "", rowText: {
+                            delete: function (item) {
+                                return function () {
                                     self.removeItem(item);
                                     //console.log(item)
                                 }
@@ -131,7 +116,7 @@
                 pageSize: 6
             });
         }
-        $(document).ready(function() {
+        $(document).ready(function () {
             //var viewModel = new PagedGridModel();
             ko.applyBindings(new PagedGridModel());
         });
