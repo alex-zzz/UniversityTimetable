@@ -1,102 +1,158 @@
-﻿@using DayPilot.Web.Mvc
-@using DayPilot.Web.Mvc.Events.Calendar
-@using DayPilot.Web.Mvc.Enums.Calendar
+﻿@using Newtonsoft.Json
 
+@model IEnumerable<UniversityTimetable.Models.TimeTableViewModel>
 @{
-    ViewBag.Title = "Timetables";
+    ViewBag.Title = "TimeTables";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-
 }
 
-<h3>Timetables</h3>
+<h3>TimeTables</h3>
 
-<div class="space">
-    Week:
-    <a href="javascript:dpc.commandCallBack('previous');">Previous</a>
-    |
-    <a href="javascript:dpc.commandCallBack('today');">Today</a>
-    |
-    <a href="javascript:dpc.commandCallBack('next');">Next</a>
+<div data-bind="simpleGrid: gridViewModel" class="panel panel-default"> </div>
+
+<button data-bind="click: addItem" class="btn btn-primary">
+    Add item
+</button>
+
+<button data-bind="click: jumpToFirstPage, enable: gridViewModel.currentPageIndex" class="btn btn-primary">
+    Jump to first page
+</button>
+
+
+<div id="modalContainer">
 </div>
-
-<script src="~/Scripts/daypilot-all.min.js"></script>
-
-<script type="text/javascript">
-
-	function createEvent(start, end, resource) {
-	    modal().showUrl("@Url.Content("~/CalendarDialog/New")?start=" + start.toStringSortable() + "&end=" + end.toStringSortable());
-	}
-
-	function editEvent(id) {
-	    modal().showUrl("@Url.Content("~/CalendarDialog/Edit/")" + id);
-	}
-
-	function modal() {
-        var modal = new DayPilot.Modal();
-        modal.top = "70";
-        modal.autoStretch = true;
-        modal.height = 515;
-	    modal.onClosed = function (args) {
-	        if (args.result == "OK") {
-	            dpc.commandCallBack('refresh');
-	        }
-	        dpc.clearSelection();
-	    };
-	    return modal;
-	}
-
-</script>
-
-<div>
-
-    @(Html.DayPilotCalendar("dpc", new DayPilotCalendarConfig
-{
-    BackendUrl = Url.Content("~/Calendar/Backend"),
-    ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Week,
-    TimeFormat = DayPilot.Web.Mvc.Enums.TimeFormat.Clock24Hours,
-    TimeRangeSelectedHandling = TimeRangeSelectedHandlingType.JavaScript,
-    TimeRangeSelectedJavaScript = "createEvent(start, end)",
-    EventMoveHandling = EventMoveHandlingType.CallBack,
-    EventResizeHandling = EventResizeHandlingType.CallBack,
-    EventClickHandling = EventClickHandlingType.JavaScript,
-    EventClickJavaScript = "editEvent(e.value());",
-
-    LoadingLabelText = "<img src='" + Url.Content("~/Content/img/ajax-loader-round.gif") + "' />",
-    LoadingLabelBackColor = "",
-}))
-</div>
-
-
-
-
-@*<div id="dpc"></div>*@
 
 
 @section scripts {
     <script>
-    @*var dp = new DayPilot.Calendar("dpc");
-    dp.backendUrl = "/Calendar/Backend";
-    dp.viewType = "Week";
-    dp.timeFormat = "Clock24Hours";
-    dp.businessBeginsHour = 9;
-    dp.businessEndsHour = 18;
-    dp.timeRangeSelectedHandling = "JavaScript";
-    dp.EventClickHandling = "JavaScript";
-    dp.onTimeRangeSelected = function (start, end) { create(start, end); };
-    dp.eventMoveHandling = "CallBack";
-    dp.eventResizeHandling = "CallBack";
-    dp.init();
+        var PagedGridModel = function () {
+            self = this;
+            self.TimeTables = ko.observableArray(@Html.Raw(JsonConvert.SerializeObject(this.Model)));
 
-    function create(start, end) {
-        var m = new DayPilot.Modal();
-        m.closed = function () {
-            if (this.result == "OK") {
-                dp.commandCallBack('refresh');
-            }
-            dp.clearSelection();
-        };
-        m.showUrl('@Url.Action("Create", "Event")?start=' + start + '&end=' + end);
-    }*@
+            @*self.addItem = function () {
+                $.ajax({
+                        url: '@Url.Action("AddTimeTable", "Admin")',
+                        type: "GET"
+                    })
+                    .done(function (partialViewResult) {
+                        $("#modalContainer").html(partialViewResult);
+                        $('#myModal').modal('show');
+                    });
+            };
+
+            self.insertItem = function (item) {
+                var groupObj = JSON.parse('{"' + decodeURI(item).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+                self.Groups.unshift(groupObj);
+            };*@
+
+            self.addItem = function() {
+                $.ajax({
+                        url: '@Url.Action("AddTimeTable", "Admin")',
+                        type: "GET"
+                    })
+                    .done(function(partialViewResult) {
+                        $("#modalContainer").html(partialViewResult);
+                        $('#myModal').modal('show');
+                    });
+            };
+
+            self.insertItem = function(item) {
+                self.TimeTables.unshift(item);
+            };
+
+            self.editItem = function (item) {
+
+                $.ajax({
+                        url: '@Url.Action("EditGroup", "Admin")',
+                        type: "GET",
+                        data: "id=" + item.Id
+                    })
+                    .done(function (partialViewResult) {
+                        $("#modalContainer").html(partialViewResult);
+                        $('#myModal').modal('show');
+                    });
+
+            };
+
+            self.updateItem = function (item) {
+                var groupObj = JSON.parse('{"' + decodeURI(item).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+                var groupId = groupObj.Id;
+
+                var group = ko.utils.arrayFirst(self.Groups(), function(group) {
+                    return group.Id === groupId;
+                });
+
+                self.Groups.replace(group, {
+                    Id: groupObj.Id,
+                    Name: groupObj.Name
+                });
+            };
+
+            self.removeItem = function(item) {
+                $.ajax({
+                    url: '@Url.Action("DeleteTimeTable", "Admin")',
+                    type: "GET",
+                    data: "id=" + item.Id,
+                    success: function(result) {
+                        if (result.success) {
+                            self.TimeTables.remove(item);
+                        } else {
+                            $("#modalContainer").html(result);
+                            $('#myModal').modal('show');
+                        }
+
+                    }
+                });
+
+            };
+
+            self.jumpToFirstPage = function () {
+                self.gridViewModel.currentPageIndex(0);
+            };
+
+
+            self.gridViewModel = new ko.simpleGrid.viewModel({
+                data: self.TimeTables,
+                columns: [
+                    { headerText: "Group", rowText: "GroupName" },
+                    { headerText: "Start", rowText: "Start" },
+                    { headerText: "Finish", rowText: "End" },
+                    {
+                        headerText: "", rowText: {
+                            edit: function (item) {
+                                return function () {
+                                    self.editItem(item);
+                                }
+                            }
+                        }
+                    },
+                    {
+                        headerText: "", rowText: {
+                            edit: function (item) {
+                                return function () {
+                                    self.editItem(item);
+                                }
+                            }
+                        }
+                    },
+                    {
+                        headerText: "", rowText: {
+                            delete: function (item) {
+                                return function () {
+                                    self.removeItem(item);
+                                }
+                            }
+                        }
+                    }
+                ],
+                pageSize: 6
+            });
+        }
+        $(document).ready(function () {
+            ko.applyBindings(new PagedGridModel());
+        });
+
 
     </script>
+
 }

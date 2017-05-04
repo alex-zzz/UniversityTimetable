@@ -17,6 +17,8 @@ namespace UniversityTimetable.DAL.Entities
 
         public string Name { get; set; }
 
-        public virtual List<Student> Students { get; set; }
+        public virtual ICollection<Student> Students { get; set; }
+
+        public virtual TimeTable TimeTable { get; set; }
     }
 }

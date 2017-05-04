@@ -13,5 +13,6 @@ namespace UniversityTimetable.BLL.DTO
 
         public virtual List<StudentDTO> Students { get; set; }
 
+        public virtual TimeTableDTO TimeTable { get; set; }
     }
 }

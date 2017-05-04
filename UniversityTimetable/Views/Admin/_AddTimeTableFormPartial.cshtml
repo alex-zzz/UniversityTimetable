@@ -1,0 +1,88 @@
+﻿@model UniversityTimetable.Models.TimeTableViewModel
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <script type="text/javascript">
+                $('form#addTimeTableForm').removeData("validator");
+                $('form#addTimeTableForm').removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse($('form#addTimeTableForm'));
+
+                //$("#h_reg_date").datepicker();
+                //$("#h_reg_date").datepicker("option", "dateFormat", "yy-M-dd");
+
+                //$("#save_data").on("click", function () {
+                //    var reg_date = $("#h_reg_date").val();
+                //    console.log(reg_date);
+                //    reg_date = moment(reg_date).format("YYYY/MM/DD");
+                //    console.log(reg_date);
+                //    return;
+                //});
+
+
+            </script>
+
+            @using (Html.BeginForm("AddTimeTable", "Admin", FormMethod.Post, new { id = "addTimeTableForm" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add timetable for group</h4>
+                </div>
+                <div class="modal-body">
+
+                    @Html.ValidationSummary()
+
+                    @Html.HiddenFor(m => m.Id, new { @value = Guid.NewGuid() })
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.GroupId)
+                        @Html.DropDownListFor(m => m.GroupId, (SelectList)ViewBag.GroupList, "  -----No group selected-----  ", new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Start, new { })
+                        @Html.TextBoxFor(m => m.Start, new { @class = "form-control", @id = "h_reg_date" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.End, new { })
+                        @Html.TextBoxFor(m => m.End, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            }
+
+            <script>
+                $('#addTimeTableForm').submit(function () {
+                    var formData = $(this).serialize();
+                    $.ajax({
+                        url: this.action,
+                        type: this.method,
+                        data: $(this).serialize(),
+                        success: function (result) {
+                            if (result.success) {
+                                $('#myModal').modal('hide');
+                                var deserializedFormData = JSON.parse('{"' + decodeURIComponent(formData).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+                                deserializedFormData.Id = result.id;
+                                deserializedFormData.GroupName = result.GroupName;
+                                self.insertItem(deserializedFormData);
+                                //Refresh page
+                                //location.reload();
+                            } else {
+                                if (!$("#dbError").length) {
+                                    $(".modal-body")
+                                        .prepend('<div class="validation-summary-errors" id="dbError"><ul><li>' +
+                                        result.errorMessage +
+                                        '</li></ul></div>');
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                });
+            </script>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Data.Entity;
+using System.Linq;
 using UniversityTimetable.DAL.EF;
 using UniversityTimetable.DAL.Entities;
 using UniversityTimetable.DAL.Identity;
@@ -16,9 +17,9 @@ namespace UniversityTimetable.DAL.Common
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
 
             // создаем роли
-            var role1 = new IdentityRole { Id = "admin",    Name = "admin" };
-            var role2 = new IdentityRole { Id = "manager",  Name = "manager" };
-            var role3 = new IdentityRole { Id = "student",  Name = "student" };
+            var role1 = new IdentityRole { Id = "admin", Name = "admin" };
+            var role2 = new IdentityRole { Id = "manager", Name = "manager" };
+            var role3 = new IdentityRole { Id = "student", Name = "student" };
 
             // добавляем роли в бд
             roleManager.Create(role1);
@@ -94,8 +95,88 @@ namespace UniversityTimetable.DAL.Common
 
             //Default Group
             context.Groups.Add(new Group { Id = new Guid("c47b2d19-bd53-41b8-98fb-fa8b0578b8ce"), Name = "Default" });
-            context.Groups.Add(new Group { Id = new Guid("44c93470-f488-4433-865c-2c707bfc9661"), Name = "C# Prof (04.05.2017 - 20.06.2017)" });
-            context.Groups.Add(new Group { Id = new Guid("7771485d-1156-4657-a085-f8f33504603f"), Name = "Java Script Advanced (18.05.2017 - 04.07.2017)" });
+
+            var group1 = new Group
+            {
+                Id = new Guid("44c93470-f488-4433-865c-2c707bfc9661"),
+                Name = "C# Prof (cs001)"
+            };
+
+            context.Groups.Add(group1);
+
+            var group2 = new Group
+            {
+                Id = new Guid("7771485d-1156-4657-a085-f8f33504603f"),
+                Name = "Java Script Advanced (js001)"
+            };
+
+            context.Groups.Add(group2);
+
+            var group3 = new Group
+            {
+                Id = new Guid(),
+                Name = "HTML5 Advanced (htm001)"
+            };
+
+            context.Groups.Add(group3);
+
+            var timeTable1 = new TimeTable
+            {
+                Group = group1,
+                Start = new DateTime(2017, 5, 5),
+                End = new DateTime(2017, 6, 5)
+            };
+
+            context.TimeTables.Add(timeTable1);
+
+            var timeTable2 = new TimeTable
+            {
+                Group = group2,
+                Start = new DateTime(2017, 5, 12),
+                End = new DateTime(2017, 6, 12)
+            };
+
+            context.TimeTables.Add(timeTable2);
+
+            context.Events.Add(new Event
+            {
+                Start = new DateTime(2017, 5, 5, 9, 0, 0),
+                End = new DateTime(2017, 5, 5, 10, 30, 0),
+                RoomNumber = 18,
+                TeacherName = "Anders Hejlsberg",
+                TimeTableId = timeTable1.Id,
+                Text = "Intro C#"
+            });
+
+            context.Events.Add(new Event
+            {
+                Start = new DateTime(2017, 5, 6, 9, 0, 0),
+                End = new DateTime(2017, 5, 6, 10, 30, 0),
+                RoomNumber = 18,
+                TeacherName = "Anders Hejlsberg",
+                TimeTableId = timeTable1.Id,
+                Text = "Lesson 1 C#"
+            });
+
+            context.Events.Add(new Event
+            {
+                Start = new DateTime(2017, 5, 12, 9, 0, 0),
+                End = new DateTime(2017, 5, 12, 10, 30, 0),
+                RoomNumber = 12,
+                TeacherName = "Brendan Eich",
+                TimeTableId = timeTable2.Id,
+                Text = "Intro JS"
+            });
+
+            context.Events.Add(new Event
+            {
+                Start = new DateTime(2017, 5, 13, 9, 0, 0),
+                End = new DateTime(2017, 5, 13, 10, 30, 0),
+                RoomNumber = 12,
+                TeacherName = "Brendan Eich",
+                TimeTableId = timeTable2.Id,
+                Text = "Lesson 1 JS"
+            });
 
             context.Students.Add(new Student { UserId = user1.Id, GroupId = new Guid("44c93470-f488-4433-865c-2c707bfc9661") });
             context.Students.Add(new Student { UserId = user2.Id, GroupId = new Guid("44c93470-f488-4433-865c-2c707bfc9661") });

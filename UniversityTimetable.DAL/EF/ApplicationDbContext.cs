@@ -65,12 +65,16 @@ namespace UniversityTimetable.DAL.EF
             });
             modelBuilder.Entity<Event>().Map(m => {
                 m.MapInheritedProperties();
-                m.ToTable("Event");
+                m.ToTable("Events");
             });
             modelBuilder.Entity<TimeTable>().Map(m => {
                 m.MapInheritedProperties();
-                m.ToTable("TimeTable");
+                m.ToTable("TimeTables");
             });
+
+            modelBuilder.Entity<TimeTable>()
+                .HasRequired(t => t.Group)
+                .WithOptional(g => g.TimeTable);
         }
 
         public override int SaveChanges()

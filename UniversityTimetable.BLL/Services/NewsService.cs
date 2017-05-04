@@ -39,6 +39,15 @@ namespace UniversityTimetable.BLL.Services
 
         public IEnumerable<NewsDTO> GetNews()
         {
+            //var test = _mapper.Map<IEnumerable<TimeTable>, List<TimeTableDTO>>(Database.TimeTables.GetAll());
+
+            //var test2 = _mapper.Map<IEnumerable<Group>, List<GroupDTO>>(Database.Groups.GetAll());
+
+
+            ////var ev = test[0].Events;
+
+            //int t = 1;
+
             return _mapper.Map<IEnumerable<News>, List<NewsDTO>>(Database.News.GetAll());
         }
 

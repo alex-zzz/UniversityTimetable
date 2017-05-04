@@ -46,7 +46,7 @@ namespace UniversityTimetable.DAL.Repositories
 
         public IEnumerable<TimeTable> GetAll()
         {
-            return db.TimeTables.ToList();
+            return db.TimeTables.OrderByDescending(t=>t.CreatedDate).ToList();
         }
 
         public TimeTable GetByName(string name)

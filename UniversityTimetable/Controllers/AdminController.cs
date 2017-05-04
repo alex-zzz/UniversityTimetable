@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -35,6 +33,8 @@ namespace UniversityTimetable.Controllers
         {
             return RedirectToAction("Students", "Admin");
         }
+
+        //Managers
 
         [Authorize(Roles = "admin, manager")]
         public ActionResult Managers()
@@ -70,6 +70,8 @@ namespace UniversityTimetable.Controllers
 
             return RedirectToAction("Managers", "Admin");
         }
+
+        //Groups
 
         [Authorize(Roles = "admin, manager")]
         public ActionResult Groups()
@@ -159,17 +161,118 @@ namespace UniversityTimetable.Controllers
 
         }
 
+        //Reports
+
         [Authorize(Roles = "admin, manager")]
         public ActionResult Reports()
         {
             return View();
         }
 
+        //TimeTables
+
         [Authorize(Roles = "admin, manager")]
         public ActionResult Timetables()
         {
+            IEnumerable<TimeTableDTO> timeTablesDtos = _timeTableService.GetTimeTables();
+            var timeTableViewModels = _mapper.Map<IEnumerable<TimeTableDTO>, List<TimeTableViewModel>>(timeTablesDtos);
+            return View(timeTableViewModels);
+        }
+
+        [Authorize(Roles = "admin, manager")]
+        public ActionResult AddTimeTable()
+        {
+            IEnumerable<GroupDTO> groupDtos = _timeTableService.GetGroups();
+            var groupViewModels = _mapper.Map<IEnumerable<GroupDTO>, List<GroupViewModel>>(groupDtos).Where(g=>g.TimeTable == null);
+            ViewBag.GroupList = new SelectList(groupViewModels, "Id", "Name");
+
+            var newTimeTable = new TimeTableViewModel
+            {
+                Start = DateTime.Now,
+                End = DateTime.Now.AddMonths(1)
+            };
+
+            return PartialView("_AddTimeTableFormPartial", newTimeTable);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, manager")]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddTimeTable(TimeTableViewModel timeTableViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    GroupDTO groupDto = _timeTableService.GetGroupDTOById(new Guid(timeTableViewModel.GroupId));
+                    TimeTableDTO timeTableDto = _mapper.Map<TimeTableViewModel, TimeTableDTO>(timeTableViewModel);
+                    var timeTableId = _timeTableService.AddTimeTable(timeTableDto);
+                    return Json(new { success = true, id = timeTableId, GroupName = groupDto.Name });
+                }
+            }
+            catch (ValidationException ex)
+            {
+                ViewBag.Error = ex.Message;
+                return Json(new { success = false, errorMessage = ex.Message });
+            }
+
+            return PartialView("_AddTimeTableFormPartial", timeTableViewModel);
+        }
+
+        [Authorize(Roles = "admin, manager")]
+        public ActionResult EditTimeTable(Guid id)
+        {
+            TimeTableDTO timeTableDto = _timeTableService.GetTimeTableDTOById(id);
+            var timeTableViewModel = _mapper.Map<TimeTableDTO, TimeTableViewModel>(timeTableDto);
+            return PartialView("_EditTimeTableFormPartial", timeTableViewModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, manager")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditTimeTable(TimeTableViewModel timeTableViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    TimeTableDTO timeTableDto = _mapper.Map<TimeTableViewModel, TimeTableDTO>(timeTableViewModel);
+
+                    _timeTableService.UpdateTimeTable(timeTableDto);
+                    return Json(new { success = true });
+                }
+            }
+            catch (ValidationException ex)
+            {
+                ViewBag.Error = ex.Message;
+                return Json(new { success = false, errorMessage = ex.Message });
+            }
+
+            return PartialView("_EditTimeTableFormPartial", timeTableViewModel);
+        }
+
+        [Authorize(Roles = "admin, manager")]
+        public ActionResult DeleteTimeTable(Guid id)
+        {
+            try
+            {
+                _timeTableService.DeleteTimeTable(id);
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (ValidationException ex)
+            {
+                ViewBag.Error = ex.Message;
+                return PartialView("_ErrorDeletePartial");
+            }
+        }
+
+        [Authorize(Roles = "admin, manager")]
+        public ActionResult Timetables2()
+        {
             return View();
         }
+
+        //Students
 
         [Authorize(Roles = "admin, manager")]
         public ActionResult Students()
@@ -178,14 +281,6 @@ namespace UniversityTimetable.Controllers
             var studentViewModels = _mapper.Map<IEnumerable<StudentDTO>, List<StudentViewModel>>(studentDtos);
             return View(studentViewModels);
         }
-
-        //[Authorize(Roles = "admin")]
-        //public ActionResult GetGroups()
-        //{
-        //    IEnumerable<GroupDTO> groupDtos = _timeTableService.GetGroups();
-        //    var groupViewModels = _mapper.Map<IEnumerable<GroupDTO>, List<GroupViewModel>>(groupDtos);
-        //    return Json(groupViewModels, JsonRequestBehavior.AllowGet);
-        //}
 
         [Authorize(Roles = "admin, manager")]
         public ActionResult EditStudent(Guid id)
@@ -225,6 +320,8 @@ namespace UniversityTimetable.Controllers
             return RedirectToAction("Students", "Admin");
         }
 
+        //News
+       
         [Authorize(Roles = "admin, manager")]
         public ActionResult News()
         {

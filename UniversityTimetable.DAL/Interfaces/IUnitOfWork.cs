@@ -13,6 +13,9 @@ namespace UniversityTimetable.DAL.Interfaces
         IRepository<Student> Students { get; }
         IRepository<Group> Groups { get; }
         IRepository<News> News { get; }
+        IRepository<TimeTable> TimeTables { get; }
+        IRepository<Event> Events { get; }
+
         void Save();
 
         ApplicationUserManager UserManager { get; }

@@ -24,6 +24,11 @@ namespace UniversityTimetable.BLL.Interfaces
         void UpdateGroup(GroupDTO groupDto);
         void DeleteGroup(Guid Id);
 
-        //void Dispose();
+        IEnumerable<TimeTableDTO> GetTimeTables();
+        TimeTableDTO GetTimeTableDTOById(Guid Id);
+
+        Guid AddTimeTable(TimeTableDTO timeTableDto);
+        void UpdateTimeTable(TimeTableDTO timeTableDto);
+        void DeleteTimeTable(Guid Id);
     }
 }

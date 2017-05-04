@@ -37,6 +37,17 @@ namespace UniversityTimetable.BLL.Services
             return group.Id;
         }
 
+        public Guid AddTimeTable(TimeTableDTO timeTableDTO)
+        {
+            TimeTable timeTable = _mapper.Map<TimeTableDTO, TimeTable>(timeTableDTO);
+            timeTable.Group = Database.Groups.Get(timeTableDTO.GroupId);
+
+            Database.TimeTables.Create(timeTable);
+            Database.Save();
+
+            return timeTable.Id;
+        }
+
         public void AddStudent(StudentDTO studentDto)
         {
             if (studentDto != null && studentDto.Group != null)
@@ -60,10 +71,20 @@ namespace UniversityTimetable.BLL.Services
 
         public void DeleteGroup(Guid id)
         {
-            if ((Database.Students.GetAll().Any(s => s.Group.Id == id)))
+            //if ((Database.Students.GetAll().Any(s => s.Group.Id == id)))
+            if (Database.Groups.Get(id).Students.Any())
                 throw new ValidationException("Нельзя удалить группу в которой присутствуют студенты", "");
 
             Database.Groups.Delete(id);
+            Database.Save();
+        }
+
+        public void DeleteTimeTable(Guid id)
+        {
+            if (Database.TimeTables.Get(id).Events.Any())
+                throw new ValidationException("Нельзя удалить расписание в котором определены события", "");
+
+            Database.TimeTables.Delete(id);
             Database.Save();
         }
 
@@ -94,6 +115,12 @@ namespace UniversityTimetable.BLL.Services
             return _mapper.Map<Group, GroupDTO>(group);
         }
 
+        public TimeTableDTO GetTimeTableDTOById(Guid id)
+        {
+            TimeTable timeTable = Database.TimeTables.Get(id);
+            return _mapper.Map<TimeTable, TimeTableDTO>(timeTable);
+        }
+
         public IEnumerable<StudentDTO> GetStudents()
         {
             return _mapper.Map<IEnumerable<Student>, List<StudentDTO>>(Database.Students.GetAll());
@@ -102,6 +129,11 @@ namespace UniversityTimetable.BLL.Services
         public IEnumerable<GroupDTO> GetGroups()
         {
             return _mapper.Map<IEnumerable<Group>, List<GroupDTO>>(Database.Groups.GetAll());
+        }
+
+        public IEnumerable<TimeTableDTO> GetTimeTables()
+        {
+            return _mapper.Map<IEnumerable<TimeTable>, List<TimeTableDTO>>(Database.TimeTables.GetAll());
         }
 
         public void UpdateStudent(StudentDTO studentDto)
@@ -128,6 +160,14 @@ namespace UniversityTimetable.BLL.Services
             Group group = _mapper.Map<GroupDTO, Group>(groupDto);
 
             Database.Groups.Update(group);
+            Database.Save();
+        }
+
+        public void UpdateTimeTable(TimeTableDTO timeTableDTO)
+        {
+            TimeTable timeTable = _mapper.Map<TimeTableDTO, TimeTable>(timeTableDTO);
+
+            Database.TimeTables.Update(timeTable);
             Database.Save();
         }
 

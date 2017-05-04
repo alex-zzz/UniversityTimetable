@@ -57,7 +57,10 @@
                                 <!--ko if: rowText == 'Img'-->\
                                 <td><img class=\"\" data-bind=\"attr:{src: typeof rowText == 'function' ? rowText($parent) : $parent[rowText]}\" /></td>\
                                 <!-- /ko -->\
-                                <!--ko ifnot: (typeof rowText == 'object' || rowText == 'Img') -->\
+                                <!--ko if: rowText == 'Start' || rowText == 'End' -->\
+                                <td data-bind=\"text: moment(typeof rowText == 'function' ? rowText($parent) : $parent[rowText]).format('L') \" ></td>\
+                                <!-- /ko -->\
+                                <!--ko ifnot: (typeof rowText == 'object' || rowText == 'Img' || rowText == 'Start' || rowText == 'End') -->\
                                 <td data-bind=\"text: typeof rowText == 'function' ? rowText($parent) : $parent[rowText] \" ></td>\
                                 <!--/ko-->\
                             </tr>\

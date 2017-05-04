@@ -11,6 +11,10 @@ namespace UniversityTimetable.BLL.Mappings
         {
             CreateMap<StudentDTO, Student>().PreserveReferences();
             CreateMap<GroupDTO, Group>().PreserveReferences();
+
+            CreateMap<TimeTableDTO, TimeTable>().PreserveReferences();
+            CreateMap<EventDTO, Event>().PreserveReferences();
+
             CreateMap<NewsDTO, News>();
             CreateMap<UserDTO, ApplicationUser>();
         }

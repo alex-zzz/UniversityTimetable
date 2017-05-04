@@ -8,27 +8,19 @@ namespace UniversityTimetable.Models
 {
     public class TimeTableViewModel
     {
-        public Guid _id;
+        public Guid Id { get; set; }
 
-        public Guid Id
-        {
-            get
-            {
-                if (this._id == Guid.Empty)
-                    this._id = Guid.NewGuid();
-                return this._id;
-            }
-            set
-            {
-                this._id = value;
-            }
-        }
-
+        [Required]
         [Display(Name = "Group")]
         public string GroupId { get; set; }
         public string GroupName { get; set; }
 
+        [Required]
+        [Display(Name = "Start date")]
         public DateTime Start { get; set; }
+
+        [Required]
+        [Display(Name = "Finish date")]
         public DateTime End { get; set; }
     }
 }

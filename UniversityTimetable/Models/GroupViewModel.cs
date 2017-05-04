@@ -15,5 +15,7 @@ namespace UniversityTimetable.Models
         public string Name { get; set; }
 
         public List<StudentViewModel> Students { get; set; }
+
+        public TimeTableViewModel TimeTable { get; set; }
     }
 }
