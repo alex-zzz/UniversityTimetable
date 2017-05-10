@@ -51,7 +51,7 @@ namespace UniversityTimetable.DAL.Repositories
 
         public IEnumerable<Group> GetAll()
         {
-            return db.Groups.Include("Students").Where(g => g.Id != new Guid("c47b2d19-bd53-41b8-98fb-fa8b0578b8ce")).ToList();
+            return db.Groups.Include("Students").Where(g => g.Id != new Guid("c47b2d19-bd53-41b8-98fb-fa8b0578b8ce")).OrderByDescending(t => t.CreatedDate).ToList();
         }
 
         public void Update(Group item)

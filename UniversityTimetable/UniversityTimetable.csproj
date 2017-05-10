@@ -205,16 +205,13 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Common\EventManager.cs" />
     <Compile Include="Common\Validators\MustBeTrueAttribute.cs" />
     <Compile Include="Common\Validators\RegisterViewModelCustomBinder.cs" />
     <Compile Include="Common\Validators\ValidateFileSizeAttribute.cs" />
     <Compile Include="Common\Validators\ValidateFileTypeAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AccountController_old.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
-    <Compile Include="Controllers\CalendarDialogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -226,6 +223,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\GroupViewModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\EventViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Models\ManagerViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -427,24 +425,19 @@
     <Content Include="Views\Admin\_EditNewsFormPartial.cshtml" />
     <Content Include="Views\Admin\Groups.cshtml" />
     <Content Include="Views\Admin\Managers.cshtml" />
-    <Content Include="Views\Admin\Students - Copy.cshtml" />
-    <Content Include="Views\Admin\Timetables - Init.cshtml" />
     <Content Include="Views\Admin\Timetables.cshtml" />
-    <None Include="Views\Admin\Timetables2.cshtml" />
-    <Content Include="Views\CalendarDialog\New.cshtml" />
+    <Content Include="Views\Admin\EditTimetableEvents.cshtml" />
+    <Content Include="Views\Calendar\New.cshtml" />
     <Content Include="Views\Shared\_Blank.cshtml" />
-    <Content Include="Views\CalendarDialog\Edit.cshtml" />
-    <Content Include="Views\CalendarDialog\New - Copy.cshtml" />
+    <Content Include="Views\Calendar\Edit.cshtml" />
     <Content Include="Views\Admin\_AddGroupFormPartial.cshtml" />
     <Content Include="Views\Admin\_EditGroupFormPartial.cshtml" />
     <Content Include="Views\Admin\_AddManagerFormPartial.cshtml" />
     <Content Include="Views\Admin\_ErrorDeletePartial.cshtml" />
     <Content Include="Views\Admin\_AddTimeTableFormPartial.cshtml" />
-    <Content Include="Views\Admin\_EditTimeTableFormPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Calendar\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

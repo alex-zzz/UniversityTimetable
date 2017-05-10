@@ -55,7 +55,7 @@ namespace UniversityTimetable.DAL.Repositories
 
         public IEnumerable<Student> GetAll()
         {
-            return (from s in db.Students select s).ToList();
+            return (from s in db.Students select s).OrderByDescending(t => t.CreatedDate).ToList();
         }
 
         public void Update(Student item)

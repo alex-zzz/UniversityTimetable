@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Ninject;
 using UniversityTimetable.BLL.Interfaces;
 using UniversityTimetable.BLL.Services;
+using UniversityTimetable.Common;
 using UniversityTimetable.Controllers;
 
 namespace UniversityTimetable.Utils
@@ -35,7 +36,7 @@ namespace UniversityTimetable.Utils
 
             kernel.Bind<IMapper>().ToConstant(Mappings.AutoMapperConfiguration.Configure().CreateMapper()).WhenInjectedInto(typeof(HomeController));
             kernel.Bind<IMapper>().ToConstant(Mappings.AutoMapperConfiguration.Configure().CreateMapper()).WhenInjectedInto(typeof(AdminController));
-            //kernel.Bind<IMapper>().ToConstant(Mappings.AutoMapperConfiguration.Configure().CreateMapper()).WhenInjectedInto(typeof(ManageController));
+            kernel.Bind<IMapper>().ToConstant(Mappings.AutoMapperConfiguration.Configure().CreateMapper()).WhenInjectedInto(typeof(CalendarController));
         }
     }
 }

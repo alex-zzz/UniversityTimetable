@@ -14,7 +14,7 @@ namespace UniversityTimetable.BLL.Services
 {
     public class TimeTableService : ITimeTableService
     {
-        IMapper _mapper;
+        readonly IMapper _mapper;
         IUnitOfWork Database { get; set; }
 
         public TimeTableService(IUnitOfWork uow, IMapper mapper)
@@ -23,18 +23,63 @@ namespace UniversityTimetable.BLL.Services
             Database = uow;
         }
 
+        //Groups
+
+        public IEnumerable<GroupDTO> GetGroups()
+        {
+            return _mapper.Map<IEnumerable<Group>, List<GroupDTO>>(Database.Groups.GetAll());
+        }
+
+        public GroupDTO GetGroupDTOById(Guid id)
+        {
+            Group group = Database.Groups.Get(id);
+            return _mapper.Map<Group, GroupDTO>(group);
+        }
+
         public Guid AddGroup(GroupDTO groupDto)
         {
-            //if (Database.Groups.GetAll().Where(a => a.Name == groupDto.Name).Count() > 0)
             if (Database.Groups.Find(g => g.Name == groupDto.Name).Any())
                 throw new ValidationException("Такая группа уже существует в БД!", "");
 
-            Group group = _mapper.Map<GroupDTO, Group>(groupDto);
+            var group = _mapper.Map<GroupDTO, Group>(groupDto);
 
             Database.Groups.Create(group);
             Database.Save();
 
             return group.Id;
+        }
+
+        public void UpdateGroup(GroupDTO groupDto)
+        {
+            if (Database.Groups.Find(g => g.Name == groupDto.Name).Any())
+                throw new ValidationException("Такая группа уже существует в БД!", "");
+
+            Group group = _mapper.Map<GroupDTO, Group>(groupDto);
+
+            Database.Groups.Update(group);
+            Database.Save();
+        }
+
+        public void DeleteGroup(Guid id)
+        {
+            if (Database.Groups.Get(id).Students.Any())
+                throw new ValidationException("Нельзя удалить группу в которой присутствуют студенты", "");
+
+            Database.Groups.Delete(id);
+            Database.Save();
+        }
+
+        //Timetables
+
+        public IEnumerable<TimeTableDTO> GetTimeTables()
+        {
+            return _mapper.Map<IEnumerable<TimeTable>, List<TimeTableDTO>>(Database.TimeTables.GetAll());
+        }
+
+        public TimeTableDTO GetTimeTableDTOById(Guid id)
+        {
+            TimeTable timeTable = Database.TimeTables.Find(t => t.Id == id).FirstOrDefault();
+            return _mapper.Map<TimeTable, TimeTableDTO>(timeTable);
         }
 
         public Guid AddTimeTable(TimeTableDTO timeTableDTO)
@@ -46,6 +91,50 @@ namespace UniversityTimetable.BLL.Services
             Database.Save();
 
             return timeTable.Id;
+        }
+
+        public void UpdateTimeTable(TimeTableDTO timeTableDTO)
+        {
+            //TimeTable timeTable = _mapper.Map<TimeTableDTO, TimeTable>(timeTableDTO);
+
+            //var existingTimeTable = Database.TimeTables.Find(t => t.Id == timeTableDTO.Id).FirstOrDefault();
+            //var existingEvents = existingTimeTable.Events.ToList();
+            //var updatedEvents = timeTable.Events.ToList();
+
+            //var addedEvents = updatedEvents.Where(e => !existingEvents.Select(ee => ee.Id).Contains(e.Id)).ToList();
+            //var deletedEvents = existingEvents.Where(e => !updatedEvents.Select(ee => ee.Id).Contains(e.Id)).ToList();
+            //var modifiedEvents = updatedEvents.Where(e => !addedEvents.Select(ee => ee.Id).Contains(e.Id)).ToList();
+
+            //foreach (var addedEvent in addedEvents)
+            //{
+            //    Database.Events.Create(addedEvent);
+            //}
+
+
+            //Database.TimeTables.Update(timeTable);
+            Database.Save();
+        }
+
+        public void DeleteTimeTable(Guid id)
+        {
+            if (Database.TimeTables.Get(id).Events.Any())
+                throw new ValidationException("Нельзя удалить расписание в котором определены события", "");
+
+            Database.TimeTables.Delete(id);
+            Database.Save();
+        }
+
+        //Studendts
+
+        public IEnumerable<StudentDTO> GetStudents()
+        {
+            return _mapper.Map<IEnumerable<Student>, List<StudentDTO>>(Database.Students.GetAll());
+        }
+
+        public StudentDTO GetStudentDTOById(Guid id)
+        {
+            Student student = Database.Students.Get(id);
+            return _mapper.Map<Student, StudentDTO>(student);
         }
 
         public void AddStudent(StudentDTO studentDto)
@@ -69,22 +158,11 @@ namespace UniversityTimetable.BLL.Services
             Database.Save();
         }
 
-        public void DeleteGroup(Guid id)
+        public void UpdateStudent(StudentDTO studentDto)
         {
-            //if ((Database.Students.GetAll().Any(s => s.Group.Id == id)))
-            if (Database.Groups.Get(id).Students.Any())
-                throw new ValidationException("Нельзя удалить группу в которой присутствуют студенты", "");
+            Student student = _mapper.Map<StudentDTO, Student>(studentDto);
 
-            Database.Groups.Delete(id);
-            Database.Save();
-        }
-
-        public void DeleteTimeTable(Guid id)
-        {
-            if (Database.TimeTables.Get(id).Events.Any())
-                throw new ValidationException("Нельзя удалить расписание в котором определены события", "");
-
-            Database.TimeTables.Delete(id);
+            Database.Students.Update(student);
             Database.Save();
         }
 
@@ -94,82 +172,52 @@ namespace UniversityTimetable.BLL.Services
             Database.Save();
         }
 
-        public StudentDTO GetStudentDTOById(Guid id)
+        //Events
+
+        public EventDTO GetEventDTOById(Guid id)
         {
-            Student student = Database.Students.Get(id);
-            //Student student = Database.Students.Find(s => s.Id == id).FirstOrDefault();
+            Event @event = Database.Events.Find(e => e.Id == id).FirstOrDefault();
 
-            //StudentDTO studentDto = new StudentDTO();
-            //studentDto.Id = student.Id;
-            //studentDto.UserId = student.UserId;
-            //studentDto.GroupId = (Guid) student.GroupId;
+            EventDTO eventDto = new EventDTO
+            {
+                Id = @event.Id,
+                Start = @event.Start,
+                End = @event.End,
+                Text = @event.Text,
+                RoomNumber = @event.RoomNumber,
+                TeacherName = @event.TeacherName,
+                TimeTableId = @event.TimeTableId
+            };
 
-            //return studentDto;
+            //EventDTO eventDto = _mapper.Map<Event, EventDTO>(@event);
 
-            return _mapper.Map<Student, StudentDTO>(student);
+            return eventDto;
         }
 
-        public GroupDTO GetGroupDTOById(Guid id)
+        public Guid AddEvent(EventDTO eventDto)
         {
-            Group group = Database.Groups.Get(id);
-            return _mapper.Map<Group, GroupDTO>(group);
+            Event @event = _mapper.Map<EventDTO, Event>(eventDto);
+
+            Database.Events.Create(@event);
+            Database.Save();
+
+            return @event.Id;
         }
 
-        public TimeTableDTO GetTimeTableDTOById(Guid id)
+        public void UpdateEvent(EventDTO eventDto)
         {
-            TimeTable timeTable = Database.TimeTables.Get(id);
-            return _mapper.Map<TimeTable, TimeTableDTO>(timeTable);
-        }
+            Event @event = _mapper.Map<EventDTO, Event>(eventDto);
 
-        public IEnumerable<StudentDTO> GetStudents()
-        {
-            return _mapper.Map<IEnumerable<Student>, List<StudentDTO>>(Database.Students.GetAll());
-        }
-
-        public IEnumerable<GroupDTO> GetGroups()
-        {
-            return _mapper.Map<IEnumerable<Group>, List<GroupDTO>>(Database.Groups.GetAll());
-        }
-
-        public IEnumerable<TimeTableDTO> GetTimeTables()
-        {
-            return _mapper.Map<IEnumerable<TimeTable>, List<TimeTableDTO>>(Database.TimeTables.GetAll());
-        }
-
-        public void UpdateStudent(StudentDTO studentDto)
-        {
-            //if (studentDto != null && studentDto.Group != null)
-            //{
-            //    //if (Database.Students.Find(a => a.User.Id == studentDto.User.Id && a.Group.Id == studentDto.Group.Id).Any())
-            //    if (Database.Students.GetAll().Where(a => a.User.Id == studentDto.User.Id && a.Group.Id == studentDto.Group.Id).Count() > 0)
-            //        throw new ValidationException("Такой студент уже существует в этой группе!", "");
-
-            //}
-
-            Student student = _mapper.Map<StudentDTO, Student>(studentDto);
-
-            Database.Students.Update(student);
+            Database.Events.Update(@event);
             Database.Save();
         }
 
-        public void UpdateGroup(GroupDTO groupDto)
+        public void DeleteEvent(Guid id)
         {
-            if (Database.Groups.Find(g => g.Name == groupDto.Name).Any())
-                throw new ValidationException("Такая группа уже существует в БД!", "");
-
-            Group group = _mapper.Map<GroupDTO, Group>(groupDto);
-
-            Database.Groups.Update(group);
+            Database.Events.Delete(id);
             Database.Save();
         }
 
-        public void UpdateTimeTable(TimeTableDTO timeTableDTO)
-        {
-            TimeTable timeTable = _mapper.Map<TimeTableDTO, TimeTable>(timeTableDTO);
-
-            Database.TimeTables.Update(timeTable);
-            Database.Save();
-        }
 
         public void Dispose()
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,7 +57,9 @@ namespace UniversityTimetable.DAL.Repositories
 
         public void Update(TimeTable item)
         {
-            db.Entry(item).State = EntityState.Modified;
+            //db.Entry(item).State = EntityState.Modified;
+            db.TimeTables.AddOrUpdate(item);
+
         }
     }
 }

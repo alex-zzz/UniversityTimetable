@@ -7,43 +7,21 @@
 }
 
 <h3>TimeTables</h3>
-
 <div data-bind="simpleGrid: gridViewModel" class="panel panel-default"> </div>
-
-<button data-bind="click: addItem" class="btn btn-primary">
-    Add item
-</button>
+<button data-bind="click: addItem" class="btn btn-primary">Add item</button>
 
 <button data-bind="click: jumpToFirstPage, enable: gridViewModel.currentPageIndex" class="btn btn-primary">
     Jump to first page
 </button>
 
-
 <div id="modalContainer">
 </div>
-
 
 @section scripts {
     <script>
         var PagedGridModel = function () {
             self = this;
             self.TimeTables = ko.observableArray(@Html.Raw(JsonConvert.SerializeObject(this.Model)));
-
-            @*self.addItem = function () {
-                $.ajax({
-                        url: '@Url.Action("AddTimeTable", "Admin")',
-                        type: "GET"
-                    })
-                    .done(function (partialViewResult) {
-                        $("#modalContainer").html(partialViewResult);
-                        $('#myModal').modal('show');
-                    });
-            };
-
-            self.insertItem = function (item) {
-                var groupObj = JSON.parse('{"' + decodeURI(item).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
-                self.Groups.unshift(groupObj);
-            };*@
 
             self.addItem = function() {
                 $.ajax({
@@ -60,7 +38,7 @@
                 self.TimeTables.unshift(item);
             };
 
-            self.editItem = function (item) {
+            @*self.editItem = function (item) {
 
                 $.ajax({
                         url: '@Url.Action("EditGroup", "Admin")',
@@ -86,7 +64,7 @@
                     Id: groupObj.Id,
                     Name: groupObj.Name
                 });
-            };
+            };*@
 
             self.removeItem = function(item) {
                 $.ajax({
@@ -117,20 +95,31 @@
                     { headerText: "Group", rowText: "GroupName" },
                     { headerText: "Start", rowText: "Start" },
                     { headerText: "Finish", rowText: "End" },
+                    //{
+                    //    headerText: "", rowText: {
+                    //        edit: function (item) {
+                    //            return function () {
+                    //                self.editItem(item);
+                    //            }
+                    //        }
+                    //    }
+                    //},
                     {
                         headerText: "", rowText: {
-                            edit: function (item) {
+                            timetable: function (item) {
                                 return function () {
-                                    self.editItem(item);
-                                }
-                            }
-                        }
-                    },
-                    {
-                        headerText: "", rowText: {
-                            edit: function (item) {
-                                return function () {
-                                    self.editItem(item);
+                                    $.ajax({
+                                        url: '@Url.Action("RedirectToTimeTableEventsEditor", "Admin")',
+                                        type: "GET",
+                                        data: "id=" + item.Id,
+                                        success: function(response){
+                                            window.location.href = response;
+                                        }
+                                    });
+                                    //.done(function (partialViewResult) {
+                                    //    $("#modalContainer").html(partialViewResult);
+                                    //    $('#myModal').modal('show');
+                                    //});
                                 }
                             }
                         }
@@ -151,7 +140,6 @@
         $(document).ready(function () {
             ko.applyBindings(new PagedGridModel());
         });
-
 
     </script>
 

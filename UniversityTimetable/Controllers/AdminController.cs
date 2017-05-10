@@ -267,6 +267,22 @@ namespace UniversityTimetable.Controllers
         }
 
         [Authorize(Roles = "admin, manager")]
+        public ActionResult RedirectToTimeTableEventsEditor(Guid id)
+        {
+            var timeTableId = id;
+            return Json(Url.Action("EditTimeTableEvents", new { id = timeTableId }), JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize(Roles = "admin, manager")]
+        public ActionResult EditTimeTableEvents(Guid id)
+        {
+            TimeTableDTO timeTableDto = _timeTableService.GetTimeTableDTOById(id);
+            TimeTableViewModel timeTableViewModel = _mapper.Map<TimeTableDTO, TimeTableViewModel>(timeTableDto);
+
+            return View(timeTableViewModel);
+        }
+
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Timetables2()
         {
             return View();

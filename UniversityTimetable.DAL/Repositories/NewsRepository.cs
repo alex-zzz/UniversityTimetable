@@ -50,7 +50,7 @@ namespace UniversityTimetable.DAL.Repositories
 
         public IEnumerable<News> GetAll()
         {
-            return db.News.ToList();
+            return db.News.OrderByDescending(t => t.CreatedDate).ToList();
         }
 
         public void Update(News item)

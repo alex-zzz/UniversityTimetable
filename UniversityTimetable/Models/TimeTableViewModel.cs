@@ -22,5 +22,7 @@ namespace UniversityTimetable.Models
         [Required]
         [Display(Name = "Finish date")]
         public DateTime End { get; set; }
+
+        public List<EventViewModel> Events { get; set; }
     }
 }

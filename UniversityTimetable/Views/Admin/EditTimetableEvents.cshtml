@@ -2,15 +2,15 @@
 @using DayPilot.Web.Mvc.Events.Calendar
 @using DayPilot.Web.Mvc.Enums.Calendar
 
+@model UniversityTimetable.Models.TimeTableViewModel
 
 @{
-    ViewBag.Title = "Timetables";
+    ViewBag.Title = "Edit Timetable Events";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 
 }
 
-
-<h3>Timetables</h3>
+<h3>Timetable for @Model.GroupName (@Model.Start - @Model.End)</h3>
 
 <div class="space">
     Week:
@@ -26,18 +26,18 @@
 <script type="text/javascript">
 
 	function createEvent(start, end, resource) {
-	    modal().showUrl("@Url.Content("~/CalendarDialog/New")?start=" + start.toStringSortable() + "&end=" + end.toStringSortable());
+	    modal().showUrl("@Url.Content("~/Calendar/New")?start=" + start.toStringSortable() + "&end=" + end.toStringSortable());
 	}
 
 	function editEvent(id) {
-	    modal().showUrl("@Url.Content("~/CalendarDialog/Edit/")" + id);
+	    modal().showUrl("@Url.Content("~/Calendar/Edit/")" + id);
 	}
 
 	function modal() {
         var modal = new DayPilot.Modal();
         modal.top = "70";
         modal.autoStretch = true;
-        modal.height = 515;
+        //modal.height = 515;
 	    modal.onClosed = function (args) {
 	        if (args.result == "OK") {
 	            dpc.commandCallBack('refresh');
@@ -52,21 +52,25 @@
 <div>
 
     @(Html.DayPilotCalendar("dpc", new DayPilotCalendarConfig
-{
-    BackendUrl = Url.Content("~/Calendar/Backend"),
-    ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Week,
-    TimeFormat = DayPilot.Web.Mvc.Enums.TimeFormat.Clock24Hours,
-    TimeRangeSelectedHandling = TimeRangeSelectedHandlingType.JavaScript,
-    TimeRangeSelectedJavaScript = "createEvent(start, end)",
-    EventMoveHandling = EventMoveHandlingType.CallBack,
-    EventResizeHandling = EventResizeHandlingType.CallBack,
-    EventClickHandling = EventClickHandlingType.JavaScript,
-    EventClickJavaScript = "editEvent(e.value());",
+    {
+        BackendUrl = Url.Action("Backend", "Calendar", new { id = Model.Id }),
+        //BackendUrl = Url.Content("~/Calendar/Backend/"+ @Model.Id),
+        ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Week,
+        TimeFormat = DayPilot.Web.Mvc.Enums.TimeFormat.Clock24Hours,
+        TimeRangeSelectedHandling = TimeRangeSelectedHandlingType.JavaScript,
+        TimeRangeSelectedJavaScript = "createEvent(start, end)",
+        EventMoveHandling = EventMoveHandlingType.CallBack,
+        EventResizeHandling = EventResizeHandlingType.CallBack,
+        EventClickHandling = EventClickHandlingType.JavaScript,
+        EventClickJavaScript = "editEvent(e.value());",
 
-    LoadingLabelText = "<img src='" + Url.Content("~/Content/img/ajax-loader-round.gif") + "' />",
-    LoadingLabelBackColor = "",
-}))
+        LoadingLabelText = "<img src='" + Url.Content("~/Content/img/ajax-loader-round.gif") + "' />",
+        LoadingLabelBackColor = "",
+    }))
 </div>
+<br>
+@Html.ActionLink("Go to timetable list", "TimeTables", "Admin", null, null)
+
 
 
 

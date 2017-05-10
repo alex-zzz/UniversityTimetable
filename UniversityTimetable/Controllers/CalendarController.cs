@@ -1,72 +1,51 @@
-﻿using DayPilot.Web.Mvc;
+﻿using AutoMapper;
+using DayPilot.Web.Mvc;
 using DayPilot.Web.Mvc.Enums;
 using DayPilot.Web.Mvc.Events.Calendar;
+using DayPilot.Web.Mvc.Json;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using UniversityTimetable.Common;
+using UniversityTimetable.BLL.DTO;
+using UniversityTimetable.BLL.Interfaces;
+using UniversityTimetable.Models;
 
 namespace UniversityTimetable.Controllers
 {
     [HandleError]
     public class CalendarController : Controller
     {
+        private readonly ITimeTableService _timeTableService;
+        private readonly IMapper _mapper;
 
-        public ActionResult Backend()
+        public CalendarController(ITimeTableService timeTableService, IMapper mapper)
         {
-            return new Dpc().CallBack(this);
+            _timeTableService = timeTableService;
+            _mapper = mapper;
+        }
+
+        public ActionResult Backend(Guid id)
+        {
+            this.Session["TimeTableId"] = id;
+
+            return new Dpc(_timeTableService, _mapper, id).CallBack(this);
         }
 
         public class Dpc : DayPilotCalendar
         {
-            protected override void OnTimeRangeSelected(TimeRangeSelectedArgs e)
+            private readonly ITimeTableService _timeTableService;
+            private readonly IMapper _mapper;
+            private readonly Guid _id;
+
+            public Dpc(ITimeTableService timeTableService, IMapper mapper, Guid id)
             {
-                string name = (string)e.Data["name"];
-                if (String.IsNullOrEmpty(name))
-                {
-                    name = "(default)";
-                }
-                new EventManager(Controller).EventCreate(e.Start, e.End, name);
-                Update();
+                _timeTableService = timeTableService;
+                _mapper = mapper;
+                _id = id;
             }
 
-            protected override void OnEventMove(DayPilot.Web.Mvc.Events.Calendar.EventMoveArgs e)
+            protected override void OnInit(InitArgs initArgs)
             {
-                if (new EventManager(Controller).Get(e.Id) != null)
-                {
-                    new EventManager(Controller).EventMove(e.Id, e.NewStart, e.NewEnd);
-                }
-
-                Update();
-            }
-
-            protected override void OnEventClick(EventClickArgs e)
-            {
-
-            }
-
-            protected override void OnEventResize(DayPilot.Web.Mvc.Events.Calendar.EventResizeArgs e)
-            {
-                new EventManager(Controller).EventMove(e.Id, e.NewStart, e.NewEnd);
-                Update();
-            }
-
-            private int i = 0;
-            protected override void OnBeforeEventRender(BeforeEventRenderArgs e)
-            {
-                if (Id == "dpc_customization")
-                {
-                    // alternating color
-                    int colorIndex = i % 4;
-                    string[] backColors = { "#FFE599", "#9FC5E8", "#B6D7A8", "#EA9999" };
-                    string[] borderColors = { "#F1C232", "#3D85C6", "#6AA84F", "#CC0000" };
-                    e.BackgroundColor = backColors[colorIndex];
-                    e.BorderColor = borderColors[colorIndex];
-                    i++;
-                }
+                Update(CallBackUpdateType.Full);
             }
 
             protected override void OnCommand(CommandArgs e)
@@ -100,11 +79,6 @@ namespace UniversityTimetable.Controllers
                 }
             }
 
-            protected override void OnInit(InitArgs initArgs)
-            {
-                Update(CallBackUpdateType.Full);
-            }
-
             protected override void OnFinish()
             {
                 // only load the data if an update was requested by an Update() call
@@ -113,22 +87,122 @@ namespace UniversityTimetable.Controllers
                     return;
                 }
 
-                // this select is a really bad example, no where clause
-                Events = new EventManager(Controller).Data.AsEnumerable();
+                DataIdField = "Id";
+                DataStartField = "Start";
+                DataEndField = "End";
+                DataTextField = "Text";
 
-                /*
-                foreach (DataRow dr in (EnumerableRowCollection) Events)
-                {
-                    dr["text"] = "custom HTML";
-                }
-                 */
+                TimeTableDTO timeTableDto = _timeTableService.GetTimeTableDTOById(_id);
+                var timeTableViewModel = _mapper.Map<TimeTableDTO, TimeTableViewModel>(timeTableDto);
 
-                DataStartField = "start";
-                DataEndField = "end";
-                DataTextField = "text";
-                DataIdField = "id";
+                Events = timeTableViewModel.Events;
             }
 
+
+            protected override void OnTimeRangeSelected(TimeRangeSelectedArgs e)
+            {
+                string name = (string)e.Data["name"];
+                if (String.IsNullOrEmpty(name))
+                {
+                    name = "(default)";
+                }
+                //new EventManager(Controller).EventCreate(e.Start, e.End, name);
+                Update();
+            }
+
+            protected override void OnEventMove(DayPilot.Web.Mvc.Events.Calendar.EventMoveArgs e)
+            {
+                var eventDto = _timeTableService.GetEventDTOById(new Guid(e.Id));
+                eventDto.Start = e.NewStart;
+                eventDto.End = e.NewEnd;
+                _timeTableService.UpdateEvent(eventDto);
+
+                Update();
+            }
+
+            protected override void OnEventClick(EventClickArgs e)
+            {
+
+            }
+
+            protected override void OnEventResize(DayPilot.Web.Mvc.Events.Calendar.EventResizeArgs e)
+            {
+                var eventDto = _timeTableService.GetEventDTOById(new Guid(e.Id));
+                eventDto.Start = e.NewStart;
+                eventDto.End = e.NewEnd;
+                _timeTableService.UpdateEvent(eventDto);
+
+                Update();
+            }
+
+            private int i = 0;
+            protected override void OnBeforeEventRender(BeforeEventRenderArgs e)
+            {
+                if (Id == "dpc_customization")
+                {
+                    // alternating color
+                    int colorIndex = i % 4;
+                    string[] backColors = { "#FFE599", "#9FC5E8", "#B6D7A8", "#EA9999" };
+                    string[] borderColors = { "#F1C232", "#3D85C6", "#6AA84F", "#CC0000" };
+                    e.BackgroundColor = backColors[colorIndex];
+                    e.BorderColor = borderColors[colorIndex];
+                    i++;
+                }
+            }
+        }
+
+        public ActionResult New(string id)
+        {
+            var @event = new EventViewModel();
+            @event.Start = Convert.ToDateTime(Request.QueryString["start"]);
+            @event.End = Convert.ToDateTime(Request.QueryString["end"]);
+
+            return View(@event);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult New(FormCollection form)
+        {
+            DateTime start = Convert.ToDateTime(form["Start"]);
+            DateTime end = Convert.ToDateTime(form["End"]);
+            string text = form["Text"];
+
+            EventViewModel @event = new EventViewModel
+            {
+                TimeTableId = new Guid(this.Session["TimeTableId"].ToString()),
+                Start = start,
+                End = end,
+                Text = text
+            };
+
+            EventDTO eventDto = _mapper.Map<EventViewModel, EventDTO>(@event);
+
+            _timeTableService.AddEvent(eventDto);
+
+            return JavaScript(SimpleJsonSerializer.Serialize("OK"));
+        }
+
+        public ActionResult Edit(string id)
+        {
+            var eventDto = _timeTableService.GetEventDTOById(new Guid(id));
+            var @event = _mapper.Map<EventDTO, EventViewModel>(eventDto);
+            return View(@event);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Edit(FormCollection form)
+        {
+            if (form["DeleteLesson"] == "on")
+            {
+                _timeTableService.DeleteEvent(new Guid(form["Id"]));
+            }
+            else
+            {
+                var eventDto = _timeTableService.GetEventDTOById(new Guid(form["Id"]));
+                eventDto.Text = form["Text"];
+                _timeTableService.UpdateEvent(eventDto);
+            }
+            return JavaScript(SimpleJsonSerializer.Serialize("OK"));
         }
     }
 }

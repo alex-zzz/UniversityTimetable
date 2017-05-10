@@ -54,6 +54,9 @@
                                 <!--ko if: typeof rowText == 'object' && typeof rowText.delete == 'function'-->\
                                 <td><button class=\"btn btn-primary center-block\" data-bind=\"click:rowText.delete($parent)\">delete</button></td>\
                                 <!-- /ko -->\
+                                <!--ko if: typeof rowText == 'object' && typeof rowText.timetable == 'function'-->\
+                                <td><button class=\"btn btn-primary center-block\" data-bind=\"click:rowText.timetable($parent)\">edit events</button></td>\
+                                <!-- /ko -->\
                                 <!--ko if: rowText == 'Img'-->\
                                 <td><img class=\"\" data-bind=\"attr:{src: typeof rowText == 'function' ? rowText($parent) : $parent[rowText]}\" /></td>\
                                 <!-- /ko -->\
