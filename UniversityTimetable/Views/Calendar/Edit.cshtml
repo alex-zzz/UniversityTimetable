@@ -4,14 +4,26 @@
 <body class="padded">
     <form id="f" method="post" action="@Url.Action("Edit")">
         <h2>Edit Lesson</h2>
+        
+        @Html.Hidden("Id")
 
         <div style="margin-top:20px">
             <div>Event text</div>
-            @Html.TextBox("Text")@Html.Hidden("Id")
+            @Html.TextBox("Text")
+        </div>
+        
+        <div style="margin-top:20px">
+            <div>Teacher Name</div>
+            @Html.TextBox("TeacherName")
+        </div>
+        
+        <div style="margin-top:20px">
+            <div>Room Number</div>
+            @Html.TextBox("RoomNumber")
         </div>
 
         <div style="margin-top:20px">
-            <input type="checkbox" name="DeleteLesson" onclick="showMe('recurrenceSection')" />
+            <input type="checkbox" name="DeleteLesson" />
             <span style="color: red;"> Delete</span>
         </div>
 

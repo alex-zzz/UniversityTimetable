@@ -101,13 +101,13 @@ namespace UniversityTimetable.Controllers
 
             protected override void OnTimeRangeSelected(TimeRangeSelectedArgs e)
             {
-                string name = (string)e.Data["name"];
-                if (String.IsNullOrEmpty(name))
-                {
-                    name = "(default)";
-                }
-                //new EventManager(Controller).EventCreate(e.Start, e.End, name);
-                Update();
+                //string name = (string)e.Data["name"];
+                //if (String.IsNullOrEmpty(name))
+                //{
+                //    name = "(default)";
+                //}
+
+                //Update();
             }
 
             protected override void OnEventMove(DayPilot.Web.Mvc.Events.Calendar.EventMoveArgs e)
@@ -135,19 +135,21 @@ namespace UniversityTimetable.Controllers
                 Update();
             }
 
-            private int i = 0;
+            //private int i = 0;
             protected override void OnBeforeEventRender(BeforeEventRenderArgs e)
             {
-                if (Id == "dpc_customization")
-                {
-                    // alternating color
-                    int colorIndex = i % 4;
-                    string[] backColors = { "#FFE599", "#9FC5E8", "#B6D7A8", "#EA9999" };
-                    string[] borderColors = { "#F1C232", "#3D85C6", "#6AA84F", "#CC0000" };
-                    e.BackgroundColor = backColors[colorIndex];
-                    e.BorderColor = borderColors[colorIndex];
-                    i++;
-                }
+                //if (Id == "dpc_customization")
+                //{
+                //    // alternating color
+                //    int colorIndex = i % 4;
+                //    string[] backColors = { "#FFE599", "#9FC5E8", "#B6D7A8", "#EA9999" };
+                //    string[] borderColors = { "#F1C232", "#3D85C6", "#6AA84F", "#CC0000" };
+                //    e.BackgroundColor = backColors[colorIndex];
+                //    e.BorderColor = borderColors[colorIndex];
+                //    i++;
+                //}
+
+                e.Html = "<strong>" + e.Text + "</strong>" + "<br>Teacher: " + e.DataItem["TeacherName"] + "<br>Room: " + e.DataItem["RoomNumber"];
             }
         }
 
@@ -166,13 +168,19 @@ namespace UniversityTimetable.Controllers
             DateTime start = Convert.ToDateTime(form["Start"]);
             DateTime end = Convert.ToDateTime(form["End"]);
             string text = form["Text"];
+            string teacherName = form["TeacherName"];
+            int roomNumber = 0;
+            Int32.TryParse(form["RoomNumber"], out roomNumber);
+
 
             EventViewModel @event = new EventViewModel
             {
                 TimeTableId = new Guid(this.Session["TimeTableId"].ToString()),
                 Start = start,
                 End = end,
-                Text = text
+                Text = text,
+                TeacherName = teacherName,
+                RoomNumber = roomNumber
             };
 
             EventDTO eventDto = _mapper.Map<EventViewModel, EventDTO>(@event);
@@ -200,6 +208,11 @@ namespace UniversityTimetable.Controllers
             {
                 var eventDto = _timeTableService.GetEventDTOById(new Guid(form["Id"]));
                 eventDto.Text = form["Text"];
+                eventDto.TeacherName = form["TeacherName"];
+                int roomNumber = 0;
+                Int32.TryParse(form["RoomNumber"], out roomNumber);
+                eventDto.RoomNumber = roomNumber;
+
                 _timeTableService.UpdateEvent(eventDto);
             }
             return JavaScript(SimpleJsonSerializer.Serialize("OK"));
