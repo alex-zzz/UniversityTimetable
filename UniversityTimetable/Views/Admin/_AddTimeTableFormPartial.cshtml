@@ -6,19 +6,6 @@
                 $('form#addTimeTableForm').removeData("validator");
                 $('form#addTimeTableForm').removeData("unobtrusiveValidation");
                 $.validator.unobtrusive.parse($('form#addTimeTableForm'));
-
-                //$("#h_reg_date").datepicker();
-                //$("#h_reg_date").datepicker("option", "dateFormat", "yy-M-dd");
-
-                //$("#save_data").on("click", function () {
-                //    var reg_date = $("#h_reg_date").val();
-                //    console.log(reg_date);
-                //    reg_date = moment(reg_date).format("YYYY/MM/DD");
-                //    console.log(reg_date);
-                //    return;
-                //});
-
-
             </script>
 
             @using (Html.BeginForm("AddTimeTable", "Admin", FormMethod.Post, new { id = "addTimeTableForm" }))
