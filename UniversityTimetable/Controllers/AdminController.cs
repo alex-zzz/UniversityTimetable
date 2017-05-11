@@ -127,7 +127,9 @@ namespace UniversityTimetable.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    GroupDTO groupDto = _mapper.Map<GroupViewModel, GroupDTO>(groupViewModel);
+                    GroupDTO groupDto = _timeTableService.GetGroupDTOById(groupViewModel.Id);
+                    groupDto.Name = groupViewModel.Name;
+                    //groupDto = _mapper.Map<GroupViewModel, GroupDTO>(groupViewModel);
 
                     _timeTableService.UpdateGroup(groupDto);
                     return Json(new { success = true });
