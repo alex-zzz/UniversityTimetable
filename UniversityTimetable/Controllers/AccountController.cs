@@ -1,29 +1,19 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
+﻿using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using UniversityTimetable.Models;
-using UniversityTimetable.BLL.Interfaces;
 using UniversityTimetable.BLL.DTO;
 using UniversityTimetable.BLL.Infrastructure;
-using System.Collections.Generic;
+using UniversityTimetable.BLL.Interfaces;
 using UniversityTimetable.Common.Validators;
+using UniversityTimetable.Models;
 
 namespace UniversityTimetable.Controllers
 {
     public class AccountController : Controller
     {
-
-        //private ApplicationSignInManager _signInManager;
-        //private ApplicationUserManager _userManager;
-
-
         private IUserService UserService
         {
             get
@@ -59,7 +49,7 @@ namespace UniversityTimetable.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserDTO userDto = new UserDTO { Email = model.Email, Password = model.Password};
+                UserDTO userDto = new UserDTO { Email = model.Email, Password = model.Password };
                 ClaimsIdentity claim = await UserService.Authenticate(userDto);
                 if (claim == null)
                 {
@@ -108,7 +98,7 @@ namespace UniversityTimetable.Controllers
                 if (operationDetails.Succedeed)
                 {
 
-                    ClaimsIdentity claim = await UserService.Authenticate(userDto); 
+                    ClaimsIdentity claim = await UserService.Authenticate(userDto);
                     if (claim == null)
                     {
                         ModelState.AddModelError("", "Wrong login/password.");
@@ -125,27 +115,13 @@ namespace UniversityTimetable.Controllers
                         TTService.AddStudent(new StudentDTO { UserId = userDto.Id });
 
                         return RedirectToAction("Index", "Home");
-                    }                   
+                    }
                 }
-                
+
                 else
                     ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
             }
             return View(model);
         }
-
-        //private async Task SetInitialDataAsync()
-        //{
-        //    await UserService.SetInitialData(new UserDTO
-        //    {
-        //        Email = "somemail@mail.com",
-        //        UserName = "admin",
-        //        Password = "admin",
-        //        Name = "Admin",
-        //        Address = "ул. Спортивная, д.30, кв.75",
-        //        Role = "admin",
-        //    }, new List<string> { "admin", "manager", "student" });
-        //}
-
     }
 }

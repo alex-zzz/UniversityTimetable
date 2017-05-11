@@ -12,7 +12,7 @@ namespace UniversityTimetable.Common.Validators
 
         protected override void OnModelUpdated(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
-            //base.OnModelUpdated(controllerContext, bindingContext);
+            base.OnModelUpdated(controllerContext, bindingContext);
             IDataErrorInfo errorProvider = bindingContext.Model as IDataErrorInfo;
             if (errorProvider != null)
             {

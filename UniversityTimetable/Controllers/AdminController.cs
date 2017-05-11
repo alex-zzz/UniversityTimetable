@@ -149,14 +149,11 @@ namespace UniversityTimetable.Controllers
             {
                 _timeTableService.DeleteGroup(id);
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);
-                //return RedirectToAction("Groups", "Admin");
             }
             catch (ValidationException ex)
             {
                 ViewBag.Error = ex.Message;
                 return PartialView("_ErrorDeletePartial");
-
-                //return Json(new { success = false, errorMessage = ex.Message }, JsonRequestBehavior.AllowGet);
             }
 
         }
@@ -219,14 +216,6 @@ namespace UniversityTimetable.Controllers
             return PartialView("_AddTimeTableFormPartial", timeTableViewModel);
         }
 
-        [Authorize(Roles = "admin, manager")]
-        public ActionResult EditTimeTable(Guid id)
-        {
-            TimeTableDTO timeTableDto = _timeTableService.GetTimeTableDTOById(id);
-            var timeTableViewModel = _mapper.Map<TimeTableDTO, TimeTableViewModel>(timeTableDto);
-            return PartialView("_EditTimeTableFormPartial", timeTableViewModel);
-        }
-
         [HttpPost]
         [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
@@ -280,12 +269,6 @@ namespace UniversityTimetable.Controllers
             TimeTableViewModel timeTableViewModel = _mapper.Map<TimeTableDTO, TimeTableViewModel>(timeTableDto);
 
             return View(timeTableViewModel);
-        }
-
-        [Authorize(Roles = "admin, manager")]
-        public ActionResult Timetables2()
-        {
-            return View();
         }
 
         //Students

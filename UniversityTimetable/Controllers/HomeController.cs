@@ -20,14 +20,6 @@ namespace UniversityTimetable.Controllers
         INewsService _newsService;
         IMapper _mapper;
 
-        //private INewsService NewsService
-        //{
-        //    get
-        //    {
-        //        return HttpContext.GetOwinContext().GetUserManager<INewsService>();
-        //    }
-        //}
-
         public HomeController(INewsService newsService, IMapper mapper)
         {
             _newsService = newsService;

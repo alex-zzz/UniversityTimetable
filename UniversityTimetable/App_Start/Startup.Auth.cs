@@ -82,10 +82,5 @@ namespace UniversityTimetable
         {
             return serviceCreator.CreateTTService("DefaultConnection");
         }
-
-        //private INewsService CreateNewsService()
-        //{
-        //    return serviceCreator.CreateNewsService("DefaultConnection");
-        //}
     }
 }
