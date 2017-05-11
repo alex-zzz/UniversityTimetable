@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace UniversityTimetable.BLL.DTO
 {
-    public class GroupDTO
+    public class GroupDTO : EntityDTO
     {
-        public Guid Id { get; set; }
+        //public Guid Id { get; set; }
         public string Name { get; set; }
 
         public virtual List<StudentDTO> Students { get; set; }

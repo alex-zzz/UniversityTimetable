@@ -10,21 +10,23 @@ namespace UniversityTimetable.Models
     public class StudentViewModel
     {
 
-        public Guid _id;
+        //public Guid _id;
 
-        public Guid Id
-        {
-            get
-            {
-                if (this._id == Guid.Empty)
-                    this._id = Guid.NewGuid();
-                return this._id;
-            }
-            set
-            {
-                this._id = value;
-            }
-        }
+        //public Guid Id
+        //{
+        //    get
+        //    {
+        //        if (this._id == Guid.Empty)
+        //            this._id = Guid.NewGuid();
+        //        return this._id;
+        //    }
+        //    set
+        //    {
+        //        this._id = value;
+        //    }
+        //}
+
+        public Guid Id { get; set; }
 
         [Display(Name = "Name")]
         public string Name { get; set; }
