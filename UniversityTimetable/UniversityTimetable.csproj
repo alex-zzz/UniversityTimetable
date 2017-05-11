@@ -219,13 +219,13 @@
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Mappings\DtoToViewModelMappingProfile.cs" />
     <Compile Include="Mappings\ViewModelToDtoMappingProfile.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ChangePasswordViewModel.cs" />
     <Compile Include="Models\GroupViewModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\EventViewModel.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Models\ManagerViewModel.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\NewsViewModel.cs" />
     <Compile Include="Models\StudentViewModel.cs" />
@@ -388,24 +388,9 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
@@ -434,6 +419,7 @@
     <Content Include="Views\Admin\_AddManagerFormPartial.cshtml" />
     <Content Include="Views\Admin\_ErrorDeletePartial.cshtml" />
     <Content Include="Views\Admin\_AddTimeTableFormPartial.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

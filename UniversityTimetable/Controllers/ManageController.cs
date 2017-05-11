@@ -78,6 +78,7 @@ namespace UniversityTimetable.Controllers
             return View(model);
         }
 
+
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
@@ -116,22 +117,6 @@ namespace UniversityTimetable.Controllers
                 }
             }
 
-            return View(model);
-        }
-
-        //
-        // GET: /Manage/SetPassword
-        public ActionResult SetPassword()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Manage/SetPassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
-        {
             return View(model);
         }
 
